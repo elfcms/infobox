@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('infoboxes', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
+            $table->boolean('active')->default(1)->nullable();
             $table->timestamps();
         });
     }

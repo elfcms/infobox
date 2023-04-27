@@ -9,15 +9,41 @@ class InfoboxItem extends Model
 {
     use HasFactory;
 
+
+
     protected $fillable = [
-        'code',
         'title',
-        'image',
-        'text',
+        'slug',
+        'parent_id',
+        'infobox_id',
+        'description',
+        'meta_keywords',
+        'meta_description',
+        'active'
     ];
 
-    public function options()
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
     {
-        return $this->hasMany(InfoboxItemOption::class, 'item_id');
+        return 'slug';
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active',1);
+    }
+
+    public function category ()
+    {
+        return $this->belongsTo(InfoboxCategory::class, 'category_id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(InfoboxItemProperty::class, 'item_id');
     }
 }
