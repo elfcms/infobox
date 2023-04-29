@@ -3,7 +3,7 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Infobox\Models\InfoboxDataType;
+use Elfcms\Basic\Models\DataType;
 use Elfcms\Infobox\Models\InfoboxItem;
 use Elfcms\Infobox\Models\InfoboxItemOption;
 use Illuminate\Http\Request;
@@ -14,6 +14,7 @@ class InfoboxItemController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -54,7 +55,7 @@ class InfoboxItemController extends Controller
      */
     public function create()
     {
-        $data_types = InfoboxDataType::all();
+        $data_types = DataType::all();
         return view('infobox::admin.infobox.items.create',[
             'page' => [
                 'title' => __('infobox::elf.infobox') . ' ' . __('infobox::elf.items'),
@@ -97,7 +98,7 @@ class InfoboxItemController extends Controller
                 if (!empty($param['deleted']) || empty($param['type']) || empty($param['name'])) {
                     continue;
                 }
-                $typeCode = InfoboxDataType::find($param['type']);
+                $typeCode = DataType::find($param['type']);
                 $typeCodes = ['int','float','date','datetime'];
                 $type = '';
                 if (!empty($typeCode) && !empty($typeCode->code) && in_array($typeCode->code,$typeCodes)) {
@@ -134,7 +135,7 @@ class InfoboxItemController extends Controller
      */
     public function edit(InfoboxItem $item)
     {
-        $data_types = InfoboxDataType::all();
+        $data_types = DataType::all();
         $next_option_id = $item->options->max('id');
         if (empty($next_option_id)) {
             $next_option_id = 0;
@@ -196,27 +197,27 @@ class InfoboxItemController extends Controller
                     $item->options()->find($oid)->delete();
                     continue;
                 }
-                $typeCode = InfoboxDataType::find($param['type']);
+                $typeCode = DataType::find($param['type']);
                 $type = '';
                 if (!empty($typeCode) && !empty($typeCode->code) && in_array($typeCode->code,$typeCodes)) {
                     $type = '_' . $typeCode->code;
                 }
-                $option = InfoboxItemOption::find($oid);
+                /* $option = InfoboxItemOption::find($oid);
                 if ($option) {
                     $option['value'.$type] = $param['value'];
                     $option->name = $param['name'];
                     $option->data_type_id = $param['type'];
                     $option->save();
-                }
+                } */
             }
         }
 
-        if (!empty($request->options_new)) {
+        /* if (!empty($request->options_new)) {
             foreach ($request->options_new as $i => $param) {
                 if (!empty($param['deleted']) || (empty($param['value']) && empty($param['text']))) {
                     continue;
                 }
-                $typeCode = InfoboxDataType::find($param['type']);
+                $typeCode = DataType::find($param['type']);
                 $type = '';
                 if (!empty($typeCode) && !empty($typeCode->code) && in_array($typeCode->code,$typeCodes)) {
                     $type = '_' . $typeCode->code;
@@ -228,7 +229,7 @@ class InfoboxItemController extends Controller
                 ];
                 $item->options()->create($optionData);
             }
-        }
+        } */
 
         $item->save();
 

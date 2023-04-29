@@ -1,6 +1,6 @@
 <?php
 
-namespace Elfcms\Infobox\Http\Controllers;
+namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Infobox\Models\InfoboxCategoryProperty;
