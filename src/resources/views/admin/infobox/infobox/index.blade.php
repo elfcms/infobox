@@ -65,7 +65,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route('admin.infobox.infoboxes.edit',$infobox) }}">
+                        <a href="{{ route('admin.infobox.infoboxes.show',$infobox) }}">
                             {{ $infobox->title }}
                         </a>
                     </td>

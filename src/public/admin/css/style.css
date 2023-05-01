@@ -99,3 +99,6 @@ main:has(.infobox-table-buttons) {
 .grid-table.infobox-property-table .table-subrow.showed {
     display: initial;
 }
+select option.hidden {
+    display: none;
+}

@@ -95,7 +95,13 @@ class InfoboxController extends Controller
      */
     public function show(Infobox $infobox)
     {
-        //
+        return view('infobox::admin.infobox.infobox.show',[
+            'page' => [
+                'title' => __('infobox::elf.infobox') . '"' . $infobox->title . '"',
+                'current' => url()->current(),
+            ],
+            'infobox' => $infobox
+        ]);
     }
 
     /**

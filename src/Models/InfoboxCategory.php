@@ -35,6 +35,11 @@ class InfoboxCategory extends Model
         return $query->where('active',1);
     }
 
+    public function infobox ()
+    {
+        return $this->belongsTo(Infobox::class, 'infobox_id');
+    }
+
     public function items ()
     {
         return $this->hasMany(InfoboxItem::class, 'category_id');

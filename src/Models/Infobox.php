@@ -28,6 +28,11 @@ class Infobox extends Model
         return 'slug';
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('active',1);
+    }
+
     public function items ()
     {
         return $this->hasMany(InfoboxItem::class, 'infobox_id');
