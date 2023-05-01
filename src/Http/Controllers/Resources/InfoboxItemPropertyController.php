@@ -3,6 +3,8 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Basic\Models\DataType;
+use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxItemProperty;
 use Illuminate\Http\Request;
 
@@ -11,11 +13,23 @@ class InfoboxItemPropertyController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Elfcms\Infobox\Models\Infobox  $infobox
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Infobox $infobox)
     {
-        //
+        $dataTypes = DataType::all();
+        $properties = InfoboxItemProperty::all();
+        return view('infobox::admin.infobox.properties.index',[
+            'page' => [
+                'title' => __('infobox::elf.item_properties'),
+                'current' => url()->current(),
+            ],
+            'properties' => $properties,
+            'data_types' => $dataTypes,
+            'infobox' => $infobox,
+            'type' => 'item',
+        ]);
     }
 
     /**

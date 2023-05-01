@@ -17,10 +17,9 @@
 
     <div class="item-form">
         <h3>{{ __('infobox::elf.create_infobox') }}</h3>
-        <form action="{{ route('admin.infobox.infobox.update') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.infobox.infoboxes.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
-            <input type="hidden" name="id" id="id" value="{{ $infobox->id }}">
+            @method('POST')
             <div class="colored-rows-box">
                 <div class="input-box colored">
                     <div class="checkbox-wrapper">
@@ -29,9 +28,7 @@
                                 type="checkbox"
                                 name="active"
                                 id="active"
-                                @if ($post->active == 1)
                                 checked
-                                @endif
                             >
                             <i></i>
                             <label for="active">
@@ -43,13 +40,13 @@
                 <div class="input-box colored">
                     <label for="title">{{ __('basic::elf.title') }}</label>
                     <div class="input-wrapper">
-                        <input type="text" name="title" id="title" autocomplete="off" value="{{ $infobox->title }}">
+                        <input type="text" name="title" id="title" autocomplete="off">
                     </div>
                 </div>
                 <div class="input-box colored">
                     <label for="slug">{{ __('basic::elf.slug') }}</label>
                     <div class="input-wrapper">
-                        <input type="text" name="slug" id="slug" autocomplete="off" data-isslug value="{{ $infobox->slug }}">
+                        <input type="text" name="slug" id="slug" autocomplete="off" data-isslug>
                     </div>
                     <div class="input-wrapper">
                         <div class="autoslug-wrapper">
@@ -61,21 +58,21 @@
                 <div class="input-box colored">
                     <label for="description">{{ __('basic::elf.description') }}</label>
                     <div class="input-wrapper">
-                        <textarea name="description" id="description" cols="30" rows="2">{{ $infobox->description }}</textarea>
+                        <textarea name="description" id="description" cols="30" rows="2"></textarea>
                     </div>
                 </div>
-                <div class="input-box colored">
+                {{-- <div class="input-box colored">
                     <label for="meta_keywords">{{ __('basic::elf.meta_keywords') }}</label>
                     <div class="input-wrapper">
-                        <textarea name="meta_keywords" id="meta_keywords" cols="30" rows="2">{{ $infobox->meta_keywords }}</textarea>
+                        <textarea name="meta_keywords" id="meta_keywords" cols="30" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="input-box colored">
                     <label for="meta_description">{{ __('basic::elf.meta_description') }}</label>
                     <div class="input-wrapper">
-                        <textarea name="meta_description" id="meta_description" cols="30" rows="2">{{ $infobox->meta_description }}</textarea>
+                        <textarea name="meta_description" id="meta_description" cols="30" rows="2"></textarea>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>

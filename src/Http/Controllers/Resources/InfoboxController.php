@@ -35,9 +35,9 @@ class InfoboxController extends Controller
 
         }
 
-        return view('infobox::admin.infobox.index.index',[
+        return view('infobox::admin.infobox.infobox.index',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . ' ' . __('infobox::elf.infoboxes'),
+                'title' => __('infobox::elf.infoboxes'),
                 'current' => url()->current(),
             ],
             'infoboxes' => $infoboxes,
@@ -53,7 +53,7 @@ class InfoboxController extends Controller
      */
     public function create()
     {
-        return view('infobox::admin.infobox.index.create',[
+        return view('infobox::admin.infobox.infobox.create',[
             'page' => [
                 'title' => __('infobox::elf.create_infobox'),
                 'current' => url()->current(),
@@ -73,19 +73,18 @@ class InfoboxController extends Controller
             'slug' => Str::slug($request->slug),
         ]);
         $validated = $request->validate([
-            'category_id' => 'required',
             'title' => 'required',
             'slug' => 'required|unique:Elfcms\Infobox\Models\Infobox,slug',
         ]);
 
         $validated['description'] = $request->description;
-        $validated['meta_keywords'] = $request->meta_keywords;
-        $validated['meta_description'] = $request->meta_description;
+        //$validated['meta_keywords'] = $request->meta_keywords;
+        //$validated['meta_description'] = $request->meta_description;
         $validated['active'] = empty($request->active) ? 0 : 1;
 
         $infobox = Infobox::create($validated);
 
-        return redirect(route('admin.infobox.infobox.edit',$infobox->id))->with('infoboxresult',__('infobox::elf.infobox_created_successfully'));
+        return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::elf.infobox_created_successfully'));
     }
 
     /**
@@ -107,9 +106,9 @@ class InfoboxController extends Controller
      */
     public function edit(Infobox $infobox)
     {
-        return view('infobox::admin.infobox.index.edit',[
+        return view('infobox::admin.infobox.infobox.edit',[
             'page' => [
-                'title' => __('infobox::elf.edit_infobox'),
+                'title' => __('infobox::elf.edit_infobox',['infobox'=>$infobox->title]),
                 'current' => url()->current(),
             ],
             'infobox' => $infobox
@@ -130,7 +129,7 @@ class InfoboxController extends Controller
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infobox.index'))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
+            return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
         }
         else {
             $request->merge([
@@ -139,8 +138,8 @@ class InfoboxController extends Controller
             $validated = $request->validate([
                 'title' => 'required',
             ]);
-            if (Infobox::where('slug',$request->slug)->where('id','<>',$infobox->id)->first()) {
-                return redirect(route('admin.infobox.infobox.edit',$infobox->id))->withErrors([
+            if (Infobox::where('slug',$request->slug)->where('id','<>',$infobox)->first()) {
+                return redirect(route('admin.infobox.infoboxes.edit',$infobox))->withErrors([
                     'slug' => __('infobox::elf.item_already_exists')
                 ]);
             }
@@ -148,13 +147,13 @@ class InfoboxController extends Controller
             $infobox->title = $validated['title'];
             $infobox->slug = $request->slug;
             $infobox->description = $request->description;
-            $infobox->meta_keywords = $request->meta_keywords;
-            $infobox->meta_description = $request->meta_description;
+            //$infobox->meta_keywords = $request->meta_keywords;
+            //$infobox->meta_description = $request->meta_description;
             $infobox->active = empty($request->active) ? 0 : 1;
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infobox.edit',$infobox))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
+            return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
         }
     }
 
@@ -167,9 +166,9 @@ class InfoboxController extends Controller
     public function destroy(Infobox $infobox)
     {
         if (!$infobox->delete()) {
-            return redirect(route('admin.infobox.infobox.index'))->withErrors(['deleteerror'=>__('infobox::elf.error_of_infobox_deleting')]);
+            return redirect(route('admin.infobox.infoboxes'))->withErrors(['deleteerror'=>__('infobox::elf.error_of_infobox_deleting')]);
         }
 
-        return redirect(route('admin.infobox.infobox.index'))->with('infoboxresult',__('infobox::elf.infobox_deleted_successfully'));
+        return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::elf.infobox_deleted_successfully'));
     }
 }

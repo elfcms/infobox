@@ -17,7 +17,7 @@
 
     <div class="item-form">
         <h3>{{ __('infobox::elf.create_infobox') }}</h3>
-        <form action="{{ route('admin.infobox.infobox.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.infobox.infoboxes.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="colored-rows-box">
@@ -61,7 +61,7 @@
                         <textarea name="description" id="description" cols="30" rows="2"></textarea>
                     </div>
                 </div>
-                <div class="input-box colored">
+                {{-- <div class="input-box colored">
                     <label for="meta_keywords">{{ __('basic::elf.meta_keywords') }}</label>
                     <div class="input-wrapper">
                         <textarea name="meta_keywords" id="meta_keywords" cols="30" rows="2"></textarea>
@@ -72,7 +72,7 @@
                     <div class="input-wrapper">
                         <textarea name="meta_description" id="meta_description" cols="30" rows="2"></textarea>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>

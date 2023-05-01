@@ -1,11 +1,11 @@
-let elfSBDataTypes = null;
+let elfIBDataTypes = null;
 async function getSBDataTypes () {
-    if (elfSBDataTypes !== null && typeof elfSBDataTypes == 'object') {
-        return elfSBDataTypes;
+    if (elfIBDataTypes !== null && typeof elfIBDataTypes == 'object') {
+        return elfIBDataTypes;
     }
-    let elfSBDataTypesResponse = await fetch('/admin/ajax/json/infobox/datatypes',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
-    elfSBDataTypes = await elfSBDataTypesResponse.json();
-    return elfSBDataTypes;
+    let elfIBDataTypesResponse = await fetch('/admin/ajax/json/infobox/datatypes',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
+    elfIBDataTypes = await elfIBDataTypesResponse.json();
+    return elfIBDataTypes;
 }
 getSBDataTypes()
 
@@ -19,7 +19,7 @@ function infoboxOptionInit(addSelector = '#addoptionline', line = 0) {
             const lastLine = document.querySelector('.options-table-string-line[data-line="'+optionNextLine+'"]')
             optionNextLine++
             let optionList = '';
-            elfSBDataTypes.forEach(option => {
+            elfIBDataTypes.forEach(option => {
                 optionList += `<option value="${option.id}">${option.name}</option>`
             });
             const htmlLine = `
@@ -44,5 +44,50 @@ function infoboxOptionInit(addSelector = '#addoptionline', line = 0) {
                 lastLine.insertAdjacentHTML('afterend',htmlLine)
             }
         })
+    }
+}
+
+function isIBEditedUnits() {
+    const editedRows = document.querySelectorAll('tr[data-id].edited');
+    if (editedRows && editedRows.length) {
+        return true;
+    }
+    return false;
+}
+
+function isIBDeletableUnits() {
+    const editedRows = document.querySelectorAll('tr[data-id].deletable');
+    if (editedRows && editedRows.length) {
+        return true;
+    }
+    return false;
+}
+
+function setIBSaveEnabled() {
+    const saveButton = document.querySelector('button[data-action="save"]');
+    if (saveButton) {
+        if (isIBDeletableUnits() || isIBEditedUnits()) {
+            saveButton.disabled = false;
+        }
+        else {
+            saveButton.disabled = true;
+        }
+    }
+}
+
+function addIBPropertyItem() {
+    if (!emptyItem) return false;
+    if (!newItemId && newItemId !== 0) return false;
+    const container = document.querySelector('table.infobox-property-table tbody');
+    if (container) {
+        let itemString = emptyItem.replaceAll('btn" data-id="newproperty"','btn" data-id="'+newItemId+'"').replaceAll('id="newproperty"','id="new_'+newItemId+'"').replaceAll('property[newproperty]','newproperty['+newItemId+']').replaceAll('property_newproperty','newproperty_'+newItemId).replaceAll('<span>newproperty</span>','');
+        container.insertAdjacentHTML('beforeend',itemString);
+        const newRow = container.lastElementChild;
+        if (newRow) {
+            newRow.classList.add('edited');
+        }
+        newItemId++;
+        autoSlug(newRow.querySelectorAll('.autoslug'));
+        setIBSaveEnabled();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Elfcms\Infobox\Models;
 
+use Elfcms\Basic\Models\DataType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

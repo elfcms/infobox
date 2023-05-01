@@ -7,8 +7,8 @@
     <nav class="pagenav">
         <ul>
             <li>
-                <a href="{{ route('admin.infobox.infobox.index') }}" class="button button-left">{{ __('infobox::elf.infoboxes') }}</a>
-                <a href="{{ route('admin.infobox.infobox.create') }}" class="button button-right">+</a>
+                <a href="{{ route('admin.infobox.infoboxes') }}" class="button button-left">{{ __('infobox::elf.infoboxes') }}</a>
+                <a href="{{ route('admin.infobox.infoboxes.create') }}" class="button button-right">+</a>
             </li>
             <li>
                 <a href="{{ route('admin.infobox.categories') }}" class="button button-left">{{ __('basic::elf.categories') }}</a>

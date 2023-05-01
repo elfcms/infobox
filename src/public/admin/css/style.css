@@ -9,3 +9,93 @@
         minmax(100px, 1.2fr)
         160px;
 }
+
+main:has(.infobox-table-buttons) {
+    overflow: initial;
+}
+.big-container:has(.infobox-table-buttons) {
+    padding-bottom: 0;
+}
+
+.input-wrapper.wide-editor-wrapper .gnommy-editor-field-box {
+    height: 120px;
+}
+
+.infobox-table-buttons {
+    position: sticky;
+    bottom: 29px;
+    /* margin: 0px -20px; */
+    padding: 15px 20px;
+    background-color: #ffffff;
+    text-align: center;
+    box-shadow: 0px -4px 4px -4px rgb(0 0 0 / 30%);
+    z-index: 10;
+}
+.infobox-option-table {
+    /* width: calc(100% - 80px); */
+    display: grid;
+    grid-template-columns: 3fr 3fr 1fr;
+    column-gap: 2px;
+    padding: 5px 10px;
+}
+.infobox-option-table-head,
+.infobox-option-table-body,
+.infobox-option-table-row {
+    display: contents;
+}
+.infobox-option-table-head .infobox-option-table-column {
+    background-color: #d8e2e9;
+    color: #425870;
+    text-align: center;
+    padding: 5px 10px;
+}
+.infobox-option-table-body  .infobox-option-table-column {
+    padding: 5px 2px;
+}
+.infobox-option-table-head .infobox-option-table-column .checkbox-switch {
+    margin: auto;
+}
+.infobox-option-table-add {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding: 5px 2px;
+}
+
+.infobox-option-box {
+    display: grid;
+    grid-template-columns: 90px auto;
+}
+.infobox-option-multiple-line {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+.infobox-option-multiple-line label {
+    padding: 0px 10px;
+}
+.infobox-option-box-label {
+    /* width: 80px; */
+    font-weight: 500;
+    padding: 5px 10px;
+}
+
+.grid-table.infobox-property-table {
+    grid-template-columns:
+        auto
+        minmax(100px, 1fr)
+        minmax(50px, 0.15fr)
+        minmax(100px, 1fr)
+        minmax(50px, 0.5fr)
+        minmax(100px, 1fr)
+        minmax(90px, 0.2fr);
+}
+.grid-table.infobox-property-table .table-subrow {
+    display: none;
+    grid-column-start: 1;
+    grid-column-end: 8;
+}
+.grid-table.infobox-property-table .table-subrow.showed {
+    display: initial;
+}

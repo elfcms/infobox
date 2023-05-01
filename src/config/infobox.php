@@ -37,10 +37,26 @@ return [
             "title" => "Infobox",
             "lang_title" => "infobox::elf.infobox",
             "route" => "admin.infobox.items",
-            "parent_route" => "admin.infobox.items",
+            "parent_route" => "admin.infobox",
             "icon" => "/vendor/elfcms/infobox/admin/images/icons/box.png",
             "position" => 100,
-            "submenu" => []
+            "submenu" => [
+                [
+                    "title" => "Infoboxes",
+                    "lang_title" => "infobox::elf.infoboxes",
+                    "route" => "admin.infobox.infoboxes"
+                ],
+                [
+                    "title" => "Categories",
+                    "lang_title" => "infobox::elf.categories",
+                    "route" => "admin.infobox.categories"
+                ],
+                [
+                    "title" => "Items",
+                    "lang_title" => "infobox::elf.items",
+                    "route" => "admin.infobox.items"
+                ],
+            ]
         ],
     ],
 
