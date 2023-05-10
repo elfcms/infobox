@@ -2,11 +2,8 @@
 
 @section('infoboxpage-content')
 
-    @if (Session::has('categoryedited'))
-        <div class="alert alert-success">{{ Session::get('categoryedited') }}</div>
-    @endif
-    @if (Session::has('categorycreated  '))
-        <div class="alert alert-success">{{ Session::get('categorycreated') }}</div>
+    @if (Session::has('categoryresult'))
+        <div class="alert alert-success">{{ Session::get('categoryresult') }}</div>
     @endif
     @if ($errors->any())
     <div class="alert alert-danger">

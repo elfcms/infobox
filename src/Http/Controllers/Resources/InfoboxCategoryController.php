@@ -42,7 +42,7 @@ class InfoboxCategoryController extends Controller
 
         return view('infobox::admin.infobox.categories.index',[
             'page' => [
-                'title' => 'Infobox categories',
+                'title' => __('infobox::elf.categories'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -64,7 +64,7 @@ class InfoboxCategoryController extends Controller
         $firstInfobox = Infobox::active()->first();
         return view('infobox::admin.infobox.categories.create',[
             'page' => [
-                'title' => 'Create category',
+                'title' => __('infobox::elf.create_category'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -177,7 +177,7 @@ class InfoboxCategoryController extends Controller
         $categories = InfoboxCategory::where('infobox_id',$category->infobox->id)->whereNotIn('id',$exclude)->get();
         return view('infobox::admin.infobox.categories.edit',[
             'page' => [
-                'title' => 'Edit category #' . $category->id,
+                'title' => __('infobox::elf.edit_category',['category'=>$category->title]),
                 'current' => url()->current(),
             ],
             'category' => $category,

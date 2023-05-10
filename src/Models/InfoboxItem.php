@@ -19,7 +19,9 @@ class InfoboxItem extends Model
         'description',
         'meta_keywords',
         'meta_description',
-        'active'
+        'active',
+        'public_time',
+        'end_time',
     ];
 
     /**

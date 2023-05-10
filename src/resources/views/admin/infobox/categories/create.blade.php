@@ -2,8 +2,8 @@
 
 @section('infoboxpage-content')
 
-    @if (Session::has('categoryedited'))
-        <div class="alert alert-success">{{ Session::get('categoryedited') }}</div>
+    @if (Session::has('categoryresult'))
+        <div class="alert alert-success">{{ Session::get('categoryresult') }}</div>
     @endif
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -169,8 +169,13 @@
                 const current = infobox.options[infobox.selectedIndex];
                 if (current) {
                     let id = current.dataset.id;
-                    options.forEach(option => {
+                    let selected = false;
+                    options.forEach((option, i) => {
                         if (option.dataset.id == id) {
+                            if (!selected) {
+                                parents.selectedIndex = i;
+                                selected = true;
+                            }
                             option.classList.remove('hidden');
                         }
                         else {

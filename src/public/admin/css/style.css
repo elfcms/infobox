@@ -102,3 +102,16 @@ main:has(.infobox-table-buttons) {
 select option.hidden {
     display: none;
 }
+
+.grid-table.infobox-itemtable {
+    grid-template-columns:
+        70px minmax(150px, 1.7fr)
+        minmax(150px, 1.7fr)
+        minmax(150px, 1.7fr)
+        minmax(100px, 1.2fr)
+        minmax(100px, 1.2fr)
+        minmax(100px, 1.2fr)
+        minmax(100px, 1.2fr)
+        minmax(60px, 0.8fr)
+        minmax(160px, 1.8fr);
+}

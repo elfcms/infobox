@@ -4,6 +4,8 @@ namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Basic\Models\DataType;
+use Elfcms\Infobox\Models\Infobox;
+use Elfcms\Infobox\Models\InfoboxCategory;
 use Elfcms\Infobox\Models\InfoboxItem;
 use Elfcms\Infobox\Models\InfoboxItemOption;
 use Illuminate\Http\Request;
@@ -51,17 +53,24 @@ class InfoboxItemController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $data_types = DataType::all();
+        $categories = InfoboxCategory::all();
+        $infoboxes = Infobox::active()->get();
+        $currentInfobox = Infobox::where('id',$request->infobox)->orWhere('slug',$request->infobox)->first();
+        $firstInfobox = Infobox::active()->first();
         return view('infobox::admin.infobox.items.create',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . ' ' . __('infobox::elf.items'),
+                'title' => 'Create category',
                 'current' => url()->current(),
             ],
-            'data_types' => $data_types
+            'categories' => $categories,
+            'infoboxes' => $infoboxes,
+            'currentInfobox' => $currentInfobox,
+            'firstInfobox' => $firstInfobox,
         ]);
     }
 

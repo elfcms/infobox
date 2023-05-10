@@ -2,8 +2,8 @@
 
 @section('infoboxpage-content')
 
-    @if (Session::has('likeedited'))
-        <div class="alert alert-success">{{ Session::get('likeedited') }}</div>
+    @if (Session::has('itemresult'))
+        <div class="alert alert-success">{{ Session::get('itemresult') }}</div>
     @endif
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -22,15 +22,44 @@
             @method('POST')
             <div class="colored-rows-box">
                 <div class="input-box colored">
-                    <label for="code">{{ __('basic::elf.code') }}</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="code" id="code" autocomplete="off" data-isslug>
-                    </div>
-                    <div class="input-wrapper">
-                        <div class="autoslug-wrapper">
-                            <input type="checkbox" data-text-id="title" data-slug-id="code" class="autoslug" checked>
-                            <div class="autoslug-button"></div>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-inner">
+                            <input
+                                type="checkbox"
+                                name="active"
+                                id="active"
+                                checked
+                            >
+                            <i></i>
+                            <label for="active">
+                                {{ __('basic::elf.active') }}
+                            </label>
                         </div>
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="infobox_id">{{ __('infobox::elf.infobox') }}</label>
+                    <div class="input-wrapper">
+                    @if (!empty($currentInfobox))
+                        #{{ $currentInfobox->id }} {{ $currentInfobox->title }}
+                        <input type="hidden" name="infobox_id" value="{{ $currentInfobox->id }}">
+                    @else
+                        <select name="infobox_id" id="infobox_id">
+                        @foreach ($infoboxes as $infobox)
+                            <option value="{{ $infobox->id }}" data-id="{{ $infobox->id }}">{{ $infobox->title }}</option>
+                        @endforeach
+                        </select>
+                    @endif
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="category_id">{{ __('basic::elf.category') }}</label>
+                    <div class="input-wrapper">
+                        <select name="category_id" id="category_id">
+                        @foreach ($categories as $item)
+                        <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}">{{ $item->title }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
+                        @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="input-box colored">
@@ -40,66 +69,52 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="text">{{ __('basic::elf.text') }}</label>
+                    <label for="slug">{{ __('basic::elf.slug') }}</label>
                     <div class="input-wrapper">
-                        <textarea name="text" id="text" cols="30" rows="10"></textarea>
+                        <input type="text" name="slug" id="slug" autocomplete="off">
                     </div>
-                </div>
-                <div class="input-box colored">
-                    <label for="image">{{ __('basic::elf.image') }}</label>
                     <div class="input-wrapper">
-                        <input type="hidden" name="image_path" id="image_path">
-                        <div class="image-button">
-                            <div class="delete-image hidden">&#215;</div>
-                            <div class="image-button-img">
-                                <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
-                            </div>
-                            <div class="image-button-text">
-                                {{ __('basic::elf.choose_file') }}
-                            </div>
-                            <input type="file" name="image" id="image">
+                        <div class="autoslug-wrapper">
+                            <input type="checkbox" data-text-id="title" data-slug-id="slug" class="autoslug" checked>
+                            <div class="autoslug-button"></div>
                         </div>
                     </div>
                 </div>
-                <div class="input-box colored" id="optionsbox">
-                    <label for="">{{ __('infobox::elf.options') }}</label>
+                <div class="input-box colored">
+                    <label for="desctiption">{{ __('basic::elf.description') }}</label>
                     <div class="input-wrapper">
-                        <div>
-                            <div class="sb-input-options-table">
-                                <div class="options-table-head-line">
-                                    <div class="options-table-head">
-                                        {{ __('infobox::elf.type') }}
-                                    </div>
-                                    <div class="options-table-head">
-                                        {{ __('basic::elf.name') }}
-                                    </div>
-                                    <div class="options-table-head">
-                                        {{ __('basic::elf.value') }}
-                                    </div>
-                                    <div class="options-table-head">
-                                        {{ __('basic::elf.delete') }}
-                                    </div>
-                                </div>
-                                <div class="options-table-string-line" data-line="0">
-                                    <div class="options-table-string">
-                                        <select name="options_new[0][type]" id="option_new_type_0" data-option-type>
-                                        @foreach ($data_types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="options-table-string">
-                                        <input type="text" name="options_new[0][name]" id="option_new_name_0" data-option-name data-isslug>
-                                    </div>
-                                    <div class="options-table-string">
-                                        <input type="text" name="options_new[0][value]" id="option_new_value_0" data-option-value>
-                                    </div>
-                                    <div class="options-table-string">
-                                        <input type="checkbox" name="options_new[0][deleted]" id="option_new_disabled_0" data-option-deleted>
-                                    </div>
-                                </div>
+                        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="desctiption">{{ __('basic::elf.description') }}</label>
+                    <div class="input-wrapper">
+                        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="meta_keywords">{{ __('basic::elf.meta_keywords') }}</label>
+                    <div class="input-wrapper">
+                        <textarea name="meta_keywords" id="meta_keywords" cols="30" rows="3" data-editor="quill"></textarea>
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="meta_description">{{ __('basic::elf.meta_description') }}</label>
+                    <div class="input-wrapper">
+                        <textarea name="meta_description" id="meta_description" cols="30" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="input-box colored">
+                    <label for="tags">{{ __('basic::elf.tags') }}</label>
+                    <div class="input-wrapper">
+                        <div class="tag-form-wrapper">
+                            <div class="tag-list-box"></div>
+                            <div class="tag-input-box">
+                                <input type="text" class="tag-input" autocomplete="off">
+                                <button type="button" class="default-btn tag-add-button">Add</button>
+                                <div class="tag-prompt-list"></div>
                             </div>
-                            <button type="button" class="default-btn option-table-add" id="addoptionline">{{ __('basic::elf.add_option') }}</button>
                         </div>
                     </div>
                 </div>
@@ -110,15 +125,47 @@
         </form>
     </div>
     <script>
-    autoSlug('.autoslug')
-    inputSlugInit()
     const imageInput = document.querySelector('#image')
     if (imageInput) {
         inputFileImg(imageInput)
     }
+    const previewInput = document.querySelector('#preview')
+    if (previewInput) {
+        inputFileImg(previewInput)
+    }
+    const infobox = document.querySelector('select[name="infobox_id"]');
+    const parents = document.querySelector('select[name="category_id"]');
+    if (infobox && parents) {
+        const options = parents.querySelectorAll('option');
+        if (options) {
+            infobox.addEventListener('change',function(){
+                const current = infobox.options[infobox.selectedIndex];
+                if (current) {
+                    let id = current.dataset.id;
+                    let selected = false;
+                    options.forEach((option, i) => {
+                        if (option.dataset.id == id) {
+                            if (!selected) {
+                                parents.selectedIndex = i;
+                                console.log(i);
+                                selected = true;
+                            }
+                            option.classList.remove('hidden');
+                        }
+                        else {
+                            option.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+        }
+    }
+    autoSlug('.autoslug')
 
-
-infoboxOptionInit();
+    tagFormInit()
+    //add editor
+    runEditor('#description')
+    runEditor('#text')
     </script>
 
 @endsection
