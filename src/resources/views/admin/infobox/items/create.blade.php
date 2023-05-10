@@ -56,9 +56,10 @@
                     <label for="category_id">{{ __('basic::elf.category') }}</label>
                     <div class="input-wrapper">
                         <select name="category_id" id="category_id">
-                        @foreach ($categories as $item)
-                        <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}">{{ $item->title }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
-                        @endforeach
+                            <option value="">{{ __('basic::elf.none') }}</option>
+                            @foreach ($categories as $item)
+                            <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}">{{ $item->title }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -87,9 +88,17 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="desctiption">{{ __('basic::elf.description') }}</label>
+                    <label for="public_time">{{ __('basic::elf.public_time') }}</label>
                     <div class="input-wrapper">
-                        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                        <input type="date" name="public_time[]" id="public_time" autocomplete="off">
+                        <input type="time" name="public_time[]" id="public_time_time" autocomplete="off">
+                    </div>
+                </div>
+                <div class="input-box colored">
+                    <label for="end_time">{{ __('basic::elf.end_time') }}</label>
+                    <div class="input-wrapper">
+                        <input type="date" name="end_time[]" id="end_time" autocomplete="off">
+                        <input type="time" name="end_time[]" id="end_time_time" autocomplete="off">
                     </div>
                 </div>
                 <div class="input-box colored">
@@ -105,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="input-box colored">
+                {{-- <div class="input-box colored">
                     <label for="tags">{{ __('basic::elf.tags') }}</label>
                     <div class="input-wrapper">
                         <div class="tag-form-wrapper">
@@ -117,7 +126,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
@@ -165,7 +174,6 @@
     tagFormInit()
     //add editor
     runEditor('#description')
-    runEditor('#text')
     </script>
 
 @endsection

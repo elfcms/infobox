@@ -44,8 +44,13 @@ class InfoboxItem extends Model
         return $this->belongsTo(InfoboxCategory::class, 'category_id');
     }
 
-    public function properties()
+    public function infobox ()
+    {
+        return $this->belongsTo(Infobox::class, 'infobox_id');
+    }
+
+    /* public function properties()
     {
         return $this->hasMany(InfoboxItemProperty::class, 'item_id');
-    }
+    } */
 }

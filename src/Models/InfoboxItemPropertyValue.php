@@ -12,7 +12,7 @@ class InfoboxItemPropertyValue extends Model
 
     protected $fillable = [
         'property_id',
-        'category_id',
+        'item_id',
         'bool_value',
         'int_value',
         'float_value',

@@ -5,7 +5,7 @@
     <div class="table-search-box">
         <div class="table-search-result-title">
             @if (!empty($search))
-                {{ __('basic::elf.search_result_for') }} "{{ $search }}" <a href="{{ route('admin.infobox.items') }}" title="{{ __('basic::elf.reset_search') }}">&#215;</a>
+                {{ __('basic::elf.search_result_for') }} "{{ $search }}" <a href="{{    ('admin.infobox.items') }}" title="{{ __('basic::elf.reset_search') }}">&#215;</a>
             @endif
         </div>
         <form action="{{ route('admin.infobox.items') }}" method="get">
@@ -52,8 +52,10 @@
                         <a href="{{ route('admin.infobox.items',UrlParams::addArr(['order'=>'title','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['title'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.slug') }}
-                        <a href="{{ route('admin.infobox.items',UrlParams::addArr(['order'=>'slug','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['slug'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
+                        {{-- {{ __('basic::elf.slug') }}
+                        <a href="{{ route('admin.infobox.items',UrlParams::addArr(['order'=>'slug','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['slug'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
+                        {{ __('infobox::elf.infobox') }}
+                        <a href="{{ route('admin.infobox.items',UrlParams::addArr(['order'=>'infobox_id','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['infobox_id'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
                         {{ __('basic::elf.category') }}
@@ -89,15 +91,24 @@
                 <tr data-id="{{ $item->id }}" class="@empty ($item->active) inactive @endempty">
                     <td>{{ $item->id }}</td>
                     <td>
-                        <a href="{{ route('admin.infobox.items.edit',$item->id) }}">
+                        <a href="{{ route('admin.infobox.items.edit',$item) }}">
                             {{ $item->title }}
                         </a>
                     </td>
-                    <td>{{ $item->slug }}</td>
                     <td>
-                        <a href="{{ route('admin.infobox.items',UrlParams::addArr(['category'=>$item->category->id])) }}">
+                        <a href="{{ route('admin.infobox.infoboxes.edit',$item->infobox) }}">
+                            #{{ $item->infobox->id }} {{ $item->infobox->title }}
+                        </a>
+                    </td>
+                    <td>
+                        @if ($item->category)
+                        <a href="{{ route('admin.infobox.categories.edit',$item->category) }}">
                             #{{ $item->category->id }} {{ $item->category->title }}
                         </a>
+                        @endif
+                        {{-- <a href="{{ route('admin.infobox.items',UrlParams::addArr(['category'=>$item->category->id])) }}">
+                            #{{ $item->category->id }} {{ $item->category->title }}
+                        </a> --}}
                     </td>
                 {{-- <td class="image-cell">
                         <img src="{{ asset($item->preview) }}" alt="">
@@ -117,8 +128,8 @@
                     @endif
                     </td>
                     <td class="button-column non-text-buttons">
-                        <a href="{{ route('admin.infobox.items.edit',$item->id) }}" class="default-btn edit-button" title="{{ __('basic::elf.add_item') }}"></a>
-                        <form action="{{ route('admin.infobox.items.update',$item->id) }}" method="POST">
+                        <a href="{{ route('admin.infobox.items.edit',$item) }}" class="default-btn edit-button" title="{{ __('basic::elf.add_item') }}"></a>
+                        <form action="{{ route('admin.infobox.items.update',$item) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $item->id }}">
@@ -126,7 +137,7 @@
                             <input type="hidden" name="notedit" value="1">
                             <button type="submit" @if ($item->active == 1) class="default-btn deactivate-button" title="{{__('basic::elf.deactivate') }}" @else class="default-btn activate-button" title="{{ __('basic::elf.activate') }}" @endif></button>
                         </form>
-                        <form action="{{ route('admin.infobox.items.destroy',$item->id) }}" method="POST" data-submit="check">
+                        <form action="{{ route('admin.infobox.items.destroy',$item) }}" method="POST" data-submit="check">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $item->id }}">
@@ -134,8 +145,8 @@
                             <button type="submit" class="default-btn delete-button" title="{{ __('basic::elf.delete') }}"></button>
                         </form>
                         <div class="contextmenu-content-box">
-                            <a href="{{ route('admin.infobox.items.edit',$item->id) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
-                            <form action="{{ route('admin.infobox.items.update',$item->id) }}" method="POST">
+                            <a href="{{ route('admin.infobox.items.edit',$item) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
+                            <form action="{{ route('admin.infobox.items.update',$item) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="id" id="id" value="{{ $item->id }}">
@@ -149,7 +160,7 @@
                                 @endif
                                 </button>
                             </form>
-                            <form action="{{ route('admin.infobox.items.destroy',$item->id) }}" method="POST" data-submit="check">
+                            <form action="{{ route('admin.infobox.items.destroy',$item) }}" method="POST" data-submit="check">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $item->id }}">

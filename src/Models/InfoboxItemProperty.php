@@ -35,7 +35,7 @@ class InfoboxItemProperty extends Model
 
     public function values(int|null $itemId = null)
     {
-        $result = $this->hasMany(InfoboxCategoryPropertyValue::class, 'property_id');
+        $result = $this->hasMany(InfoboxItemPropertyValue::class, 'property_id');
         if (!empty($itemId) && is_numeric($itemId)) {
             $result = $result->where('item_id', $itemId)->get()->toArray();
             if (!empty($result)) {

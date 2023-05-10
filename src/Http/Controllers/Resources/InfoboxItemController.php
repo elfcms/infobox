@@ -4,10 +4,13 @@ namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Basic\Models\DataType;
+use Elfcms\Basic\Models\FileCatalog;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategory;
 use Elfcms\Infobox\Models\InfoboxItem;
 use Elfcms\Infobox\Models\InfoboxItemOption;
+use Elfcms\Infobox\Models\InfoboxItemProperty;
+use Elfcms\Infobox\Models\InfoboxItemPropertyValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -64,7 +67,7 @@ class InfoboxItemController extends Controller
         $firstInfobox = Infobox::active()->first();
         return view('infobox::admin.infobox.items.create',[
             'page' => [
-                'title' => 'Create category',
+                'title' => __('infobox::elf.create_item'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -83,22 +86,40 @@ class InfoboxItemController extends Controller
     public function store(Request $request)
     {
         $request->merge([
-            'code' => Str::slug($request->code),
+            'slug' => Str::slug($request->slug),
         ]);
         $validated = $request->validate([
+            'infobox_id' => 'required',
             'title' => 'required',
-            'code' => 'required|unique:Elfcms\Infobox\Models\InfoboxItem,code',
-            'image' => 'nullable|file|max:2024',
+            'slug' => 'required|unique:Elfcms\Infobox\Models\InfoboxItem,slug'
         ]);
 
-        $image_path = '';
-        if (!empty($request->file()['image'])) {
-            $image = $request->file()['image']->store('public/infobox/items/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
+
+        $public_time = $request->public_time[0];
+
+        if (empty($request->public_time[1]) && !empty($public_time)) {
+            $public_time .= ' 00:00:00';
+        }
+        elseif (!empty($public_time)) {
+            $public_time .= ' '.$request->public_time[1];
         }
 
-        $validated['image'] = $image_path;
-        $validated['text'] = $request->text;
+        $end_time = $request->end_time[0];
+
+        if (empty($request->end_time[1]) && !empty($end_time)) {
+            $end_time .= ' 00:00:00';
+        }
+        elseif (!empty($end_time)) {
+            $end_time .= ' '.$request->end_time[1];
+        }
+
+        $validated['category_id'] = $request->category_id;
+        $validated['description'] = $request->description;
+        $validated['active'] = empty($request->active) ? 0 : 1;
+        $validated['public_time'] = $public_time;
+        $validated['end_time'] = $end_time;
+        $validated['meta_keywords'] = $request->meta_keywords;
+        $validated['meta_description'] = $request->meta_description;
 
         $item = InfoboxItem::create($validated);
 
@@ -122,7 +143,7 @@ class InfoboxItemController extends Controller
             }
         }
 
-        return redirect(route('admin.infobox.items.edit',$item->id))->with('itemcreated',__('infobox::elf.item_created_successfully'));
+        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::elf.item_created_successfully'));
     }
 
     /**
@@ -144,24 +165,41 @@ class InfoboxItemController extends Controller
      */
     public function edit(InfoboxItem $item)
     {
-        $data_types = DataType::all();
-        $next_option_id = $item->options->max('id');
-        if (empty($next_option_id)) {
-            $next_option_id = 0;
+        if (!empty($item->end_time)) {
+            $item->end_time_time = date('H:i',strtotime($item->end_time));
+            $item->end_time = date('Y-m-d',strtotime($item->end_time));
         }
-        else {
-            $next_option_id++;
+        if (!empty($item->public_time)) {
+            $item->public_time_time = date('H:i',strtotime($item->public_time));
+            $item->public_time = date('Y-m-d',strtotime($item->public_time));
         }
-        $typeCodes = ['int','float','date','datetime'];
+        $item->created = '';
+        $item->updated = '';
+        if (!empty($item->created_at)) {
+            $item->created = date('d.m.Y H:i:s',strtotime($item->created_at));
+        }
+        if (!empty($item->updated_at)) {
+            $item->updated = date('d.m.Y H:i:s',strtotime($item->updated_at));
+        }
+        $categories = InfoboxCategory::where('infobox_id',$item->infobox->id)->get();
+        $properties = InfoboxItemProperty::where('infobox_id',$item->infobox->id)->get();
+        foreach ($properties as $property) {
+            //if ($parameter->id == 9) dd($parameter->product_values($shopProduct->id));
+            $property->value = $property->values($item->id);
+            /* if ($property->data_type->code == 'color') {
+                //dd($property->value);
+                $property->colorData = ShopColor::find($property->value);
+            } */
+            //if ($parameter->id == 9) dd($parameter->value);
+        }
         return view('infobox::admin.infobox.items.edit',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . ' ' . __('infobox::elf.item') . '#' . $item->id,
+                'title' => __('infobox::elf.edit_item', ['item'=>$item->title]),
                 'current' => url()->current(),
             ],
+            'categories' => $categories,
             'item' => $item,
-            'next_option_id' => $next_option_id,
-            'data_types' => $data_types,
-            'type_codes' => $typeCodes
+            'properties' => $properties
         ]);
     }
 
@@ -175,30 +213,47 @@ class InfoboxItemController extends Controller
     public function update(Request $request, InfoboxItem $item)
     {
         $request->merge([
-            'code' => Str::slug($request->code),
+            'slug' => Str::slug($request->slug),
         ]);
         $validated = $request->validate([
             'title' => 'required',
-            'code' => 'required',//|unique:Elfcms\Infobox\Models\InfoboxItem,code',
-            'image' => 'nullable|file|max:1024',
+            'slug' => 'required',//|unique:Elfcms\Infobox\Models\InfoboxItem,code',
         ]);
-        if (InfoboxItem::where('code',$request->code)->where('id','<>',$item->id)->first()) {
+        if (InfoboxItem::where('slug',$request->slug)->where('id','<>',$item->id)->first()) {
             return redirect(route('admin.infobox.item.edit',$item->id))->withErrors([
-                'code' => __('infobox::elf.item_already_exists')
+                'slug' => __('infobox::elf.item_already_exists')
             ]);
         }
-        $image_path = $request->image_path;
-        if (!empty($request->file()['image'])) {
-            $image = $request->file()['image']->store('public/infobox/items/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
+
+        $public_time = $request->public_time[0];
+
+        if (empty($request->public_time[1]) && !empty($public_time)) {
+            $public_time .= ' 00:00:00';
+        }
+        elseif (!empty($public_time)) {
+            $public_time .= ' '.$request->public_time[1];
         }
 
-        $item->code = $request->code;
-        $item->title = $request->title;
-        $item->image = $image_path;
-        $item->text = $request->text;
+        $end_time = $request->end_time[0];
 
-        $typeCodes = ['int','float','date','datetime'];
+        if (empty($request->end_time[1]) && !empty($end_time)) {
+            $end_time .= ' 00:00:00';
+        }
+        elseif (!empty($end_time)) {
+            $end_time .= ' '.$request->end_time[1];
+        }
+
+        $item->slug = $request->slug;
+        $item->title = $request->title;
+        $item->category_id = $request->category_id;
+        $item->description = $request->description;
+        $item->active = empty($request->active) ? 0 : 1;
+        $item->public_time = $public_time;
+        $item->end_time = $end_time;
+        $item->meta_keywords = $request->meta_keywords;
+        $item->meta_description = $request->meta_description;
+
+        /* $typeCodes = ['int','float','date','datetime'];
 
         if (!empty($request->options_exist)) {
             foreach ($request->options_exist as $oid => $param) {
@@ -217,9 +272,9 @@ class InfoboxItemController extends Controller
                     $option->name = $param['name'];
                     $option->data_type_id = $param['type'];
                     $option->save();
-                } */
+                } *
             }
-        }
+        } */
 
         /* if (!empty($request->options_new)) {
             foreach ($request->options_new as $i => $param) {
@@ -242,7 +297,61 @@ class InfoboxItemController extends Controller
 
         $item->save();
 
-        return redirect(route('admin.infobox.items.edit',$item->id))->with('itemedited',__('infobox::elf.item_edited_successfully'));
+        /* Properties */
+        if (!empty($request->property)) {
+            foreach($request->property as $id => $paramValue) {
+                $property = InfoboxItemProperty::find($id);
+                if (is_array($paramValue)) {
+                    if (!empty($request->file()['property'][$id]['file'])) {
+                        continue;
+                    }
+                    if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                        continue;
+                    }
+                    $paramValue = $paramValue['path'];
+                }
+                if ($property->data_type->code == 'list') {
+                    if (empty($paramValue)) {
+                        $paramValue = [];
+                    }
+                    if (!is_array($paramValue)) {
+                        $paramValue = [$paramValue];
+                    }
+                    $paramValue = json_encode($paramValue);
+                }
+                if ($property->data_type->code == 'color') {
+                    if ($paramValue == 0) {
+                        $paramValue = null;
+                    }
+                }
+
+                $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                    ['item_id' => $item->id, 'property_id' => $id],
+                    [$property->data_type->code . '_value' => $paramValue]
+                );
+
+            }
+        }
+        if (!empty($request->file()['property'])) {
+            foreach($request->file()['property'] as $id => $paramValue) {
+                $property = InfoboxItemProperty::find($id);
+                if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                    continue;
+                }
+                $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
+                $file_path = $request->property[$id]['path'];
+                $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/item/' . $property->data_type->code . 's');
+                $file_path = str_ireplace('public/','/storage/',$file);
+                FileCatalog::set($file_path,$originalName);
+                $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                    ['item_id' => $item->id, 'property_id' => $id],
+                    [$property->data_type->code . '_value' => $file_path]
+                );
+            }
+        }
+        /* /Properties */
+
+        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::elf.item_edited_successfully'));
 
     }
 
