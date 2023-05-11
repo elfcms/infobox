@@ -212,6 +212,7 @@ class InfoboxItemController extends Controller
      */
     public function update(Request $request, InfoboxItem $item)
     {
+        //dd($item->infobox->itemProperties[0]->data_type);
         $request->merge([
             'slug' => Str::slug($request->slug),
         ]);
@@ -299,54 +300,74 @@ class InfoboxItemController extends Controller
 
         /* Properties */
         if (!empty($request->property)) {
-            foreach($request->property as $id => $paramValue) {
-                $property = InfoboxItemProperty::find($id);
-                if (is_array($paramValue)) {
-                    if (!empty($request->file()['property'][$id]['file'])) {
-                        continue;
+            $properties = $item->infobox->itemProperties;
+            foreach($properties as $property) {
+                if (empty($request->property[$property->id])) {
+                    if ($property->data_type->code == 'bool') {
+                        $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                            ['item_id' => $item->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => 0]
+                        );
                     }
+                    elseif ($property->data_type->code == 'list') {
+                        $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                            ['item_id' => $item->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => null]
+                        );
+                    }
+                    continue;
+                }
+
+                if (!empty($request->property[$property->id])) {
+
+                    $paramValue = $request->property[$property->id];
+                    if (is_array($paramValue)) {
+                        if (!empty($request->file()['property'][$property->id]['file'])) {
+                            continue;
+                        }
+                        if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                            continue;
+                        }
+                        $paramValue = $paramValue['path'];
+                    }
+                    if ($property->data_type->code == 'list') {
+                        if (empty($paramValue)) {
+                            $paramValue = [];
+                        }
+                        if (!is_array($paramValue)) {
+                            $paramValue = [$paramValue];
+                        }
+                        $paramValue = json_encode($paramValue);
+                    }
+                    if ($property->data_type->code == 'color') {
+                        if ($paramValue == 0) {
+                            $paramValue = null;
+                        }
+                    }
+                    if ($property->data_type->code == 'bool') {
+                        $paramValue = 1;
+                    }
+
+                    $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                        ['item_id' => $item->id, 'property_id' => $property->id],
+                        [$property->data_type->code . '_value' => $paramValue]
+                    );
+                }
+                if (!empty($request->file()['property']) && !empty($request->file()['property'][$property->id])) {
+                    $paramValue = $request->file()['property'][$property->id];
                     if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
                         continue;
                     }
-                    $paramValue = $paramValue['path'];
+                    $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
+                    $file_path = $request->property[$property->id]['path'];
+                    $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/item/' . $property->data_type->code . 's');
+                    $file_path = str_ireplace('public/','/storage/',$file);
+                    FileCatalog::set($file_path,$originalName);
+                    $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                        ['item_id' => $item->id, 'property_id' => $property->id],
+                        [$property->data_type->code . '_value' => $file_path]
+                    );
                 }
-                if ($property->data_type->code == 'list') {
-                    if (empty($paramValue)) {
-                        $paramValue = [];
-                    }
-                    if (!is_array($paramValue)) {
-                        $paramValue = [$paramValue];
-                    }
-                    $paramValue = json_encode($paramValue);
-                }
-                if ($property->data_type->code == 'color') {
-                    if ($paramValue == 0) {
-                        $paramValue = null;
-                    }
-                }
-
-                $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
-                    ['item_id' => $item->id, 'property_id' => $id],
-                    [$property->data_type->code . '_value' => $paramValue]
-                );
-
-            }
-        }
-        if (!empty($request->file()['property'])) {
-            foreach($request->file()['property'] as $id => $paramValue) {
-                $property = InfoboxItemProperty::find($id);
-                if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
-                    continue;
-                }
-                $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
-                $file_path = $request->property[$id]['path'];
-                $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/item/' . $property->data_type->code . 's');
-                $file_path = str_ireplace('public/','/storage/',$file);
-                FileCatalog::set($file_path,$originalName);
-                $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
-                    ['item_id' => $item->id, 'property_id' => $id],
-                    [$property->data_type->code . '_value' => $file_path]
-                );
             }
         }
         /* /Properties */

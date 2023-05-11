@@ -53,4 +53,14 @@ class Infobox extends Model
         return $this->hasMany(InfoboxCategory::class, 'infobox_id')->where('parent_id',null);
     }
 
+    public function categoryProperties ()
+    {
+        return $this->hasMany(InfoboxCategoryProperty::class, 'infobox_id');
+    }
+
+    public function itemProperties ()
+    {
+        return $this->hasMany(InfoboxItemProperty::class, 'infobox_id');
+    }
+
 }

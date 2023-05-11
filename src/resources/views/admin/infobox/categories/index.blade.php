@@ -84,8 +84,8 @@
                 <tr data-id="{{ $category->id }}" class="level-{{ $category->level }}@empty ($category->active) inactive @endempty">
                     <td class="subline-{{ $category->level }}">{{ $category->id }}</td>
                     <td>
-                        <a href="{{ route('admin.infobox.categories.edit',$category->id) }}">
-                            {{ $category->name }}
+                        <a href="{{ route('admin.infobox.categories.edit',$category) }}">
+                            {{ $category->title }}
                         </a>
                     </td>
                     <td>{{ $category->slug }}</td>

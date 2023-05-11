@@ -165,20 +165,87 @@
                     </div>
                 </div>
             </div>
+
+            @if($properties->count())
+            <div class="colored-rows-box">
+                <h4> {{ __('infobox::elf.properties') }} </h4>
+                @foreach ($properties as $property)
+                <div class="input-box colored">
+                    <label for="property_{{$property->id}}">{{ $property->name }}</label>
+                    <div class="input-wrapper">
+                        @if ($property->data_type->code == 'text' || $property->data_type->code == 'json')
+                        <textarea name="property[{{$property->id}}]" id="property_{{$property->id}}">{{ $property->value }}</textarea>
+                        @elseif ($property->data_type->code == 'list')
+                        <select name="property[{{$property->id}}]" id="property_{{$property->id}}" @if($property->multiple) multiple @endif>
+                            <option value="">{{ __('shop::elf.none') }}</option>
+                            @if (!empty($property->options))
+                            @foreach ($property->options as $value => $text)
+                            <option value="{{$value}}"
+                                @if (is_array($property->value) && in_array($value,$property->value))
+                                selected
+                                @endif>{{$text}}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                        @elseif ($property->data_type->code == 'image')
+                        <input type="hidden" name="property[{{$property->id}}][path]" id="property_{{$property->id}}_path" value="{{ $property->value }}">
+                        <div class="image-button">
+                            <div class="delete-image @if (empty($property->value)) hidden @endif">&#215;</div>
+                            <div class="image-button-img">
+                            @if (!empty($property->value))
+                                <img src="{{ asset($property->value) }}" alt="Image">
+                            @else
+                                <img src="{{ asset('/vendor/elfcms/shop/admin/images/icons/upload.png') }}" alt="Upload file">
+                            @endif
+                            </div>
+                            <div class="image-button-text">
+                            @if (!empty($property->value))
+                                {{ __('basic::elf.change_file') }}
+                            @else
+                                {{ __('basic::elf.choose_file') }}
+                            @endif
+                            </div>
+                            <input type="file" name="property[{{$property->id}}][image]" id="property_{{$property->id}}_image">
+                        </div>
+                        <script>
+                            const imageInput{{$property->id}} = document.querySelector('#property_{{$property->id}}_path')
+                            if (imageInput{{$property->id}}) {
+                                inputFileImg(imageInput{{$property->id}})
+                            }
+                        </script>
+                        @elseif ($property->data_type->code == 'file')
+                        <x-basic::anonymous.button.file name="property[{{$property->id}}]" value="{{ $property->value }}" id="property_{{$property->id}}" />
+                        {{-- @elseif ($property->data_type->code == 'color')
+                        <x-shop::anonymous.picker.color :list="$colors" name="property[{{$property->id}}]" :default="$property->colorData" id="property_{{$property->id}}" /> --}}
+
+                        {{-- @elseif ($property->data_type->code == 'string')
+                        <input type="text" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}">
+                        @elseif ($property->data_type->code == 'int')
+                        <input type="number" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}" step="1"> --}}
+                        @elseif ($property->data_type->code == 'bool')
+                        <input type="checkbox" name="property[{{$property->id}}]" id="property_{{$property->id}}" @if ($property->value == 1) checked @endif value="1">
+                        @else
+                        <input type="{{ $property->data_type->field[0] }}" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->value }}">
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
             </div>
         </form>
     </div>
     <script>
-    const imageInput = document.querySelector('#image')
+    /* const imageInput = document.querySelector('#image')
     if (imageInput) {
         inputFileImg(imageInput)
     }
     const previewInput = document.querySelector('#preview')
     if (previewInput) {
         inputFileImg(previewInput)
-    }
+    } */
 
     autoSlug('.autoslug')
     //add editor

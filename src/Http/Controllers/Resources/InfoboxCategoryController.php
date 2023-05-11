@@ -3,8 +3,11 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Basic\Models\FileCatalog;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategory;
+use Elfcms\Infobox\Models\InfoboxCategoryProperty;
+use Elfcms\Infobox\Models\InfoboxCategoryPropertyValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -175,6 +178,16 @@ class InfoboxCategoryController extends Controller
         }
         $exclude =InfoboxCategory::childrenid($category->id,true);
         $categories = InfoboxCategory::where('infobox_id',$category->infobox->id)->whereNotIn('id',$exclude)->get();
+        $properties = InfoboxCategoryProperty::where('infobox_id',$category->infobox->id)->get();
+        foreach ($properties as $property) {
+            //if ($parameter->id == 9) dd($parameter->product_values($shopProduct->id));
+            $property->value = $property->values($category->id);
+            /* if ($property->data_type->code == 'color') {
+                //dd($property->value);
+                $property->colorData = ShopColor::find($property->value);
+            } */
+            //if ($parameter->id == 9) dd($parameter->value);
+        }
         return view('infobox::admin.infobox.categories.edit',[
             'page' => [
                 'title' => __('infobox::elf.edit_category',['category'=>$category->title]),
@@ -182,6 +195,7 @@ class InfoboxCategoryController extends Controller
             ],
             'category' => $category,
             'categories' => $categories,
+            'properties' => $properties
         ]);
     }
 
@@ -261,6 +275,81 @@ class InfoboxCategoryController extends Controller
             $category->meta_description = $request->meta_description;
 
             $category->save();
+
+
+            /* Properties */
+            if (!empty($request->property)) {
+                $properties = $category->infobox->categoryProperties;
+                foreach($properties as $property) {
+                    if (!isset($request->property[$property->id])) {
+                        if ($property->data_type->code == 'bool') {
+                            $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                                ['category_id' => $category->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => 0]
+                            );
+                        }
+                        elseif ($property->data_type->code == 'list') {
+                            $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                                ['category_id' => $category->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => null]
+                            );
+                        }
+                        continue;
+                    }
+
+                    if (!empty($request->property[$property->id])) {
+
+                        $paramValue = $request->property[$property->id];
+                        if (is_array($paramValue)) {
+                            if (!empty($request->file()['property'][$property->id]['file'])) {
+                                continue;
+                            }
+                            if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                                continue;
+                            }
+                            $paramValue = $paramValue['path'];
+                        }
+                        if ($property->data_type->code == 'list') {
+                            if (empty($paramValue)) {
+                                $paramValue = [];
+                            }
+                            if (!is_array($paramValue)) {
+                                $paramValue = [$paramValue];
+                            }
+                            $paramValue = json_encode($paramValue);
+                        }
+                        if ($property->data_type->code == 'color') {
+                            if ($paramValue == 0) {
+                                $paramValue = null;
+                            }
+                        }
+                        if ($property->data_type->code == 'bool') {
+                            $paramValue = 1;
+                        }
+
+                        $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                            ['category_id' => $category->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $paramValue]
+                        );
+                    }
+                    if (!empty($request->file()['property']) && !empty($request->file()['property'][$property->id])) {
+                        $paramValue = $request->file()['property'][$property->id];
+                        if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                            continue;
+                        }
+                        $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
+                        $file_path = $request->property[$property->id]['path'];
+                        $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/category/' . $property->data_type->code . 's');
+                        $file_path = str_ireplace('public/','/storage/',$file);
+                        FileCatalog::set($file_path,$originalName);
+                        $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                            ['category_id' => $category->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $file_path]
+                        );
+                    }
+                }
+            }
+            /* /Properties */
 
             return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('infobox::elf.category_edited_successfully'));
         }
