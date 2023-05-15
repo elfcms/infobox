@@ -11,6 +11,7 @@ Route::group(['middleware'=>['web','cookie','start']],function() use ($adminPath
     Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
 
         Route::name('infobox.')->group(function() use ($adminPath) {
+            Route::get($adminPath . '/infobox/nav/{infobox?}/{category?}', [\Elfcms\Infobox\Http\Controllers\InfoboxNavigator::class, 'index'])->name('nav');
             Route::resource($adminPath . '/infobox/infoboxes', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxController::class)->names(['index' => 'infoboxes']);
             Route::resource($adminPath . '/infobox/items', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemController::class)->names(['index' => 'items']);
             Route::resource($adminPath . '/infobox/categories', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryController::class)->names(['index' => 'categories']);

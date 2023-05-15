@@ -57,6 +57,8 @@ return [
     'item_already_exists' => 'Элемент уже существует',
     'error_of_item_deleting' => 'Ошибка удаления элемента',
     'item_deleted_successfully' => 'Элемент успешно удален',
+    'deleting_of_item' => 'Удаление элемента :item',
+    'are_you_sure_to_deleting_item' => 'Вы действительно хотите удалить этот элемент?',
     'text' => 'Текст',
     'image' => 'Изображение',
 
@@ -106,5 +108,11 @@ return [
 
     'category_properties' => 'Свойства категории',
     'item_properties' => 'Свойства элемента',
+
+    'list' => 'Список',
+    'infoboxes_list' => 'Список инфобоксов',
+    'navigation' => 'Навигация',
+    'navigator' => 'Навигатор',
+    'nav' => 'Навигация',
 
 ];

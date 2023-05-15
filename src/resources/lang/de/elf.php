@@ -38,7 +38,7 @@ return [
     'error_of_category_deleting' => 'Fehler beim Löschen der Kategorie',
     'category_deleted_successfully' => 'Kategorie wurde erfolgreich gelöscht',
     'deleting_of_category' => 'Kategorie :category löschen',
-    'are_you_sure_to_deleting_category' => 'Möchten Sie dieses Kategorie wirklich löschen?',
+    'are_you_sure_to_deleting_category' => 'Möchten Sie diese Kategorie wirklich löschen?',
 
     'items_count' => 'Elemente',
     'create_item' => 'Element erstellen',
@@ -57,6 +57,8 @@ return [
     'item_already_exists' => 'Element existiert bereits',
     'error_of_item_deleting' => 'Fehler beim Löschen des Elements',
     'item_deleted_successfully' => 'Element wurde erfolgreich gelöscht',
+    'deleting_of_item' => 'Element :item löschen',
+    'are_you_sure_to_deleting_item' => 'Möchten Sie dieses Element wirklich löschen?',
     'text' => 'Text',
     'image' => 'Bild',
 
@@ -106,5 +108,11 @@ return [
 
     'category_properties' => 'Eigenschaften von Kategorien',
     'item_properties' => 'Eigenschaften von Elementen',
+
+    'list' => 'Liste',
+    'infoboxes_list' => 'Liste der Infoboxen',
+    'navigation' => 'Navigation',
+    'navigator' => 'Navigator',
+    'nav' => 'Navi',
 
 ];

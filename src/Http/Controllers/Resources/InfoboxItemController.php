@@ -61,10 +61,21 @@ class InfoboxItemController extends Controller
      */
     public function create(Request $request)
     {
+        $category_id = null;
         $categories = InfoboxCategory::all();
         $infoboxes = Infobox::active()->get();
         $currentInfobox = Infobox::where('id',$request->infobox)->orWhere('slug',$request->infobox)->first();
         $firstInfobox = Infobox::active()->first();
+        if (!empty($request->category_id)) {
+            $curentCategory = InfoboxCategory::find($request->category_id);
+            if ($curentCategory) {
+                $category_id = $request->category_id;
+                if (empty($request->infobox)) {
+                    $currentInfobox = $curentCategory->infobox;
+                }
+            }
+        }
+
         return view('infobox::admin.infobox.items.create',[
             'page' => [
                 'title' => __('infobox::elf.create_item'),
@@ -74,6 +85,7 @@ class InfoboxItemController extends Controller
             'infoboxes' => $infoboxes,
             'currentInfobox' => $currentInfobox,
             'firstInfobox' => $firstInfobox,
+            'category_id' => $category_id,
         ]);
     }
 
@@ -339,11 +351,11 @@ class InfoboxItemController extends Controller
                         }
                         $paramValue = json_encode($paramValue);
                     }
-                    if ($property->data_type->code == 'color') {
+                    /* if ($property->data_type->code == 'color') {
                         if ($paramValue == 0) {
                             $paramValue = null;
                         }
-                    }
+                    } */
                     if ($property->data_type->code == 'bool') {
                         $paramValue = 1;
                     }
@@ -385,9 +397,9 @@ class InfoboxItemController extends Controller
     public function destroy(InfoboxItem $item)
     {
         if (!$item->delete()) {
-            return redirect(route('admin.infobox.items'))->withErrors(['itemdelerror'=>__('infobox::elf.error_of_item_deleting')]);
+            return redirect()->back()->withErrors(['itemdelerror'=>__('infobox::elf.error_of_item_deleting')]);
         }
 
-        return redirect(route('admin.infobox.items'))->with('itemdeleted',__('infobox::elf.item_deleted_successfully'));
+        return redirect()->back()->with('itemresult',__('infobox::elf.item_deleted_successfully'));
     }
 }

@@ -14,7 +14,7 @@ class InfoboxItem extends Model
     protected $fillable = [
         'title',
         'slug',
-        'parent_id',
+        'category_id',
         'infobox_id',
         'description',
         'meta_keywords',

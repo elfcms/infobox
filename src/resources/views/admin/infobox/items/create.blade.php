@@ -58,7 +58,7 @@
                         <select name="category_id" id="category_id">
                             <option value="">{{ __('basic::elf.none') }}</option>
                             @foreach ($categories as $item)
-                            <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}">{{ $item->title }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
+                            <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}" @if (!empty($category_id) && $item->id == $category_id) selected @endif>{{ $item->title }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
                             @endforeach
                         </select>
                     </div>

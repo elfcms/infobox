@@ -61,10 +61,21 @@ class InfoboxCategoryController extends Controller
      */
     public function create(Request $request)
     {
+        $category_id = null;
         $categories = InfoboxCategory::all();
         $infoboxes = Infobox::active()->get();
         $currentInfobox = Infobox::where('id',$request->infobox)->orWhere('slug',$request->infobox)->first();
         $firstInfobox = Infobox::active()->first();
+        if (!empty($request->category_id)) {
+            $curentCategory = InfoboxCategory::find($request->category_id);
+            if ($curentCategory) {
+                $category_id = $request->category_id;
+                if (empty($request->infobox)) {
+                    $currentInfobox = $curentCategory->infobox;
+                }
+            }
+        }
+
         return view('infobox::admin.infobox.categories.create',[
             'page' => [
                 'title' => __('infobox::elf.create_category'),
@@ -74,6 +85,7 @@ class InfoboxCategoryController extends Controller
             'infoboxes' => $infoboxes,
             'currentInfobox' => $currentInfobox,
             'firstInfobox' => $firstInfobox,
+            'category_id' => $category_id,
         ]);
     }
 
@@ -318,11 +330,11 @@ class InfoboxCategoryController extends Controller
                             }
                             $paramValue = json_encode($paramValue);
                         }
-                        if ($property->data_type->code == 'color') {
+                        /* if ($property->data_type->code == 'color') {
                             if ($paramValue == 0) {
                                 $paramValue = null;
                             }
-                        }
+                        } */
                         if ($property->data_type->code == 'bool') {
                             $paramValue = 1;
                         }
@@ -364,9 +376,9 @@ class InfoboxCategoryController extends Controller
     public function destroy(InfoboxCategory $category)
     {
         if (!$category->delete()) {
-            return redirect(route('admin.infobox.categories'))->withErrors(['categoryerror'=>__('infobox::elf.error_of_category_deleting')]);
+            return redirect()->back()->withErrors(['categoryerror'=>__('infobox::elf.error_of_category_deleting')]);
         }
 
-        return redirect(route('admin.infobox.categories'))->with('categoryresult',__('infobox::elf.category_deleted_successfully'));
+        return redirect()->back()->with('categoryresult',__('infobox::elf.category_deleted_successfully'));
     }
 }

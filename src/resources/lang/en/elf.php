@@ -57,6 +57,8 @@ return [
     'item_already_exists' => 'Item already exists',
     'error_of_item_deleting' => 'Error of item deleting',
     'item_deleted_successfully' => 'Item deleted successfully',
+    'deleting_of_item' => 'Deleting of item :item',
+    'are_you_sure_to_deleting_item' => 'Are you sure to delete this item?',
     'text' => 'Text',
     'image' => 'Image',
 
@@ -106,5 +108,11 @@ return [
 
     'category_properties' => 'Category properties',
     'item_properties' => 'Item properties',
+
+    'list' => 'List',
+    'infoboxes_list' => 'Liste of Infoboxes',
+    'navigation' => 'Navigation',
+    'navigator' => 'Navigator',
+    'nav' => 'Nav',
 
 ];

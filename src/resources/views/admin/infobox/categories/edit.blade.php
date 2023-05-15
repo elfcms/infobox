@@ -175,6 +175,9 @@
                     <div class="input-wrapper">
                         @if ($property->data_type->code == 'text' || $property->data_type->code == 'json')
                         <textarea name="property[{{$property->id}}]" id="property_{{$property->id}}">{{ $property->value }}</textarea>
+                        <script>
+                            runEditor('#property_{{$property->id}}')
+                        </script>
                         @elseif ($property->data_type->code == 'list')
                         <select name="property[{{$property->id}}]" id="property_{{$property->id}}" @if($property->multiple) multiple @endif>
                             <option value="">{{ __('shop::elf.none') }}</option>

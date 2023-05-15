@@ -38,7 +38,7 @@ class Infobox extends Model
         return $this->hasMany(InfoboxItem::class, 'infobox_id');
     }
 
-    public function topitems ()
+    public function topItems ()
     {
         return $this->hasMany(InfoboxItem::class, 'infobox_id')->where('category_id',null);
     }
@@ -48,7 +48,7 @@ class Infobox extends Model
         return $this->hasMany(InfoboxCategory::class, 'infobox_id');
     }
 
-    public function topcategories ()
+    public function topCategories ()
     {
         return $this->hasMany(InfoboxCategory::class, 'infobox_id')->where('parent_id',null);
     }

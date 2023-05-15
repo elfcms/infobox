@@ -72,6 +72,63 @@ class InfoboxCategory extends Model
         return $result;
     }
 
+    public function subtree($parent = null)
+    {
+        static $level = 0;
+
+
+
+        /* if ($parent !== null) {
+            $parent = intval($parent);
+            if ($parent == 0) {
+                $parent = null;
+            }
+        }
+        $result = [];
+        $result = $this->where('parent_id',$parent)->get();
+        if (!empty($result)) {
+            foreach ($result as $i => $item) {
+                $sublevelData = $this->subtree($item->id);
+                if (!empty($sublevelData)) {
+                    $result[$i]['children'] = $sublevelData;
+                }
+            }
+        } */
+
+        return $this->get();
+    }
+
+    public function categories ()
+    {
+        return $this->hasMany(InfoboxCategory::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(InfoboxCategory::class, 'parent_id');
+    }
+
+    public function parentsId($current = null)
+    {
+        static $ids = [];
+
+        /* if (!empty($this->parent)) {
+            $ids[] = $this->parent->id;
+            $this->parentsId();
+        } */
+
+        if (empty($current) && !empty($this->parent)) {
+            $ids[] = $this->parent->id;
+            $this->parentsId($this->parent);
+        }
+        elseif (!empty($current->parent)) {
+            $ids[] = $current->parent->id;
+            $this->parentsId($current->parent);
+        }
+
+        return $ids;
+    }
+
     public static function flat($parent = null, $level = 0, $trend = 'asc', $order = 'id', $count = 100, $search = '')
     {
         if (!empty($trend) && $trend == 'desc') {

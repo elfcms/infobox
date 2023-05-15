@@ -42,6 +42,11 @@ return [
             "position" => 100,
             "submenu" => [
                 [
+                    "title" => "Navigation",
+                    "lang_title" => "infobox::elf.navigation",
+                    "route" => "admin.infobox.nav"
+                ],
+                [
                     "title" => "Infoboxes",
                     "lang_title" => "infobox::elf.infoboxes",
                     "route" => "admin.infobox.infoboxes"
