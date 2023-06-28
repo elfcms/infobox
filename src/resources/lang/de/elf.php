@@ -39,6 +39,7 @@ return [
     'category_deleted_successfully' => 'Kategorie wurde erfolgreich gelöscht',
     'deleting_of_category' => 'Kategorie :category löschen',
     'are_you_sure_to_deleting_category' => 'Möchten Sie diese Kategorie wirklich löschen?',
+    'no_categories' => 'Keine Kategorien',
 
     'items_count' => 'Elemente',
     'create_item' => 'Element erstellen',

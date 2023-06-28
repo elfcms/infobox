@@ -225,6 +225,13 @@ class InfoboxItemController extends Controller
     public function update(Request $request, InfoboxItem $item)
     {
         //dd($item->infobox->itemProperties[0]->data_type);
+        if ($request->notedit && $request->notedit == 1) {
+            $item->active = empty($request->active) ? 0 : 1;
+
+            $item->save();
+
+            return redirect(route('admin.infobox.items'))->with('itemresult',__('infobox::elf.item_edited_successfully'));
+        }
         $request->merge([
             'slug' => Str::slug($request->slug),
         ]);

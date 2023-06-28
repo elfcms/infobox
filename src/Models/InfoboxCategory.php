@@ -20,6 +20,13 @@ class InfoboxCategory extends Model
         'active'
     ];
 
+    protected $appends = ['props'];
+
+    public function getPropsAttribute()
+    {
+        return $this->props();
+    }
+
     /**
      * Get the route key for the model.
      *
@@ -45,9 +52,31 @@ class InfoboxCategory extends Model
         return $this->hasMany(InfoboxItem::class, 'category_id');
     }
 
-    public function properties()
+    /* public function properties()
     {
         return $this->hasMany(InfoboxCategoryProperty::class, 'category_id');
+    } */
+
+    public function properties()
+    {
+        return $this->hasMany(InfoboxCategoryPropertyValue::class, 'category_id');
+    }
+
+    public function props()
+    {
+        $result = [];
+        $props = $this->hasMany(InfoboxCategoryPropertyValue::class, 'category_id')->get();
+        foreach ($props as $prop) {
+            $name = $prop->property->code;
+            $value = $prop->{$prop->property->data_type->code.'_value'};
+            $result[$name] = $value;
+        }
+        return $result;
+    }
+
+    public function data()
+    {
+        return array_merge($this->toArray(),$this->props());
     }
 
     public static function tree($parent = null)

@@ -100,7 +100,7 @@
                             @if (!empty($category->image))
                                 <img src="{{ asset($category->preview) }}" alt="Preview">
                             @else
-                                <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/vendor/elfcms/basic/admin/images/icons/upload.png') }}" alt="Upload file">
                             @endif
                             </div>
                             <div class="image-button-text">
@@ -124,7 +124,7 @@
                             @if (!empty($category->image))
                                 <img src="{{ asset($category->image) }}" alt="Image">
                             @else
-                                <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/vendor/elfcms/basic/admin/images/icons/upload.png') }}" alt="Upload file">
                             @endif
                             </div>
                             <div class="image-button-text">

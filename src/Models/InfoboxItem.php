@@ -24,6 +24,14 @@ class InfoboxItem extends Model
         'end_time',
     ];
 
+
+    protected $appends = ['props'];
+
+    public function getPropsAttribute()
+    {
+        return $this->props();
+    }
+
     /**
      * Get the route key for the model.
      *
@@ -53,4 +61,26 @@ class InfoboxItem extends Model
     {
         return $this->hasMany(InfoboxItemProperty::class, 'item_id');
     } */
+
+    public function properties()
+    {
+        return $this->hasMany(InfoboxItemPropertyValue::class, 'item_id');
+    }
+
+    public function props()
+    {
+        $result = [];
+        $props = $this->hasMany(InfoboxItemPropertyValue::class, 'item_id')->get();
+        foreach ($props as $prop) {
+            $name = $prop->property->code;
+            $value = $prop->{$prop->property->data_type->code.'_value'};
+            $result[$name] = $value;
+        }
+        return $result;
+    }
+
+    public function data()
+    {
+        return array_merge($this->toArray(),$this->props());
+    }
 }

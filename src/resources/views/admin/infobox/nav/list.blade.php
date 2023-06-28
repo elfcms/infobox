@@ -4,11 +4,16 @@
         <a href="{{ route('admin.infobox.nav',['infobox'=>$ib]) }}">{{ $ib->title }}</a>
     </summary>
     {{-- @each('infobox::admin.infobox.nav.partials.detail',$ib->topCategories,'cat') --}}
-    @if ($ib->topCategories)
-        @foreach ($ib->topCategories as $cat)
+    {{-- @if ($ib->topCategories) --}}
+        {{-- @foreach ($ib->topCategories as $cat) --}}
+        @forelse ($ib->topCategories as $cat)
             @include('infobox::admin.infobox.nav.partials.detail',['open' => $ib == $infobox ? 'open' : ''])
-        @endforeach
-    @endif
+        {{-- @endforeach --}}
+        @empty
+            {{ __('infobox::elf.no_categories') }}
+        @endforelse
+
+    {{-- @endif --}}
 </details>
 @empty
     {{ __('basic::elf.nothing_was_found') }}

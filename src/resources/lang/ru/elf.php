@@ -39,6 +39,7 @@ return [
     'category_deleted_successfully' => 'Категория успешно удалена',
     'deleting_of_category' => 'Удаление категории :category',
     'are_you_sure_to_deleting_category' => 'Вы действительно хотите удалить эту категорию?',
+    'no_categories' => 'Нет категорий',
 
     'items_count' => 'Элементов',
     'create_item' => 'Создать элемент',

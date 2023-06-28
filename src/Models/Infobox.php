@@ -43,6 +43,18 @@ class Infobox extends Model
         return $this->hasMany(InfoboxItem::class, 'infobox_id')->where('category_id',null);
     }
 
+    public function itemsData ()
+    {
+        $items = $this->hasMany(InfoboxItem::class, 'infobox_id')->active()->get();
+        $result = [];
+        if ($items) {
+            foreach ($items as $item) {
+                $result[] = $item->data();
+            }
+        }
+        return $result;
+    }
+
     public function categories ()
     {
         return $this->hasMany(InfoboxCategory::class, 'infobox_id');

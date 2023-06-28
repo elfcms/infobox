@@ -39,6 +39,7 @@ return [
     'category_deleted_successfully' => 'Category deleted successfully',
     'deleting_of_category' => 'Deleting of category :category',
     'are_you_sure_to_deleting_category' => 'Are you sure to delete this category?',
+    'no_categories' => 'No categories',
 
     'items_count' => 'Items',
     'create_item' => 'Create item',
