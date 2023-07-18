@@ -113,7 +113,7 @@ select option.hidden {
         minmax(100px, 1.2fr)
         minmax(100px, 1.2fr)
         minmax(60px, 0.8fr)
-        minmax(160px, 1.8fr);
+        minmax(160px, 1.2fr);
 }
 
 /* Infobox navigation */
