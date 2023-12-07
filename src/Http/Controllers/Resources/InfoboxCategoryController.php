@@ -3,7 +3,7 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Basic\Models\FileCatalog;
+use Elfcms\Elfcms\Models\FileCatalog;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategory;
 use Elfcms\Infobox\Models\InfoboxCategoryProperty;
@@ -43,9 +43,9 @@ class InfoboxCategoryController extends Controller
             $categories = InfoboxCategory::flat(trend: $trend, order: $order, count: $count, search: $search);
         }
 
-        return view('infobox::admin.infobox.categories.index',[
+        return view('elfcms::admin.infobox.categories.index',[
             'page' => [
-                'title' => __('infobox::elf.categories'),
+                'title' => __('infobox::default.categories'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -76,9 +76,9 @@ class InfoboxCategoryController extends Controller
             }
         }
 
-        return view('infobox::admin.infobox.categories.create',[
+        return view('elfcms::admin.infobox.categories.create',[
             'page' => [
-                'title' => __('infobox::elf.create_category'),
+                'title' => __('infobox::default.create_category'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -200,9 +200,9 @@ class InfoboxCategoryController extends Controller
             } */
             //if ($parameter->id == 9) dd($parameter->value);
         }
-        return view('infobox::admin.infobox.categories.edit',[
+        return view('elfcms::admin.infobox.categories.edit',[
             'page' => [
-                'title' => __('infobox::elf.edit_category',['category'=>$category->title]),
+                'title' => __('infobox::default.edit_category',['category'=>$category->title]),
                 'current' => url()->current(),
             ],
             'category' => $category,
@@ -363,7 +363,7 @@ class InfoboxCategoryController extends Controller
             }
             /* /Properties */
 
-            return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('infobox::elf.category_edited_successfully'));
+            return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('infobox::default.category_edited_successfully'));
         }
     }
 
@@ -376,9 +376,9 @@ class InfoboxCategoryController extends Controller
     public function destroy(InfoboxCategory $category)
     {
         if (!$category->delete()) {
-            return redirect()->back()->withErrors(['categoryerror'=>__('infobox::elf.error_of_category_deleting')]);
+            return redirect()->back()->withErrors(['categoryerror'=>__('infobox::default.error_of_category_deleting')]);
         }
 
-        return redirect()->back()->with('categoryresult',__('infobox::elf.category_deleted_successfully'));
+        return redirect()->back()->with('categoryresult',__('infobox::default.category_deleted_successfully'));
     }
 }

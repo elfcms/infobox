@@ -1,4 +1,4 @@
-@extends('infobox::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.infobox')
 
 @section('infoboxpage-content')
 

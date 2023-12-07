@@ -35,7 +35,7 @@
     </td> --}}
     <td class="button-column non-text-buttons">
         <div class="check-delete-wrapper">
-            <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('basic::elf.delete') }}" onclick="setUnitRowDelete(this)">
+            <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" onclick="setUnitRowDelete(this)">
             <i></i>
         </div>
     </td>
@@ -47,21 +47,21 @@
                     <input type="checkbox" name="property[{{$property->id}}][multiple]" id="property_{{$property->id}}_multiple" value="1" data-name="multiple" @if($property->multiple) checked @endif>
                     <i></i>
                 </div>
-                <label for="property_{{$property->id}}_multiple">{{ __('infobox::elf.multiple') }}</label>
+                <label for="property_{{$property->id}}_multiple">{{ __('infobox::default.multiple') }}</label>
             </div>
             <div class="infobox-option-box-label">
-                {{ __('infobox::elf.options') }}
+                {{ __('infobox::default.options') }}
             </div>
             <div class="infobox-option-table">
                 <div class="infobox-option-table-head">
                     <div class="infobox-option-table-column">
-                        {{ __('infobox::elf.key') }}
+                        {{ __('infobox::default.key') }}
                     </div>
                     <div class="infobox-option-table-column">
-                        {{ __('infobox::elf.value') }}
+                        {{ __('infobox::default.value') }}
                     </div>
                     <div class="infobox-option-table-column">
-                        {{ __('basic::elf.delete') }}
+                        {{ __('elfcms::default.delete') }}
                     </div>
                 </div>
                 <div class="infobox-option-table-body">
@@ -85,7 +85,7 @@
                 @endif
                 </div>
                 <div class="infobox-option-table-add">
-                    <button class="default-btn" data-id="{{$property->id}}" onclick="addOption(this{{!$property->code ? '' : ',false' }})">{{ __('basic::elf.add_option') }}</button>
+                    <button class="default-btn" data-id="{{$property->id}}" onclick="addOption(this{{!$property->code ? '' : ',false' }})">{{ __('elfcms::default.add_option') }}</button>
                 </div>
             </div>
         </div>

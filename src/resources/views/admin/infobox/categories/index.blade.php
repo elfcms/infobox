@@ -1,17 +1,17 @@
-@extends('infobox::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.infobox')
 
 @section('infoboxpage-content')
 
     <div class="table-search-box">
         <div class="table-search-result-title">
             @if (!empty($search))
-                {{ __('basic::elf.search_result_for') }} "{{ $search }}" <a href="{{ route('admin.infobox.categories') }}" title="{{ __('basic::elf.reset_search') }}">&#215;</a>
+                {{ __('elfcms::default.search_result_for') }} "{{ $search }}" <a href="{{ route('admin.infobox.categories') }}" title="{{ __('elfcms::default.reset_search') }}">&#215;</a>
             @endif
         </div>
         <form action="{{ route('admin.infobox.categories') }}" method="get">
             <div class="input-box">
                 <label for="search">
-                    {{ __('basic::elf.search') }}
+                    {{ __('elfcms::default.search') }}
                 </label>
                 <div class="input-wrapper">
                     <input type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="">
@@ -38,7 +38,7 @@
     </div>
     @endif
     <div class="widetable-wrapper">
-        <table class="grid-table categorytable">
+        <table class="grid-table table-cols-9" style="--first-col:65px; --last-col:140px; --minw:800px">
             <thead>
                 <tr>
                     <th>
@@ -46,34 +46,34 @@
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'id','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['id'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.name') }}
+                        {{ __('elfcms::default.name') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'name','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['name'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.slug') }}
+                        {{ __('elfcms::default.slug') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'slug','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['slug'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
-                    {{-- <th>{{ __('basic::elf.preview') }}</th>
-                    <th>{{ __('basic::elf.image') }}</th>
-                    <th>{{ __('basic::elf.description') }}</th> --}}
+                    {{-- <th>{{ __('elfcms::default.preview') }}</th>
+                    <th>{{ __('elfcms::default.image') }}</th>
+                    <th>{{ __('elfcms::default.description') }}</th> --}}
                     <th>
-                        {{ __('basic::elf.created') }}
+                        {{ __('elfcms::default.created') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'created_at','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['created_at'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.updated') }}
+                        {{ __('elfcms::default.updated') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'updated_at','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['updated_at'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.public_time') }}
+                        {{ __('elfcms::default.public_time') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'public_time','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['public_time'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.end_time') }}
+                        {{ __('elfcms::default.end_time') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'end_time','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['end_time'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th>
-                        {{ __('basic::elf.active') }}
+                        {{ __('elfcms::default.active') }}
                         <a href="{{ route('admin.infobox.categories',UrlParams::addArr(['order'=>'active','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['active'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                     </th>
                     <th></th>
@@ -102,24 +102,24 @@
                     <td>{{-- {{ $category->end_time }} --}}</td>
                     <td>
                     @if ($category->active)
-                        {{ __('basic::elf.active') }}
+                        {{ __('elfcms::default.active') }}
                     @else
-                        {{ __('basic::elf.not_active') }}
+                        {{ __('elfcms::default.not_active') }}
                     @endif
                     </td>
                     <td class="button-column non-text-buttons">
                         <form action="{{ route('admin.infobox.items.create') }}" method="GET">
                             <input type="hidden" name="category_id" value="{{ $category->id }}">
-                            <button type="submit" class="default-btn submit-button create-button" title="{{ __('infobox::elf.add_item') }}"></button>
+                            <button type="submit" class="default-btn submit-button create-button" title="{{ __('infobox::default.add_item') }}"></button>
                         </form>
-                        <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="default-btn edit-button" title="{{ __('basic::elf.edit') }}"></a>
+                        <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="default-btn edit-button" title="{{ __('elfcms::default.edit') }}"></a>
                         <form action="{{ route('admin.infobox.categories.update',$category) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $category->id }}">
                             <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$category->active }}">
                             <input type="hidden" name="notedit" value="1">
-                            <button type="submit" @if ($category->active == 1) class="default-btn deactivate-button" title="{{__('basic::elf.deactivate') }}" @else class="default-btn activate-button" title="{{ __('basic::elf.activate') }}" @endif>
+                            <button type="submit" @if ($category->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
                             </button>
                         </form>
                         <form action="{{ route('admin.infobox.categories.destroy',$category) }}" method="POST" data-submit="check">
@@ -127,17 +127,17 @@
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $category->id }}">
                             <input type="hidden" name="name" value="{{ $category->name }}">
-                            <button type="submit" class="default-btn delete-button" title="{{ __('basic::elf.delete') }}"></button>
+                            <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
                         </form>
                         <div class="contextmenu-content-box">
                             <a href="{{ route('admin.infobox.items',UrlParams::addArr(['category'=>$category->id])) }}" class="contextmenu-item">
-                                {{ __('infobox::elf.show_items') }}
+                                {{ __('infobox::default.show_items') }}
                             </a>
                             <form action="{{ route('admin.infobox.items.create') }}" method="GET">
                                 <input type="hidden" name="category_id" value="{{ $category->id }}">
-                                <button type="submit" class="contextmenu-item">{{ __('infobox::elf.add_item') }}</button>
+                                <button type="submit" class="contextmenu-item">{{ __('infobox::default.add_item') }}</button>
                             </form>
-                            <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
+                            <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="contextmenu-item">{{ __('elfcms::default.edit') }}</a>
                             <form action="{{ route('admin.infobox.categories.update',$category) }}" method="POST">
                                 @csrf
                                 @method('PUT')
@@ -146,9 +146,9 @@
                                 <input type="hidden" name="notedit" value="1">
                                 <button type="submit" class="contextmenu-item">
                                 @if ($category->active == 1)
-                                    {{ __('basic::elf.deactivate') }}
+                                    {{ __('elfcms::default.deactivate') }}
                                 @else
-                                    {{ __('basic::elf.activate') }}
+                                    {{ __('elfcms::default.activate') }}
                                 @endif
                                 </button>
                             </form>
@@ -157,7 +157,7 @@
                                 @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $category->id }}">
                                 <input type="hidden" name="name" value="{{ $category->name }}">
-                                <button type="submit" class="contextmenu-item">{{ __('basic::elf.delete') }}</button>
+                                <button type="submit" class="contextmenu-item">{{ __('elfcms::default.delete') }}</button>
                             </form>
                         </div>
                     </td>
@@ -167,7 +167,7 @@
         </table>
         @if (empty(count($categories)))
             <div class="no-results-box">
-                {{ __('basic::elf.nothing_was_found') }}
+                {{ __('elfcms::default.nothing_was_found') }}
             </div>
         @endif
     </div>
@@ -183,18 +183,18 @@
                         categoryName = this.querySelector('[name="name"]').value,
                         self = this
                     popup({
-                        title:'{{ __('basic::elf.deleting_of_element') }}' + categoryId,
-                        content:'<p>{{ __('basic::elf.are_you_sure_to_deleting_category') }} "' + categoryName + '" (ID ' + categoryId + ')?</p>',
+                        title:'{{ __('elfcms::default.deleting_of_element') }}' + categoryId,
+                        content:'<p>{{ __('elfcms::default.are_you_sure_to_deleting_category') }} "' + categoryName + '" (ID ' + categoryId + ')?</p>',
                         buttons:[
                             {
-                                title:'{{ __('basic::elf.delete') }}',
+                                title:'{{ __('elfcms::default.delete') }}',
                                 class:'default-btn delete-button',
                                 callback: function(){
                                     self.submit()
                                 }
                             },
                             {
-                                title:'{{ __('basic::elf.cancel') }}',
+                                title:'{{ __('elfcms::default.cancel') }}',
                                 class:'default-btn cancel-button',
                                 callback:'close'
                             }
@@ -214,18 +214,18 @@
                             categoryName = this.querySelector('[name="name"]').value,
                             self = this
                         popup({
-                            title:'{{ __('basic::elf.deleting_of_element') }}' + categoryId,
-                            content:'<p>{{ __('basic::elf.are_you_sure_to_deleting_category') }} "' + categoryName + '" (ID ' + categoryId + ')?</p>',
+                            title:'{{ __('elfcms::default.deleting_of_element') }}' + categoryId,
+                            content:'<p>{{ __('elfcms::default.are_you_sure_to_deleting_category') }} "' + categoryName + '" (ID ' + categoryId + ')?</p>',
                             buttons:[
                                 {
-                                    title:'{{ __('basic::elf.delete') }}',
+                                    title:'{{ __('elfcms::default.delete') }}',
                                     class:'default-btn delete-button',
                                     callback: function(){
                                         self.submit()
                                     }
                                 },
                                 {
-                                    title:'{{ __('basic::elf.cancel') }}',
+                                    title:'{{ __('elfcms::default.cancel') }}',
                                     class:'default-btn cancel-button',
                                     callback:'close'
                                 }

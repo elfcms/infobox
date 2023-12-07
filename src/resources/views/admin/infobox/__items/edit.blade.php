@@ -1,4 +1,4 @@
-@extends('infobox::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.infobox')
 
 @section('infoboxpage-content')
 
@@ -19,13 +19,13 @@
     @endif
 
     <div class="item-form">
-        <h3>{{ __('infobox::elf.edit_item') }} {{$item->id}}</h3>
+        <h3>{{ __('infobox::default.edit_item') }} {{$item->id}}</h3>
         <form action="{{ route('admin.infobox.items.update',$item->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="colored-rows-box">
                 <div class="input-box colored">
-                    <label for="code">{{ __('basic::elf.code') }}</label>
+                    <label for="code">{{ __('elfcms::default.code') }}</label>
                     <div class="input-wrapper">
                         <input type="text" name="code" id="code" data-isslug value="{{ $item->code }}">
                     </div>
@@ -37,19 +37,19 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="title">{{ __('basic::elf.title') }}</label>
+                    <label for="title">{{ __('elfcms::default.title') }}</label>
                     <div class="input-wrapper">
                         <input type="text" name="title" id="title" value="{{ $item->title }}">
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="text">{{ __('basic::elf.text') }}</label>
+                    <label for="text">{{ __('elfcms::default.text') }}</label>
                     <div class="input-wrapper">
                         <textarea name="text" id="text" cols="30" rows="10">{{ $item->text }}</textarea>
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="image">{{ __('basic::elf.image') }}</label>
+                    <label for="image">{{ __('elfcms::default.image') }}</label>
                     <div class="input-wrapper">
                         <input type="hidden" name="image_path" id="image_path" value="{{$item->image}}">
                         <div class="image-button">
@@ -58,14 +58,14 @@
                             @if (!empty($item->image))
                                 <img src="{{ asset($item->image) }}" alt="Image">
                             @else
-                                <img src="{{ asset('/vendor/elfcms/basic/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
                             @endif
                             </div>
                             <div class="image-button-text">
                             @if (!empty($post->image))
-                                {{ __('basic::elf.change_file') }}
+                                {{ __('elfcms::default.change_file') }}
                             @else
-                                {{ __('basic::elf.choose_file') }}
+                                {{ __('elfcms::default.choose_file') }}
                             @endif
                             </div>
                             <input type="file" name="image" id="image">
@@ -73,22 +73,22 @@
                     </div>
                 </div>
                 <div class="input-box colored" id="optionsbox">
-                    <label for="">{{ __('infobox::elf.options') }}</label>
+                    <label for="">{{ __('infobox::default.options') }}</label>
                     <div class="input-wrapper">
                         <div>
                             <div class="sb-input-options-table">
                                 <div class="options-table-head-line">
                                     <div class="options-table-head">
-                                        {{ __('infobox::elf.type') }}
+                                        {{ __('infobox::default.type') }}
                                     </div>
                                     <div class="options-table-head">
-                                        {{ __('basic::elf.name') }}
+                                        {{ __('elfcms::default.name') }}
                                     </div>
                                     <div class="options-table-head">
-                                        {{ __('basic::elf.value') }}
+                                        {{ __('elfcms::default.value') }}
                                     </div>
                                     <div class="options-table-head">
-                                        {{ __('basic::elf.delete') }}
+                                        {{ __('elfcms::default.delete') }}
                                     </div>
                                 </div>
                                 @foreach ($item->options as $option)
@@ -130,13 +130,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="default-btn option-table-add" id="addoptionline">{{ __('basic::elf.add_option') }}</button>
+                            <button type="button" class="default-btn option-table-add" id="addoptionline">{{ __('elfcms::default.add_option') }}</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="button-box single-box">
-                <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
+                <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
             </div>
         </form>
     </div>

@@ -3,7 +3,7 @@
 namespace Elfcms\Infobox\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Basic\Models\DataType;
+use Elfcms\Elfcms\Models\DataType;
 use Elfcms\Infobox\Models\InfoboxCategoryProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,7 +39,7 @@ class InfoboxCategoryPropertyController extends Controller
         }
         else {
             return view(
-                'infobox::admin.infobox.properties.content.list',
+                'elfcms::admin.infobox.properties.content.list',
                 [
                     'properties' => $properties,
                     'data_types' => $dataTypes,
@@ -70,7 +70,7 @@ class InfoboxCategoryPropertyController extends Controller
             'data_type' => (object)['code'=>null],
         ];
         return view(
-            'infobox::admin.infobox.properties.content.item',
+            'elfcms::admin.infobox.properties.content.item',
             [
                 'property' => (object)$emptyUnit,
                 'data_types' => $dataTypes,
@@ -92,7 +92,7 @@ class InfoboxCategoryPropertyController extends Controller
             'data' => null
         ];
         if (!$request->isMethod('POST')) {
-            $result['message'] = __('infobox::elf.method_must_be',['method'=>'POST']);
+            $result['message'] = __('infobox::default.method_must_be',['method'=>'POST']);
             return $result;
         }
 
@@ -137,7 +137,7 @@ class InfoboxCategoryPropertyController extends Controller
         if (!empty($propertyDelete)) {
             $deleted = InfoboxCategoryProperty::destroy($propertyDelete);
             if (!$deleted) {
-                $result['message'] = __('infobox::elf.error_of_deleting');
+                $result['message'] = __('infobox::default.error_of_deleting');
 
                 return $result;
             }
@@ -165,7 +165,7 @@ class InfoboxCategoryPropertyController extends Controller
                     $propertyItem->options = json_encode($options);
                     $saved = $propertyItem->save();
                     if (!$saved) {
-                        $result['message'] =  __('infobox::elf.error_of_saving_id',['id'=>$id]);
+                        $result['message'] =  __('infobox::default.error_of_saving_id',['id'=>$id]);
 
                         return $result;
                     }
@@ -194,7 +194,7 @@ class InfoboxCategoryPropertyController extends Controller
                 }
                 $created = InfoboxCategoryProperty::create($newproperty);
                 if (!$created) {
-                    $result['message'] = __('infobox::elf.error_of_creating_element_with_name',['name'=>$newproperty['name']]);
+                    $result['message'] = __('infobox::default.error_of_creating_element_with_name',['name'=>$newproperty['name']]);
 
                     return $result;
                 }
@@ -204,18 +204,18 @@ class InfoboxCategoryPropertyController extends Controller
         $properties = InfoboxCategoryProperty::all();
         $dataTypes = DataType::all();
         $view = view(
-            'infobox::admin.infobox.properties.content.list',
+            'elfcms::admin.infobox.properties.content.list',
             [
                 'properties' => $properties,
                 'data_types' => $dataTypes,
             ]
         )->render();
         if (!$view) {
-            $result['message'] = __('infobox::elf.view_not_found');
+            $result['message'] = __('infobox::default.view_not_found');
             return $result;
         }
         $result['result'] = 'success';
-        $result['message'] = __('infobox::elf.data_saved_successfully');
+        $result['message'] = __('infobox::default.data_saved_successfully');
         $result['data'] = $view;
 
         return $result;

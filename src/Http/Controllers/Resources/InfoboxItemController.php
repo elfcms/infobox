@@ -3,8 +3,8 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Basic\Models\DataType;
-use Elfcms\Basic\Models\FileCatalog;
+use Elfcms\Elfcms\Models\DataType;
+use Elfcms\Elfcms\Models\FileCatalog;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategory;
 use Elfcms\Infobox\Models\InfoboxItem;
@@ -42,9 +42,9 @@ class InfoboxItemController extends Controller
 
         }
 
-        return view('infobox::admin.infobox.items.index',[
+        return view('elfcms::admin.infobox.items.index',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . ' ' . __('infobox::elf.items'),
+                'title' => __('infobox::default.infobox') . ' ' . __('infobox::default.items'),
                 'current' => url()->current(),
             ],
             'items' => $items,
@@ -76,9 +76,9 @@ class InfoboxItemController extends Controller
             }
         }
 
-        return view('infobox::admin.infobox.items.create',[
+        return view('elfcms::admin.infobox.items.create',[
             'page' => [
-                'title' => __('infobox::elf.create_item'),
+                'title' => __('infobox::default.create_item'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -155,7 +155,7 @@ class InfoboxItemController extends Controller
             }
         }
 
-        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::elf.item_created_successfully'));
+        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::default.item_created_successfully'));
     }
 
     /**
@@ -204,9 +204,9 @@ class InfoboxItemController extends Controller
             } */
             //if ($parameter->id == 9) dd($parameter->value);
         }
-        return view('infobox::admin.infobox.items.edit',[
+        return view('elfcms::admin.infobox.items.edit',[
             'page' => [
-                'title' => __('infobox::elf.edit_item', ['item'=>$item->title]),
+                'title' => __('infobox::default.edit_item', ['item'=>$item->title]),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -230,7 +230,7 @@ class InfoboxItemController extends Controller
 
             $item->save();
 
-            return redirect(route('admin.infobox.items'))->with('itemresult',__('infobox::elf.item_edited_successfully'));
+            return redirect(route('admin.infobox.items'))->with('itemresult',__('infobox::default.item_edited_successfully'));
         }
         $request->merge([
             'slug' => Str::slug($request->slug),
@@ -241,7 +241,7 @@ class InfoboxItemController extends Controller
         ]);
         if (InfoboxItem::where('slug',$request->slug)->where('id','<>',$item->id)->first()) {
             return redirect(route('admin.infobox.item.edit',$item->id))->withErrors([
-                'slug' => __('infobox::elf.item_already_exists')
+                'slug' => __('infobox::default.item_already_exists')
             ]);
         }
 
@@ -391,7 +391,7 @@ class InfoboxItemController extends Controller
         }
         /* /Properties */
 
-        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::elf.item_edited_successfully'));
+        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::default.item_edited_successfully'));
 
     }
 
@@ -404,9 +404,9 @@ class InfoboxItemController extends Controller
     public function destroy(InfoboxItem $item)
     {
         if (!$item->delete()) {
-            return redirect()->back()->withErrors(['itemdelerror'=>__('infobox::elf.error_of_item_deleting')]);
+            return redirect()->back()->withErrors(['itemdelerror'=>__('infobox::default.error_of_item_deleting')]);
         }
 
-        return redirect()->back()->with('itemresult',__('infobox::elf.item_deleted_successfully'));
+        return redirect()->back()->with('itemresult',__('infobox::default.item_deleted_successfully'));
     }
 }

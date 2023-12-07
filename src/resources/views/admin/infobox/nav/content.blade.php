@@ -7,7 +7,7 @@
 </div>
 @endif --}}
 <h4 class="infobox-nav-title">
-    {{ $category->title ?? $infobox->title }}
+    {{ $category->title ?? $infobox->title ?? __('infobox::default.infoboxes') }}
 </h4>
 <div class="infobox-nav-content">
     @if ($category)
@@ -18,23 +18,23 @@
         @endif
         @if ($category->categories)
             @foreach ($category->categories as $cat)
-                @include('infobox::admin.infobox.nav.partials.category',['items'=>$cat->items])
+                @include('elfcms::admin.infobox.nav.partials.category',['items'=>$cat->items])
             @endforeach
         @endif
         @if ($category->items)
             @foreach ($category->items as $item)
-                @include('infobox::admin.infobox.nav.partials.item')
+                @include('elfcms::admin.infobox.nav.partials.item')
             @endforeach
         @endif
     @else
-        @if ($infobox->topCategories)
+        @if (!empty($infobox->topCategories))
             @foreach ($infobox->topCategories as $cat)
-                @include('infobox::admin.infobox.nav.partials.category',['items'=>$cat->items])
+                @include('elfcms::admin.infobox.nav.partials.category',['items'=>$cat->items])
             @endforeach
         @endif
-        @if ($infobox->items)
+        @if (!empty($infobox->items))
             @foreach ($infobox->topItems as $item)
-                @include('infobox::admin.infobox.nav.partials.item')
+                @include('elfcms::admin.infobox.nav.partials.item')
             @endforeach
         @endif
     @endif
@@ -56,14 +56,14 @@ function setConfirmDelete(forms) {
                     content:'<p>' + message + '</p>',
                     buttons:[
                         {
-                            title:'{{ __('basic::elf.delete') }}',
+                            title:'{{ __('elfcms::default.delete') }}',
                             class:'default-btn delete-button',
                             callback: function(){
                                 self.submit()
                             }
                         },
                         {
-                            title:'{{ __('basic::elf.cancel') }}',
+                            title:'{{ __('elfcms::default.cancel') }}',
                             class:'default-btn cancel-button',
                             callback:'close'
                         }

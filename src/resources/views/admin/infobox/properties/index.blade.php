@@ -1,7 +1,7 @@
-@extends('infobox::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.infobox')
 @section('infoboxpage-content')
 <div class="pagenav">
-    <a href="{{ route('admin.infobox.infoboxes.edit', $infobox) }}">{{ __('infobox::elf.infobox') . ' "' . $infobox->title . '"' }}</a>
+    <a href="{{ route('admin.infobox.infoboxes.edit', $infobox) }}">{{ __('infobox::default.infobox') . ' "' . $infobox->title . '"' }}</a>
 </div>
     @if (Session::has('action_result'))
     <div class="alert alert-alternate">{{ Session::get('action_result') }}</div>
@@ -23,24 +23,24 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>{{ __('basic::elf.name') }}</th>
+                    <th>{{ __('elfcms::default.name') }}</th>
                     <th></th>
-                    <th>{{ __('basic::elf.code') }}</th>
-                    <th>{{ __('infobox::elf.data_type') }}</th>
-                    <th>{{ __('basic::elf.description') }}</th>
-                    {{-- <th>{{ __('infobox::elf.is_filter') }}</th> --}}
+                    <th>{{ __('elfcms::default.code') }}</th>
+                    <th>{{ __('infobox::default.data_type') }}</th>
+                    <th>{{ __('elfcms::default.description') }}</th>
+                    {{-- <th>{{ __('infobox::default.is_filter') }}</th> --}}
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @include('infobox::admin.infobox.properties.content.list')
+                @include('elfcms::admin.infobox.properties.content.list')
             </tbody>
         </table>
     </div>
     <div class="infobox-table-buttons">
-        <button class="default-btn alternate-button" title="{{__('infobox::elf.add_property')}}" data-action="additem">{{ __('infobox::elf.add_property') }}</button>
-        {{-- <button class="default-btn" title="{{__('basic::elf.reset_button')}}" data-action="reset">{{ __('basic::elf.reset_button') }}</button> --}}
-        <button type="submit" class="default-btn submit-button" disabled="" data-action="save">{{ __('basic::elf.save') }}</button>
+        <button class="default-btn alternate-button" title="{{__('infobox::default.add_property')}}" data-action="additem">{{ __('infobox::default.add_property') }}</button>
+        {{-- <button class="default-btn" title="{{__('elfcms::default.reset_button')}}" data-action="reset">{{ __('elfcms::default.reset_button') }}</button> --}}
+        <button type="submit" class="default-btn submit-button" disabled="" data-action="save">{{ __('elfcms::default.save') }}</button>
     </div>
 </form>
     <script>
@@ -174,8 +174,8 @@
             saveButton.addEventListener('click',function(e){
                 e.preventDefault();
                 popup({
-                    title: '{{__("infobox::elf.are_you_sure")}}',
-                    content: '{{__("infobox::elf.do_you_want_to_save_your_changes")}}',
+                    title: '{{__("infobox::default.are_you_sure")}}',
+                    content: '{{__("infobox::default.do_you_want_to_save_your_changes")}}',
                     buttons:[
                         {
                             title:'OK',
@@ -186,7 +186,7 @@
                             ]
                         },
                         {
-                            title:'{{__("basic::elf.cancel")}}',
+                            title:'{{__("elfcms::default.cancel")}}',
                             class:'default-btn cancel-button',
                             callback:'close'
                         }
@@ -225,7 +225,7 @@
                                     });
                                 }
                                 popup({
-                                    title: '{{__("infobox::elf.done")}}',
+                                    title: '{{__("infobox::default.done")}}',
                                     content: data.message,
                                     buttons:[
                                         {
@@ -240,10 +240,10 @@
                             else {
                                 if ((data.error || (data.result && data.result == 'error'))) {
                                     if (!data.message) {
-                                        data.message = '{{ __("infobox::elf.error") }}';
+                                        data.message = '{{ __("infobox::default.error") }}';
                                     }
                                     popup({
-                                        title:'{{__("infobox::elf.error")}}',
+                                        title:'{{__("infobox::default.error")}}',
                                         content:data.message,
                                         buttons:[
                                             {

@@ -1,12 +1,12 @@
 <?php
 
-use Elfcms\Basic\Models\DataType;
+use Elfcms\Elfcms\Models\DataType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-$adminPath = Config::get('elfcms.basic.admin_path') ?? '/admin';
+$adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
 
-Route::group(['middleware'=>['web','cookie','start']],function() use ($adminPath) {
+Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
 
     Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
 

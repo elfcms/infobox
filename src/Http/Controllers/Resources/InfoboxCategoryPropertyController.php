@@ -3,7 +3,7 @@
 namespace Elfcms\Infobox\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Basic\Models\DataType;
+use Elfcms\Elfcms\Models\DataType;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategoryProperty;
 use Illuminate\Http\Request;
@@ -20,9 +20,9 @@ class InfoboxCategoryPropertyController extends Controller
     {
         $dataTypes = DataType::all();
         $properties = InfoboxCategoryProperty::all();
-        return view('infobox::admin.infobox.properties.index',[
+        return view('elfcms::admin.infobox.properties.index',[
             'page' => [
-                'title' => __('infobox::elf.category_properties'),
+                'title' => __('infobox::default.category_properties'),
                 'current' => url()->current(),
             ],
             'properties' => $properties,

@@ -35,7 +35,7 @@ return [
     "menu" => [
         [
             "title" => "Infobox",
-            "lang_title" => "infobox::elf.infobox",
+            "lang_title" => "infobox::default.infobox",
             "route" => "admin.infobox.nav",
             "parent_route" => "admin.infobox",
             "icon" => "/vendor/elfcms/infobox/admin/images/icons/box.png",
@@ -43,22 +43,22 @@ return [
             "submenu" => [
                 [
                     "title" => "Navigation",
-                    "lang_title" => "infobox::elf.navigation",
+                    "lang_title" => "infobox::default.navigation",
                     "route" => "admin.infobox.nav"
                 ],
                 [
                     "title" => "Infoboxes",
-                    "lang_title" => "infobox::elf.infoboxes",
+                    "lang_title" => "infobox::default.infoboxes",
                     "route" => "admin.infobox.infoboxes"
                 ],
                 [
                     "title" => "Categories",
-                    "lang_title" => "infobox::elf.categories",
+                    "lang_title" => "infobox::default.categories",
                     "route" => "admin.infobox.categories"
                 ],
                 [
                     "title" => "Items",
-                    "lang_title" => "infobox::elf.items",
+                    "lang_title" => "infobox::default.items",
                     "route" => "admin.infobox.items"
                 ],
             ]

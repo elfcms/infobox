@@ -60,7 +60,7 @@ class InfoboxNavigator extends Controller
             }
             $message = [
                 'type' => 'danger',
-                'header' => __('basic::elf.errors'),
+                'header' => __('elfcms::default.errors'),
                 'text' => '<ul>' . $text . '</ul>',
             ];
         }
@@ -72,10 +72,10 @@ class InfoboxNavigator extends Controller
         $category = InfoboxCategory::where('slug', $request->category)->first() ?? null;
 
         if ($category) {
-            $categories = $category->categories;
+            $categories = $category->categories ?? [];
         }
         else {
-            $categories = $infobox->topCategories;
+            $categories = $infobox->topCategories ?? [];
         }
 
         /* $c = InfoboxCategory::find(6);
@@ -87,15 +87,15 @@ class InfoboxNavigator extends Controller
         //dd($infobox->categories[0]->categories);
         //dd($infobox->topCategories);
 
-        /* $pageTitle = __('infobox::elf.infobox') . ': ' . $infobox->title;
+        /* $pageTitle = __('infobox::default.infobox') . ': ' . $infobox->title;
 
         if ($category) {
-            $pageTitle .= ' | ' . __('infobox::elf.category') . ': ' . $category->title . ' sdfdsgdfsgsdf sdg sdfgsdf sdf gsfdgfdg';
+            $pageTitle .= ' | ' . __('infobox::default.category') . ': ' . $category->title . ' sdfdsgdfsgsdf sdg sdfgsdf sdf gsfdgfdg';
         } */
 
-        return view('infobox::admin.infobox.nav.index',[
+        return view('elfcms::admin.infobox.nav.index',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . ': ' . $infobox->title,
+                'title' => empty($infobox) ? __('infobox::default.infoboxes') : __('infobox::default.infobox') . ': ' . $infobox->title,
                 'current' => url()->current(),
             ],
             'infoboxes' => $infoboxes,

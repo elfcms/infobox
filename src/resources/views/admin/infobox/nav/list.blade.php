@@ -3,18 +3,18 @@
     <summary>
         <a href="{{ route('admin.infobox.nav',['infobox'=>$ib]) }}">{{ $ib->title }}</a>
     </summary>
-    {{-- @each('infobox::admin.infobox.nav.partials.detail',$ib->topCategories,'cat') --}}
+    {{-- @each('elfcms::admin.infobox.nav.partials.detail',$ib->topCategories,'cat') --}}
     {{-- @if ($ib->topCategories) --}}
         {{-- @foreach ($ib->topCategories as $cat) --}}
         @forelse ($ib->topCategories as $cat)
-            @include('infobox::admin.infobox.nav.partials.detail',['open' => $ib == $infobox ? 'open' : ''])
+            @include('elfcms::admin.infobox.nav.partials.detail',['open' => $ib == $infobox ? 'open' : ''])
         {{-- @endforeach --}}
         @empty
-            {{ __('infobox::elf.no_categories') }}
+            {{ __('infobox::default.no_categories') }}
         @endforelse
 
     {{-- @endif --}}
 </details>
 @empty
-    {{ __('basic::elf.nothing_was_found') }}
+    {{ __('elfcms::default.nothing_was_found') }}
 @endforelse

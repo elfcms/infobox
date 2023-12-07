@@ -35,9 +35,9 @@ class InfoboxController extends Controller
 
         }
 
-        return view('infobox::admin.infobox.infobox.index',[
+        return view('elfcms::admin.infobox.infobox.index',[
             'page' => [
-                'title' => __('infobox::elf.infoboxes'),
+                'title' => __('infobox::default.infoboxes'),
                 'current' => url()->current(),
             ],
             'infoboxes' => $infoboxes,
@@ -53,9 +53,9 @@ class InfoboxController extends Controller
      */
     public function create()
     {
-        return view('infobox::admin.infobox.infobox.create',[
+        return view('elfcms::admin.infobox.infobox.create',[
             'page' => [
-                'title' => __('infobox::elf.create_infobox'),
+                'title' => __('infobox::default.create_infobox'),
                 'current' => url()->current(),
             ],
         ]);
@@ -84,7 +84,7 @@ class InfoboxController extends Controller
 
         $infobox = Infobox::create($validated);
 
-        return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::elf.infobox_created_successfully'));
+        return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::default.infobox_created_successfully'));
     }
 
     /**
@@ -95,9 +95,9 @@ class InfoboxController extends Controller
      */
     public function show(Infobox $infobox)
     {
-        return view('infobox::admin.infobox.infobox.show',[
+        return view('elfcms::admin.infobox.infobox.show',[
             'page' => [
-                'title' => __('infobox::elf.infobox') . '"' . $infobox->title . '"',
+                'title' => __('infobox::default.infobox') . '"' . $infobox->title . '"',
                 'current' => url()->current(),
             ],
             'infobox' => $infobox
@@ -112,9 +112,9 @@ class InfoboxController extends Controller
      */
     public function edit(Infobox $infobox)
     {
-        return view('infobox::admin.infobox.infobox.edit',[
+        return view('elfcms::admin.infobox.infobox.edit',[
             'page' => [
-                'title' => __('infobox::elf.edit_infobox',['infobox'=>$infobox->title]),
+                'title' => __('infobox::default.edit_infobox',['infobox'=>$infobox->title]),
                 'current' => url()->current(),
             ],
             'infobox' => $infobox
@@ -135,7 +135,7 @@ class InfoboxController extends Controller
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
+            return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::default.item_edited_successfully'));
         }
         else {
             $request->merge([
@@ -146,7 +146,7 @@ class InfoboxController extends Controller
             ]);
             if (Infobox::where('slug',$request->slug)->where('id','<>',$infobox)->first()) {
                 return redirect(route('admin.infobox.infoboxes.edit',$infobox))->withErrors([
-                    'slug' => __('infobox::elf.item_already_exists')
+                    'slug' => __('infobox::default.item_already_exists')
                 ]);
             }
 
@@ -159,7 +159,7 @@ class InfoboxController extends Controller
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::elf.item_edited_successfully'));
+            return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::default.item_edited_successfully'));
         }
     }
 
@@ -172,9 +172,9 @@ class InfoboxController extends Controller
     public function destroy(Infobox $infobox)
     {
         if (!$infobox->delete()) {
-            return redirect(route('admin.infobox.infoboxes'))->withErrors(['deleteerror'=>__('infobox::elf.error_of_infobox_deleting')]);
+            return redirect(route('admin.infobox.infoboxes'))->withErrors(['deleteerror'=>__('infobox::default.error_of_infobox_deleting')]);
         }
 
-        return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::elf.infobox_deleted_successfully'));
+        return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::default.infobox_deleted_successfully'));
     }
 }

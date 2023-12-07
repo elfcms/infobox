@@ -3,16 +3,16 @@
 namespace Elfcms\Infobox\Providers;
 
 use Elfcms\Infobox\Models\InfoboxDataType;
-use Elfcms\Basic\Http\Middleware\AccountUser;
-use Elfcms\Basic\Http\Middleware\AdminUser;
-use Elfcms\Basic\Http\Middleware\CookieCheck;
+use Elfcms\Elfcms\Http\Middleware\AccountUser;
+use Elfcms\Elfcms\Http\Middleware\AdminUser;
+use Elfcms\Elfcms\Http\Middleware\CookieCheck;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
-class ElfModuleProvider extends ServiceProvider
+class ElfcmsModuleProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -31,7 +31,50 @@ class ElfModuleProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $moduleDir = dirname(__DIR__);
+
+        $locales = config('elfcms.elfcms.locales');
+
+        $this->loadRoutesFrom($moduleDir.'/routes/web.php');
+        $this->loadViewsFrom($moduleDir.'/resources/views', 'elfcms');
+        $this->loadMigrationsFrom($moduleDir.'/database/migrations');
+
+        $this->loadTranslationsFrom($moduleDir.'/resources/lang', 'infobox');
+
+        if (!empty($locales) && is_array($locales)) {
+            foreach ($locales as $locale) {
+                if (!empty($locale['code'])) {
+                    $this->publishes([
+                        $moduleDir.'/resources/lang/'.$locale['code'].'/validation.php' => resource_path('lang/'.$locale['code'].'/validation.php'),
+                    ],'lang');
+                }
+            }
+        }
+
+        $this->publishes([
+            $moduleDir.'/resources/lang' => resource_path('lang/elfcms/infobox'),
+        ],'lang');
+
+        $this->publishes([
+            $moduleDir.'/config/elfcms.php' => config_path('elfcms/infobox.php'),
+        ],'config');
+
+        $this->publishes([
+            $moduleDir.'/resources/views/admin' => resource_path('views/elfcms/admin'),
+        ],'admin');
+        $this->publishes([
+            $moduleDir.'/public/admin' => public_path('elfcms/admin/modules/infobox/'),
+        ], 'admin');
+
+        $this->publishes([
+            $moduleDir.'/resources/views/components' => resource_path('views/elfcms/components'),
+        ],'components');
+
+        $this->publishes([
+            $moduleDir.'/resources/views/emails' => resource_path('views/elfcms/emails'),
+        ],'emails');
+
+        /* $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'infobox');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'infobox');
@@ -50,9 +93,9 @@ class ElfModuleProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/elfcms/infobox'),
-        ], 'public');
+        ], 'public'); */
 
-        $startFile = __DIR__.'/../../start.json';
+        /* $startFile = __DIR__.'/../../start.json';
         $firstStart = false;
         if (file_exists($startFile)) {
             $json = File::get($startFile);
@@ -62,10 +105,10 @@ class ElfModuleProvider extends ServiceProvider
             }
         }
         if ($firstStart) {
-            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Infobox\Providers\ElfModuleProvider','--force'=>true]);
+            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Infobox\Providers\ElfcmsModuleProvider','--force'=>true]);
             Artisan::call('migrate');
             if (Schema::hasTable('infobox_data_types')) {
-                $dataTypes = new InfoboxDataType();
+                $dataTypes = new DataType();
                 $dataTypes->start();
             }
             if (unlink($startFile)) {
@@ -74,9 +117,9 @@ class ElfModuleProvider extends ServiceProvider
             elseif (!empty($fileArray)) {
                 file_put_contents($startFile,json_encode($fileArray));
             }
-        }
+        } */
 
-        $router->middlewareGroup('admin', array(
+        /* $router->middlewareGroup('admin', array(
             AdminUser::class
         ));
 
@@ -90,6 +133,6 @@ class ElfModuleProvider extends ServiceProvider
 
         $this->loadViewComponentsAs('elfcms-infobox', [
             'box' => \Elfcms\Infobox\View\Components\Box::class,
-        ]);
+        ]); */
     }
 }
