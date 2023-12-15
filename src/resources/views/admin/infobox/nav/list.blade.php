@@ -2,6 +2,7 @@
 <details  @class(['infobox-nav-ib','selected' => $ib->id == $infobox->id]) @if($ib->id == $infobox->id) open @endif>
     <summary>
         <a href="{{ route('admin.infobox.nav',['infobox'=>$ib]) }}">{{ $ib->title }}</a>
+        <a href="{{ route('admin.infobox.infoboxes.edit',$ib) }}" class="inline-button circle-button alternate-button transparent-button"></a>
     </summary>
     {{-- @each('elfcms::admin.infobox.nav.partials.detail',$ib->topCategories,'cat') --}}
     {{-- @if ($ib->topCategories) --}}

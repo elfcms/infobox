@@ -65,9 +65,9 @@ class InfoboxNavigator extends Controller
             ];
         }
 
-        $infoboxes = Infobox::orderBy('title')->get();
+        $infoboxes = Infobox::position()->get();
 
-        $infobox = Infobox::where('slug', $request->infobox)->first() ?? $infoboxes[0] ?? null;
+        $infobox = Infobox::where('slug', $request->infobox)->first() ?? new Infobox();
 
         $category = InfoboxCategory::where('slug', $request->category)->first() ?? null;
 
@@ -95,7 +95,7 @@ class InfoboxNavigator extends Controller
 
         return view('elfcms::admin.infobox.nav.index',[
             'page' => [
-                'title' => empty($infobox) ? __('infobox::default.infoboxes') : __('infobox::default.infobox') . ': ' . $infobox->title,
+                'title' => empty($infobox->id) ? __('infobox::default.infoboxes') : __('infobox::default.infobox') . ': ' . $infobox->title,
                 'current' => url()->current(),
             ],
             'infoboxes' => $infoboxes,

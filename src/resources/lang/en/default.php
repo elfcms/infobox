@@ -116,4 +116,6 @@ return [
     'navigator' => 'Navigator',
     'nav' => 'Nav',
 
+    'nothing_selected' => 'Nothing selected',
+
 ];

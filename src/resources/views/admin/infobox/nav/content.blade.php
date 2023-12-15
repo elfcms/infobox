@@ -6,6 +6,7 @@
     <a href="{{ route('admin.infobox.nav',['infobox'=>$infobox,'category'=>$category]) }}">{{ $category->title }}</a>
 </div>
 @endif --}}
+@if ($category || $infobox->title)
 <h4 class="infobox-nav-title">
     {{ $category->title ?? $infobox->title ?? __('infobox::default.infoboxes') }}
 </h4>
@@ -39,6 +40,17 @@
         @endif
     @endif
 </div>
+@else
+<div class="infobox-nav-content" {{-- data-text="{{ __('infobox::default.nothing_selected') }}" --}}>
+    <div class="infobox-nav-dnd-area infobox-nav-dnd-area-ib">
+    @forelse ($infoboxes as $ib)
+        @include('elfcms::admin.infobox.nav.partials.infobox')
+    @empty
+        {{ __('elfcms::default.nothing_was_found') }}
+    @endforelse
+    </div>
+</div>
+@endif
 <script>
 const checkForms = document.querySelectorAll('form[data-submit="check"]')
 function setConfirmDelete(forms) {
@@ -76,7 +88,7 @@ function setConfirmDelete(forms) {
 }
 
 setConfirmDelete(checkForms)
-
+/*
 const rows = document.querySelectorAll('.infobox-nav-category summary, .infobox-nav-item');
 if (rows) {
     rows.forEach(row => {
@@ -94,9 +106,8 @@ if (rows) {
 }
 window.onload = (event) => {
   console.log("page is fully loaded");
-};
+};*/
 </script>
-
-<script>
-
-</script>
+@section('footerscript')
+<script src="{{ asset('elfcms/admin/modules/infobox/js/navlineorder.js') }}"></script>
+@endsection

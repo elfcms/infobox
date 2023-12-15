@@ -120,6 +120,8 @@ select option.hidden {
 
 .infobox-nav-container {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .infobox-nav-container summary:focus,
@@ -135,6 +137,9 @@ select option.hidden {
     gap: 5px;
     width: 100%;
 }
+.infobox-nav-box:nth-child(2) {
+    flex-grow: 1;
+}
 
 .infobox-nav-left {
     width: 250px;
@@ -149,19 +154,20 @@ select option.hidden {
 }
 .infobox-nav-left .infobox-nav-ib {
     /* border: 1px solid #1e90ff; */
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 /* .infobox-nav-left .infobox-nav-ib.selected {
     border: 1px solid #006ad5;
 } */
 .infobox-nav-left .infobox-nav-ib > summary {
-    padding: 7px 10px;
+    padding: 10px 12px;
     width: 100%;
     background-color: #1e90ff;
     color: #ffffff;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .infobox-nav-left .infobox-nav-ib.selected > summary {
     background-color: #006ad5;
@@ -172,17 +178,21 @@ select option.hidden {
 .infobox-nav-left .infobox-nav-ib .infobox-nav-cat {
     padding: 2px 0px 2px 7px;
 }
+.infobox-nav-left .infobox-nav-ib .infobox-nav-cat summary + .infobox-nav-cat {
+    margin-top: 2px;
+}
 .infobox-nav-left .infobox-nav-ib > .infobox-nav-cat {
-    padding: 4px 2px 2px;
+    padding: 4px 2px 2px 6px;
 }
 .infobox-nav-left .infobox-nav-ib .infobox-nav-cat summary {
-    padding: 5px 8px;
+    padding: 8px 10px;
     width: 100%;
     background-color: #ffffff;
     color: #032a49;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .infobox-nav-left .infobox-nav-ib .infobox-nav-cat.selected > summary {
     color: #074ca5;
@@ -193,23 +203,25 @@ select option.hidden {
 
 .infobox-nav-left summary {
     list-style: none;
-    border-radius: 4px;
+    border-radius: 6px;
 }
-.infobox-nav-left summary::after {
+.infobox-nav-left summary::before {
     content: '';
     display: block;
     width: 0px;
     height: 0px;
-    margin-top: 4px;
     border: 6px solid transparent;
     border-left: 10px solid currentColor;
     border-right-width: 0px;
     transition: .15s;
 }
-.infobox-nav-left details[open] > summary::after {
+.infobox-nav-left summary:hover {
+    box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.2);
+}
+.infobox-nav-left details[open] > summary::before {
     rotate: 90deg;
 }
-.infobox-nav-left details.empty > summary::after {
+.infobox-nav-left details.empty > summary::before {
     border: 0;
 }
 
@@ -227,7 +239,7 @@ select option.hidden {
     font-weight: 400;
     color: #ffffff;
     background-color: #074ca5;
-    padding: 5px;
+    padding: 12px;
     border-radius: 6px;
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
 }
@@ -241,6 +253,17 @@ select option.hidden {
     border-radius: 6px;
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
     overflow-y: auto;
+}
+
+.infobox-nav-content:empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infobox-nav-content:empty::after {
+    content: attr(data-text);
+    font-size: 0.8em;
+    color: #425870;
 }
 
 .infobox-nav-category {
@@ -380,4 +403,47 @@ select option.hidden {
     background-color: #ff6347;
     background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/delete_white.png);
 }
+
+.infobox-nav-dnd-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.infobox-nav-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background-color: var(--main-contrast-color);
+    border-radius: 6px;
+    padding-right: 10px;
+    overflow: hidden;
+}
+
+.infobox-line-title {
+    flex-grow: 1;
+    padding: 10px;
+}
+.infobox-line-position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-select-color);
+    color: var(--main-contrast-color);
+    padding: 16px;
+    cursor: grab;
+}
+
+.invobox-nav-leftbutton {
+    position: sticky;
+    bottom: 0;
+    /* padding-top: 5px;
+    margin-bottom: 10px; */
+}
+.infobox-nav-topbuttons {
+    display: flex;
+    gap: 10px;
+}
+
 /* /Infobox navigation */

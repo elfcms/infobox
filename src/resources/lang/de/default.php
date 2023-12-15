@@ -116,4 +116,6 @@ return [
     'navigator' => 'Navigator',
     'nav' => 'Navi',
 
+    'nothing_selected' => 'Nichts ausgewählt',
+
 ];

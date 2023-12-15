@@ -15,7 +15,7 @@
         </ul>
     </div>
     @endif
-<form name="propertyform" class="data-table-box" method="post" action="{{ route('admin.infobox.ajax.property.'.$type.'.fullsave') }}">
+<form name="propertyform" class="data-table-box" method="post" action="{{ route('admin.ajax.infobox.property.'.$type.'.fullsave') }}">
     @csrf
     <input type="hidden" name="infobox_id" value="{{ $infobox->id }}">
     <div class="widetable-wrapper">
@@ -54,7 +54,7 @@
         let newItemId = 0;
 
         async function getEmptyItem() {
-            let response = await fetch('{{ route("admin.infobox.ajax.property.".$type.".empty-item") }}',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
+            let response = await fetch('{{ route("admin.ajax.infobox.property.".$type.".empty-item") }}',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
             emptyItem = await response.text();
 
             return emptyItem;
@@ -64,7 +64,7 @@
             if (unitListData !== null && typeof unitListData == 'object') {
                 return unitListData;
             }
-            let response = await fetch('{{ route("admin.infobox.ajax.property.".$type.".list",true) }}',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
+            let response = await fetch('{{ route("admin.ajax.infobox.property.".$type.".list",true) }}',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
             unitListData = await response.json();
             return unitListData;
         }

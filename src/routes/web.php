@@ -30,13 +30,34 @@ Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
             return $result;
         });
 
-        Route::get($adminPath . '/infobox/ajax/property/item/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'list'])->name('infobox.ajax.property.item.list');
-        Route::get($adminPath . '/infobox/ajax/property/item/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'emptyItem'])->name('infobox.ajax.property.item.empty-item');
-        Route::post($adminPath . '/infobox/ajax/property/item/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'save'])->name('infobox.ajax.property.item.fullsave');
+        /* Route::get($adminPath . '/infobox/ajax/property/item/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'list'])->name('ajax.infobox.property.item.list');
+        Route::get($adminPath . '/infobox/ajax/property/item/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'emptyItem'])->name('ajax.infobox.property.item.empty-item');
+        Route::post($adminPath . '/infobox/ajax/property/item/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'save'])->name('ajax.infobox.property.item.fullsave');
 
-        Route::get($adminPath . '/infobox/ajax/property/category/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'list'])->name('infobox.ajax.property.category.list');
-        Route::get($adminPath . '/infobox/ajax/property/category/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'emptyItem'])->name('infobox.ajax.property.category.empty-item');
-        Route::post($adminPath . '/infobox/ajax/property/category/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'save'])->name('infobox.ajax.property.category.fullsave');
+        Route::get($adminPath . '/infobox/ajax/property/category/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'list'])->name('ajax.infobox.property.category.list');
+        Route::get($adminPath . '/infobox/ajax/property/category/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'emptyItem'])->name('ajax.infobox.property.category.empty-item');
+        Route::post($adminPath . '/infobox/ajax/property/category/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'save'])->name('ajax.infobox.property.category.fullsave'); */
+
+        Route::name('ajax.')->group(function() {
+
+            Route::name('infobox.')->group(function() {
+                Route::post('/elfcms/api/infobox/{type}/lineorder', [Elfcms\Infobox\Http\Controllers\Ajax\InfoboxController::class, 'fieldOrder']);
+
+                Route::name('property.')->group(function() {
+                    Route::name('item.')->group(function() {
+                        Route::get('/elfcms/api/infobox/property/item/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'list'])->name('list');
+                        Route::get('/elfcms/api/infobox/property/item/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'emptyItem'])->name('empty-item');
+                        Route::post('/elfcms/api/infobox/property/item/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'save'])->name('fullsave');
+                    });
+                    Route::name('category.')->group(function() {
+                        Route::get('/elfcms/api/infobox/property/category/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'list'])->name('list');
+                        Route::get('/elfcms/api/infobox/property/category/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'emptyItem'])->name('empty-item');
+                        Route::post('/elfcms/api/infobox/property/category/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'save'])->name('fullsave');
+                    });
+                });
+            });
+
+        });
 
     });
 

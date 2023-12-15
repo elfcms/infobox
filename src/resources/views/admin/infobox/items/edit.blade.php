@@ -171,7 +171,7 @@
                             <input type="file" name="property[{{$property->id}}][image]" id="property_{{$property->id}}_image">
                         </div>
                         @elseif ($property->data_type->code == 'file')
-                        <x-basic::anonymous.button.file name="property[{{$property->id}}]" value="{{ $property->value }}" id="property_{{$property->id}}" />
+                        <x-elfcms::anonymous.button.file name="property[{{$property->id}}]" value="{{ $property->value }}" id="property_{{$property->id}}" />
                         {{-- @elseif ($property->data_type->code == 'color')
                         <x-shop::anonymous.picker.color :list="$colors" name="property[{{$property->id}}]" :default="$property->colorData" id="property_{{$property->id}}" /> --}}
 
