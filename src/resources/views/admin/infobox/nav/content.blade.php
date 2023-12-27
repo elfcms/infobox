@@ -18,30 +18,38 @@
             <a class="infobox-nav-up" href="{{ route('admin.infobox.nav',['infobox'=>$infobox]) }}">..</a>
         @endif
         @if ($category->categories)
+        <div class="infobox-nav-categories infobox-nav-dnd-area infobox-nav-dnd-area-cat" data-container="category">
             @foreach ($category->categories as $cat)
-                @include('elfcms::admin.infobox.nav.partials.category',['items'=>$cat->items])
+                @include('elfcms::admin.infobox.nav.partials.category-line',['items'=>$cat->items])
             @endforeach
+        </div>
         @endif
         @if ($category->items)
-            @foreach ($category->items as $item)
-                @include('elfcms::admin.infobox.nav.partials.item')
+        <div class="infobox-nav-items infobox-nav-dnd-area infobox-nav-dnd-area-item" data-container="item">
+            @foreach ($category->items()->position()->get() as $item)
+                @include('elfcms::admin.infobox.nav.partials.item-line')
             @endforeach
+        </div>
         @endif
     @else
         @if (!empty($infobox->topCategories))
+        <div class="infobox-nav-categories infobox-nav-dnd-area infobox-nav-dnd-area-cat" data-container="category">
             @foreach ($infobox->topCategories as $cat)
-                @include('elfcms::admin.infobox.nav.partials.category',['items'=>$cat->items])
+                @include('elfcms::admin.infobox.nav.partials.category-line',['items'=>$cat->items])
             @endforeach
+        </div>
         @endif
         @if (!empty($infobox->items))
-            @foreach ($infobox->topItems as $item)
-                @include('elfcms::admin.infobox.nav.partials.item')
+        <div class="infobox-nav-items infobox-nav-dnd-area infobox-nav-dnd-area-item" data-container="item">
+            @foreach ($infobox->topItems()->position()->get() as $item)
+                @include('elfcms::admin.infobox.nav.partials.item-line')
             @endforeach
+        </div>
         @endif
     @endif
 </div>
 @else
-<div class="infobox-nav-content" {{-- data-text="{{ __('infobox::default.nothing_selected') }}" --}}>
+<div class="infobox-nav-content">
     <div class="infobox-nav-dnd-area infobox-nav-dnd-area-ib">
     @forelse ($infoboxes as $ib)
         @include('elfcms::admin.infobox.nav.partials.infobox')

@@ -30,7 +30,11 @@ lineContainers.forEach(container => {
     container.addEventListener('dragover', e => {
         e.preventDefault();
         const afterElement = getDragAfterItem(container, e.clientY);
-        if (draggedItem) container.insertBefore(draggedItem, afterElement);
+        if (draggedItem) {
+            if (container.dataset.container == draggedItem.dataset.line) {
+                container.insertBefore(draggedItem, afterElement);
+            }
+        }
     });
 });
 
@@ -119,12 +123,13 @@ function itemPositionSuccess(type) {
     if (isChanged) {
         const data = JSON.stringify({
             //formId,
-            lines: linesData
+            lines: linesData,
+            //type
         });
         const token = document.querySelector("input[name='_token']").value;
         console.log(linesData);
         //console.log(11, token);
-        /* fetch('/elfcms/api/form/' + formId + '/lineorder',{
+        fetch('/elfcms/api/infobox/' + type + '/lineorder',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -136,9 +141,12 @@ function itemPositionSuccess(type) {
             body: data
         }).then(
             (result) => result.json()
-        ).catch(error => {
+        ).then(data => {
+            console.log(data)
+        })
+        .catch(error => {
             //
-        }); */
+        });
     }
     else {
         console.log('--');

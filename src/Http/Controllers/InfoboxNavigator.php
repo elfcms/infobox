@@ -13,28 +13,6 @@ class InfoboxNavigator extends Controller
     public function index(Request $request)
     {
 
-        //dd(Session::get('categoryresult'));
-        //dd($request->session());
-        //dd(Session::get('errors')->getBags()['default']);
-        //dd($request->session()->get('errors')->getBags()['default']->toArray());
-
-        /* $trend = 'asc';
-        $order = 'id';
-        if (!empty($request->trend) && $request->trend == 'desc') {
-            $trend = 'desc';
-        }
-        if (!empty($request->order)) {
-            $order = $request->order;
-        }
-        $search = $request->search ?? '';
-        if (!empty($search)) {
-            $infoboxes = Infobox::where('title','like',"%{$search}%")->orderBy($order, $trend)->paginate(30);
-
-        }
-        else {
-            $infoboxes = Infobox::orderBy($order, $trend)->paginate(30);
-
-        } */
         $message = null;
 
         if ($request->session()->has('categoryresult')) {
@@ -77,21 +55,6 @@ class InfoboxNavigator extends Controller
         else {
             $categories = $infobox->topCategories ?? [];
         }
-
-        /* $c = InfoboxCategory::find(6);
-
-        dd($c->parentsId()); */
-
-        //dd(InfoboxCategory::where('infobox_id', $infobox->id)->get()[0]->subtree());
-        //dd(InfoboxCategory::flat()->where('infobox_id', $infobox->id));
-        //dd($infobox->categories[0]->categories);
-        //dd($infobox->topCategories);
-
-        /* $pageTitle = __('infobox::default.infobox') . ': ' . $infobox->title;
-
-        if ($category) {
-            $pageTitle .= ' | ' . __('infobox::default.category') . ': ' . $category->title . ' sdfdsgdfsgsdf sdg sdfgsdf sdf gsfdgfdg';
-        } */
 
         return view('elfcms::admin.infobox.nav.index',[
             'page' => [

@@ -266,6 +266,10 @@ select option.hidden {
     color: #425870;
 }
 
+.infobox-nav-categories {
+    margin-bottom: 15px;
+}
+
 .infobox-nav-category {
     padding: 5px 8px;
     width: 100%;
@@ -302,6 +306,17 @@ select option.hidden {
 }
 .infobox-nav-category summary::marker {
     color: currentColor;
+}
+
+.infobox-nav-el .infobox-line-position {
+    background-color: var(--main-success-color);
+}
+
+.infobox-nav-list-none {
+    text-align: center;
+    padding: 10px 0;
+    font-size: .9em;
+    color: var(--main-text-light-color);
 }
 
 .infobox-nav-item {

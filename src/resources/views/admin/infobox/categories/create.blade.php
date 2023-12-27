@@ -66,13 +66,13 @@
                 <div class="input-box colored">
                     <label for="title">{{ __('elfcms::default.title') }}</label>
                     <div class="input-wrapper">
-                        <input type="text" name="title" id="title" autocomplete="off">
+                        <input type="text" name="title" id="title">
                     </div>
                 </div>
                 <div class="input-box colored">
                     <label for="slug">{{ __('elfcms::default.slug') }}</label>
                     <div class="input-wrapper">
-                        <input type="text" name="slug" id="slug" autocomplete="off">
+                        <input type="text" name="slug" id="slug">
                     </div>
                     <div class="input-wrapper">
                         <div class="autoslug-wrapper">
@@ -87,52 +87,12 @@
                         <textarea name="description" id="description" cols="30" rows="10"></textarea>
                     </div>
                 </div>
-                {{-- <div class="input-box colored">
-                    <label for="preview">{{ __('elfcms::default.preview') }}</label>
+                <div class="input-box colored">
+                    <label for="position">{{ __('elfcms::default.position') }}</label>
                     <div class="input-wrapper">
-                        <input type="hidden" name="preview_path" id="preview_path">
-                        <div class="image-button">
-                            <div class="delete-image hidden">&#215;</div>
-                            <div class="image-button-img">
-                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                            </div>
-                            <div class="image-button-text">
-                                {{ __('elfcms::default.choose_file') }}
-                            </div>
-                            <input type="file" name="preview" id="preview">
-                        </div>
+                        <input type="number" name="position" id="position">
                     </div>
                 </div>
-                <div class="input-box colored">
-                    <label for="image">{{ __('elfcms::default.image') }}</label>
-                    <div class="input-wrapper">
-                        <input type="hidden" name="image_path" id="image_path">
-                        <div class="image-button">
-                            <div class="delete-image hidden">&#215;</div>
-                            <div class="image-button-img">
-                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                            </div>
-                            <div class="image-button-text">
-                                {{ __('elfcms::default.choose_file') }}
-                            </div>
-                            <input type="file" name="image" id="image">
-                        </div>
-                    </div>
-                </div>
-                <div class="input-box colored">
-                    <label for="public_time">{{ __('elfcms::default.public_time') }}</label>
-                    <div class="input-wrapper">
-                        <input type="date" name="public_time[]" id="public_time" autocomplete="off">
-                        <input type="time" name="public_time[]" id="public_time_time" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-box colored">
-                    <label for="end_time">{{ __('elfcms::default.end_time') }}</label>
-                    <div class="input-wrapper">
-                        <input type="date" name="end_time[]" id="end_time" autocomplete="off">
-                        <input type="time" name="end_time[]" id="end_time_time" autocomplete="off">
-                    </div>
-                </div> --}}
                 <div class="input-box colored">
                     <label for="meta_keywords">{{ __('elfcms::default.meta_keywords') }}</label>
                     <div class="input-wrapper">

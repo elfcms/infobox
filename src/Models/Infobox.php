@@ -67,7 +67,7 @@ class Infobox extends Model
 
     public function topCategories ()
     {
-        return $this->hasMany(InfoboxCategory::class, 'infobox_id')->where('parent_id',null);
+        return $this->hasMany(InfoboxCategory::class, 'infobox_id')->where('parent_id',null)->orderBy('position');
     }
 
     public function categoryProperties ()

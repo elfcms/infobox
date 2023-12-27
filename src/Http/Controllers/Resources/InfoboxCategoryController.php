@@ -150,7 +150,7 @@ class InfoboxCategoryController extends Controller
 
         $category = InfoboxCategory::create($validated);
 
-        return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('shop::elf.category_created_successfully'));
+        return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('elfcms::default.category_created_successfully'));
     }
 
     /**
@@ -225,7 +225,7 @@ class InfoboxCategoryController extends Controller
 
             $category->save();
 
-            return redirect(route('admin.infobox.categories'))->with('categoryresult',__('shop::elf.category_edited_successfully'));
+            return redirect(route('admin.infobox.categories'))->with('categoryresult',__('elfcms::default.category_edited_successfully'));
         }
         else {
             $request->merge([

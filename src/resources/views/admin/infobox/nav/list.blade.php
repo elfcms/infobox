@@ -11,7 +11,7 @@
             @include('elfcms::admin.infobox.nav.partials.detail',['open' => $ib == $infobox ? 'open' : ''])
         {{-- @endforeach --}}
         @empty
-            {{ __('infobox::default.no_categories') }}
+            <div class="infobox-nav-list-none">{{ __('infobox::default.no_categories') }}</div>
         @endforelse
 
     {{-- @endif --}}

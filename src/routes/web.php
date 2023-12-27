@@ -41,7 +41,7 @@ Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
         Route::name('ajax.')->group(function() {
 
             Route::name('infobox.')->group(function() {
-                Route::post('/elfcms/api/infobox/{type}/lineorder', [Elfcms\Infobox\Http\Controllers\Ajax\InfoboxController::class, 'fieldOrder']);
+                Route::post('/elfcms/api/infobox/{type}/lineorder', [Elfcms\Infobox\Http\Controllers\Ajax\InfoboxController::class, 'lineOrder']);
 
                 Route::name('property.')->group(function() {
                     Route::name('item.')->group(function() {

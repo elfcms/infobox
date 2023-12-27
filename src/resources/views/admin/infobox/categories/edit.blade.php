@@ -90,68 +90,12 @@
                         <textarea name="description" id="description" cols="30" rows="10">{{ $category->description }}</textarea>
                     </div>
                 </div>
-                {{-- <div class="input-box colored">
-                    <label for="preview">{{ __('elfcms::default.preview') }}</label>
+                <div class="input-box colored">
+                    <label for="position">{{ __('elfcms::default.position') }}</label>
                     <div class="input-wrapper">
-                        <input type="hidden" name="preview_path" id="preview_path" value="{{$category->preview}}">
-                        <div class="image-button">
-                            <div class="delete-image @if (empty($category->preview)) hidden @endif">&#215;</div>
-                            <div class="image-button-img">
-                            @if (!empty($category->image))
-                                <img src="{{ asset($category->preview) }}" alt="Preview">
-                            @else
-                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                            @endif
-                            </div>
-                            <div class="image-button-text">
-                            @if (!empty($category->image))
-                                {{ __('elfcms::default.change_file') }}
-                            @else
-                                {{ __('elfcms::default.choose_file') }}
-                            @endif
-                            </div>
-                            <input type="file" name="preview" id="preview">
-                        </div>
+                        <input type="number" name="position" id="position" value="{{ $category->position }}">
                     </div>
                 </div>
-                <div class="input-box colored">
-                    <label for="image">{{ __('elfcms::default.image') }}</label>
-                    <div class="input-wrapper">
-                        <input type="hidden" name="image_path" id="image_path" value="{{$category->image}}">
-                        <div class="image-button">
-                            <div class="delete-image @if (empty($category->image)) hidden @endif">&#215;</div>
-                            <div class="image-button-img">
-                            @if (!empty($category->image))
-                                <img src="{{ asset($category->image) }}" alt="Image">
-                            @else
-                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                            @endif
-                            </div>
-                            <div class="image-button-text">
-                            @if (!empty($category->image))
-                                {{ __('elfcms::default.change_file') }}
-                            @else
-                                {{ __('elfcms::default.choose_file') }}
-                            @endif
-                            </div>
-                            <input type="file" name="image" id="image">
-                        </div>
-                    </div>
-                </div>
-                <div class="input-box colored">
-                    <label for="public_time">{{ __('elfcms::default.public_time') }}</label>
-                    <div class="input-wrapper">
-                        <input type="date" name="public_time[]" id="public_time" autocomplete="off" value="{{ $category->public_time }}">
-                        <input type="time" name="public_time[]" id="public_time_time" autocomplete="off" value="{{ $category->public_time_time }}">
-                    </div>
-                </div>
-                <div class="input-box colored">
-                    <label for="end_time">{{ __('elfcms::default.end_time') }}</label>
-                    <div class="input-wrapper">
-                        <input type="date" name="end_time[]" id="end_time" autocomplete="off" value="{{ $category->end_time }}">
-                        <input type="time" name="end_time[]" id="end_time_time" autocomplete="off" value="{{ $category->end_time_time }}">
-                    </div>
-                </div> --}}
                 <div class="input-box colored">
                     <label for="meta_keywords">{{ __('elfcms::default.meta_keywords') }}</label>
                     <div class="input-wrapper">
@@ -180,7 +124,7 @@
                         </script>
                         @elseif ($property->data_type->code == 'list')
                         <select name="property[{{$property->id}}]" id="property_{{$property->id}}" @if($property->multiple) multiple @endif>
-                            <option value="">{{ __('shop::elf.none') }}</option>
+                            <option value="">{{ __('elfcms::default.none') }}</option>
                             @if (!empty($property->options))
                             @foreach ($property->options as $value => $text)
                             <option value="{{$value}}"

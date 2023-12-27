@@ -140,7 +140,7 @@
                         </script>
                         @elseif ($property->data_type->code == 'list')
                         <select name="property[{{$property->id}}]" id="property_{{$property->id}}" @if($property->multiple) multiple @endif>
-                            <option value="">{{ __('shop::elf.none') }}</option>
+                            <option value="">{{ __('elfcms::default.none') }}</option>
                             @if (!empty($property->options))
                             @foreach ($property->options as $value => $text)
                             <option value="{{$value}}"

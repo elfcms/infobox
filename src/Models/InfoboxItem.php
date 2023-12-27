@@ -47,6 +47,11 @@ class InfoboxItem extends Model
         return $query->where('active',1);
     }
 
+    public function scopePosition($query)
+    {
+        return $query->orderBy('position');
+    }
+
     public function category ()
     {
         return $this->belongsTo(InfoboxCategory::class, 'category_id');

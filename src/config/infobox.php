@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '0.2',
+    'version' => '1.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'basic_package' => '1.4.3',
+    'elfcms_package' => '1.1',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,28 +40,6 @@ return [
             "parent_route" => "admin.infobox",
             "icon" => "/vendor/elfcms/infobox/admin/images/icons/box.png",
             "position" => 100,
-            "submenu" => [
-                [
-                    "title" => "Navigation",
-                    "lang_title" => "infobox::default.navigation",
-                    "route" => "admin.infobox.nav"
-                ],
-                [
-                    "title" => "Infoboxes",
-                    "lang_title" => "infobox::default.infoboxes",
-                    "route" => "admin.infobox.infoboxes"
-                ],
-                [
-                    "title" => "Categories",
-                    "lang_title" => "infobox::default.categories",
-                    "route" => "admin.infobox.categories"
-                ],
-                [
-                    "title" => "Items",
-                    "lang_title" => "infobox::default.items",
-                    "route" => "admin.infobox.items"
-                ],
-            ]
         ],
     ],
 
