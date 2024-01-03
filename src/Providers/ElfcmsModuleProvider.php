@@ -56,7 +56,7 @@ class ElfcmsModuleProvider extends ServiceProvider
         ],'lang');
 
         $this->publishes([
-            $moduleDir.'/config/elfcms.php' => config_path('elfcms/infobox.php'),
+            $moduleDir.'/config/infobox.php' => config_path('elfcms/infobox.php'),
         ],'config');
 
         $this->publishes([
