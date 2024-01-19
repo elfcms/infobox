@@ -61,20 +61,10 @@ function itemPositionSuccess(type) {
 
     const preLines = Object.assign({}, linesData);
 
-    /* if (formGroups == undefined) {
-        const formGroups = document.querySelector('.form-groups');
-    }
-
-    if (!lineContainers || !formGroups || !formGroups.dataset.form) return false;
-
-    let formId = formGroups.dataset.form;
-    let groupId = null; */
     let changeCount = 0;
 
     lineContainers.forEach(box => {
 
-
-        //groupId = box.dataset.id ?? null;
         const boxLines = box.querySelectorAll('.infobox-nav-line');
         let position = 1;
         if (boxLines) {
@@ -108,7 +98,7 @@ function itemPositionSuccess(type) {
                     }
                     position++;
                 }
-                console.log(position);
+
             });
         }
     });
@@ -122,13 +112,10 @@ function itemPositionSuccess(type) {
 
     if (isChanged) {
         const data = JSON.stringify({
-            //formId,
             lines: linesData,
-            //type
         });
         const token = document.querySelector("input[name='_token']").value;
-        console.log(linesData);
-        //console.log(11, token);
+
         fetch('/elfcms/api/infobox/' + type + '/lineorder',{
             method: 'POST',
             headers: {
@@ -142,14 +129,11 @@ function itemPositionSuccess(type) {
         }).then(
             (result) => result.json()
         ).then(data => {
-            console.log(data)
+            //
         })
         .catch(error => {
             //
         });
-    }
-    else {
-        console.log('--');
     }
 
 }

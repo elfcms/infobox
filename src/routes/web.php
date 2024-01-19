@@ -8,7 +8,7 @@ $adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
 
 Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
 
-    Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
+    Route::name('admin.')->middleware(['admin','access'])->group(function() use ($adminPath) {
 
         Route::name('infobox.')->group(function() use ($adminPath) {
             Route::get($adminPath . '/infobox/nav/{infobox?}/{category?}', [\Elfcms\Infobox\Http\Controllers\InfoboxNavigator::class, 'index'])->name('nav');
