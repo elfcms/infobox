@@ -328,7 +328,7 @@ class InfoboxItemController extends Controller
                             [$property->data_type->code . '_value' => 0]
                         );
                     }
-                    elseif ($property->data_type->code == 'list') {
+                    elseif ($property->data_type->code == 'list' || $property->data_type->code == 'file') {
                         $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
                             ['item_id' => $item->id, 'property_id' => $property->id],
                             [$property->data_type->code . '_value' => null]
@@ -372,14 +372,19 @@ class InfoboxItemController extends Controller
                         [$property->data_type->code . '_value' => $paramValue]
                     );
                 }
+
                 if (!empty($request->file()['property']) && !empty($request->file()['property'][$property->id])) {
                     $paramValue = $request->file()['property'][$property->id];
                     if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
                         continue;
                     }
-                    $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
-                    $file_path = $request->property[$property->id]['path'];
-                    $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/item/' . $property->data_type->code . 's');
+                    if (is_array($paramValue)) {
+                        $paramValue = $paramValue[$property->data_type->code];
+                    }
+                    $originalName = $paramValue->getClientOriginalName();
+                    $file_path = null;
+                    if (is_array($request->property[$property->id])) $file_path = $request->property[$property->id]['path'];
+                    $file = $paramValue->store('public/infobox/properties/item/' . $property->data_type->code . 's');
                     $file_path = str_ireplace('public/','/storage/',$file);
                     FileCatalog::set($file_path,$originalName);
                     $propertyValue = InfoboxItemPropertyValue::updateOrCreate(

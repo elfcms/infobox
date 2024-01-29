@@ -23,22 +23,7 @@
             <div class="colored-rows-box">
                 <input type="hidden" name="id" id="id" value="{{ $item->id }}">
                 <div class="input-box colored">
-                    <div class="checkbox-wrapper">
-                        <div class="checkbox-inner">
-                            <input
-                                type="checkbox"
-                                name="active"
-                                id="active"
-                                @if ($item->active == 1)
-                                checked
-                                @endif
-                            >
-                            <i></i>
-                            <label for="active">
-                                {{ __('elfcms::default.active') }}
-                            </label>
-                        </div>
-                    </div>
+                    <x-elfcms-input-checkbox code="active" label="{{ __('elfcms::default.active') }}" style="blue" :checked="$item->active" />
                 </div>
                 <div class="input-box colored">
                     <label>{{ __('infobox::default.infobox') }} "{{ $item->infobox->title }}"</label>
@@ -131,7 +116,7 @@
                 <h4> {{ __('infobox::default.properties') }} </h4>
                 @foreach ($properties as $property)
                 <div class="input-box colored">
-                    <label for="property_{{$property->id}}">{{ $property->name }}</label>
+                    <label>{{ $property->name }}</label>
                     <div class="input-wrapper">
                         @if ($property->data_type->code == 'text' || $property->data_type->code == 'json')
                         <textarea name="property[{{$property->id}}]" id="property_{{$property->id}}">{{ $property->value }}</textarea>
@@ -151,34 +136,9 @@
                             @endif
                         </select>
                         @elseif ($property->data_type->code == 'image')
-                        <input type="hidden" name="property[{{$property->id}}][path]" id="property_{{$property->id}}_path" value="{{ $property->value }}">
-                        <div class="image-button">
-                            <div class="delete-image @if (empty($property->value)) hidden @endif">&#215;</div>
-                            <div class="image-button-img">
-                            @if (!empty($property->value))
-                                <img src="{{ asset($property->value) }}" alt="Image">
-                            @else
-                                <img src="{{ asset('/vendor/elfcms/shop/admin/images/icons/upload.png') }}" alt="Upload file">
-                            @endif
-                            </div>
-                            <div class="image-button-text">
-                            @if (!empty($property->value))
-                                {{ __('elfcms::default.change_file') }}
-                            @else
-                                {{ __('elfcms::default.choose_file') }}
-                            @endif
-                            </div>
-                            <input type="file" name="property[{{$property->id}}][image]" id="property_{{$property->id}}_image">
-                        </div>
+                        <x-elfcms-input-image-alt inputName="property[{{$property->id}}][image]" valueName="property[{{$property->id}}][path]" valueId="property_{{$property->id}}_path" value="{{$property->value}}" download="1" />
                         @elseif ($property->data_type->code == 'file')
-                        <x-elfcms::anonymous.button.file name="property[{{$property->id}}]" value="{{ $property->value }}" id="property_{{$property->id}}" />
-                        {{-- @elseif ($property->data_type->code == 'color')
-                        <x-shop::anonymous.picker.color :list="$colors" name="property[{{$property->id}}]" :default="$property->colorData" id="property_{{$property->id}}" /> --}}
-
-                        {{-- @elseif ($property->data_type->code == 'string')
-                        <input type="text" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}">
-                        @elseif ($property->data_type->code == 'int')
-                        <input type="number" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}" step="1"> --}}
+                        <x-elfcms-input-file code="property[{{$property->id}}]" value="{{$property->value}}" download="1" />
                         @elseif ($property->data_type->code == 'bool')
                         <input type="checkbox" name="property[{{$property->id}}]" id="property_{{$property->id}}" @if ($property->value == 1) checked @endif value="1">
                         @else
@@ -195,14 +155,6 @@
         </form>
     </div>
     <script>
-    /* const imageInput = document.querySelector('#image')
-    if (imageInput) {
-        inputFileImg(imageInput)
-    }
-    const previewInput = document.querySelector('#preview')
-    if (previewInput) {
-        inputFileImg(previewInput)
-    } */
     autoSlug('.autoslug')
 
     tagFormInit()
