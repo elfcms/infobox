@@ -135,40 +135,9 @@
                             @endif
                         </select>
                         @elseif ($property->data_type->code == 'image')
-                        <input type="hidden" name="property[{{$property->id}}][path]" id="property_{{$property->id}}_path" value="{{ $property->value }}">
-                        <div class="image-button">
-                            <div class="delete-image @if (empty($property->value)) hidden @endif">&#215;</div>
-                            <div class="image-button-img">
-                            @if (!empty($property->value))
-                                <img src="{{ asset($property->value) }}" alt="Image">
-                            @else
-                                <img src="{{ asset('/vendor/elfcms/shop/admin/images/icons/upload.png') }}" alt="Upload file">
-                            @endif
-                            </div>
-                            <div class="image-button-text">
-                            @if (!empty($property->value))
-                                {{ __('elfcms::default.change_file') }}
-                            @else
-                                {{ __('elfcms::default.choose_file') }}
-                            @endif
-                            </div>
-                            <input type="file" name="property[{{$property->id}}][image]" id="property_{{$property->id}}_image">
-                        </div>
-                        <script>
-                            const imageInput{{$property->id}} = document.querySelector('#property_{{$property->id}}_path')
-                            if (imageInput{{$property->id}}) {
-                                inputFileImg(imageInput{{$property->id}})
-                            }
-                        </script>
+                        <x-elfcms-input-image-alt inputName="property[{{$property->id}}][image]" valueName="property[{{$property->id}}][path]" valueId="property_{{$property->id}}_path" value="{{$property->value}}" download="1" />
                         @elseif ($property->data_type->code == 'file')
                         <x-elfcms::anonymous.button.file name="property[{{$property->id}}]" value="{{ $property->value }}" id="property_{{$property->id}}" />
-                        {{-- @elseif ($property->data_type->code == 'color')
-                        <x-shop::anonymous.picker.color :list="$colors" name="property[{{$property->id}}]" :default="$property->colorData" id="property_{{$property->id}}" /> --}}
-
-                        {{-- @elseif ($property->data_type->code == 'string')
-                        <input type="text" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}">
-                        @elseif ($property->data_type->code == 'int')
-                        <input type="number" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->product_values($product->id) }}" step="1"> --}}
                         @elseif ($property->data_type->code == 'bool')
                         <input type="checkbox" name="property[{{$property->id}}]" id="property_{{$property->id}}" @if ($property->value == 1) checked @endif value="1">
                         @else
@@ -185,14 +154,6 @@
         </form>
     </div>
     <script>
-    /* const imageInput = document.querySelector('#image')
-    if (imageInput) {
-        inputFileImg(imageInput)
-    }
-    const previewInput = document.querySelector('#preview')
-    if (previewInput) {
-        inputFileImg(previewInput)
-    } */
 
     autoSlug('.autoslug')
     //add editor
