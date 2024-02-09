@@ -39,7 +39,7 @@ return [
             "route" => "admin.infobox.nav",
             "parent_route" => "admin.infobox",
             "icon" => "/vendor/elfcms/infobox/admin/images/icons/box.png",
-            "position" => 100,
+            "position" => 200,
         ],
     ],
 
