@@ -299,7 +299,7 @@ select option.hidden {
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/folder.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/folder.png);
 }
 .infobox-nav-category summary a {
     color: currentColor;
@@ -345,7 +345,7 @@ select option.hidden {
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/file_dark.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/file_dark.png);
     margin-top: 4px;
 }
 .infobox-nav-item a {
@@ -366,7 +366,7 @@ select option.hidden {
     display: inline-block;
     width: 20px;
     height: 17px;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/folder_back.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/folder_back.png);
     margin-right: 5px;
 }
 
@@ -400,23 +400,23 @@ select option.hidden {
 }
 .infobox-nav-button.add-item {
     background-color: #074ca5;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/add_file_white.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/add_file_white.png);
 }
 .infobox-nav-button.add-category {
     background-color: #074ca5;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/add_folder_white.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/add_folder_white.png);
 }
 .infobox-nav-button.add-category {
     background-color: #074ca5;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/add_folder_white.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/add_folder_white.png);
 }
 .infobox-nav-button.edit {
     background-color: #608822;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/edit_white.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/edit_white.png);
 }
 .infobox-nav-button.delete {
     background-color: #ff6347;
-    background-image: url(/vendor/elfcms/infobox/admin/images/icons/nav/delete_white.png);
+    background-image: url(/elfcms/admin/modules/infobox/images/icons/nav/delete_white.png);
 }
 
 .infobox-nav-dnd-area {

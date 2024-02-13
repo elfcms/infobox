@@ -38,7 +38,7 @@ return [
             "lang_title" => "infobox::default.infobox",
             "route" => "admin.infobox.nav",
             "parent_route" => "admin.infobox",
-            "icon" => "/vendor/elfcms/infobox/admin/images/icons/box.png",
+            "icon" => "/elfcms/admin/modules/infobox/images/icons/box.png",
             "position" => 200,
         ],
     ],
