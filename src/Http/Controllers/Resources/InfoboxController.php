@@ -172,9 +172,9 @@ class InfoboxController extends Controller
     public function destroy(Infobox $infobox)
     {
         if (!$infobox->delete()) {
-            return redirect(route('admin.infobox.infoboxes'))->withErrors(['deleteerror'=>__('infobox::default.error_of_infobox_deleting')]);
+            return redirect()->back()->withErrors(['deleteerror'=>__('infobox::default.error_of_infobox_deleting')]);
         }
 
-        return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::default.infobox_deleted_successfully'));
+        return redirect()->back()->with('infoboxresult',__('infobox::default.infobox_deleted_successfully'));
     }
 }
