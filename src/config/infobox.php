@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '1.2.1',
+    'version' => '1.2.2',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'elfcms_package' => '1.2.1',
+    'elfcms_package' => '1.7.2',
 
     /*
     |--------------------------------------------------------------------------
@@ -44,10 +44,10 @@ return [
     ],
 
     'components' => [
-        'box' => [
-            'class' => '\Elfcms\Infobox\View\Components\Box',
+        'infobox' => [
+            'class' => '\Elfcms\Infobox\View\Components\Infobox',
             'options' => [
-                'item' => false,
+                'infobox' => false,
                 'theme' => 'default',
             ],
         ],

@@ -8,6 +8,7 @@ use Elfcms\Elfcms\Http\Middleware\AdminUser;
 use Elfcms\Elfcms\Http\Middleware\CookieCheck;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -73,6 +74,8 @@ class ElfcmsModuleProvider extends ServiceProvider
         $this->publishes([
             $moduleDir.'/resources/views/emails' => resource_path('views/elfcms/emails'),
         ],'emails');
+
+        Blade::component('infobox-infobox', \Elfcms\Infobox\View\Components\Infobox::class);
 
         /* $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'infobox');

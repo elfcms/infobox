@@ -2,28 +2,29 @@
 
 namespace Elfcms\Infobox\View\Components;
 
-use Elfcms\Infobox\Models\InfoboxItem;
+use Elfcms\Infobox\Models\Infobox as ModelsInfobox;
+use Illuminate\Support\Facades\View;
 use Illuminate\View\Component;
 
 class Infobox extends Component
 {
-    public $item, $theme;
+    public $infobox, $theme;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($item, $theme='default')
+    public function __construct($infobox, $theme='default')
     {
-        if (is_numeric($item)) {
-            $item = intval($item);
-            $item = InfoboxItem::with('options')->find($item);
+        if (is_numeric($infobox)) {
+            $infobox = intval($infobox);
+            $infobox = ModelsInfobox::with('items')->find($infobox);
         }
-        elseif (gettype($item) == 'string') {
-            $item = InfoboxItem::where('code',$item)->with('options')->first();
+        elseif (gettype($infobox) == 'string') {
+            $infobox = ModelsInfobox::where('slug',$infobox)->with('categories')->with('items')->first();
         }
-        $this->item = $item;
+        $this->infobox = $infobox;
         $this->theme = $theme;
     }
 
@@ -34,6 +35,30 @@ class Infobox extends Component
      */
     public function render()
     {
-        return view('infobox::components.box.'.$this->theme);
+        if (View::exists('components.infobox.' . $this->theme)) {
+            return view('components.infobox.' . $this->theme);
+        }
+        if (View::exists('infobox.components.infobox.' . $this->theme)) {
+            return view('infobox.components.infobox.' . $this->theme);
+        }
+        if (View::exists('infobox::components.infobox.' . $this->theme)) {
+            return view('infobox::components.infobox.' . $this->theme);
+        }
+        if (View::exists('elfcms.components.infobox.' . $this->theme)) {
+            return view('elfcms.components.infobox.' . $this->theme);
+        }
+        if (View::exists('elfcms.infobox.components.infobox.' . $this->theme)) {
+            return view('elfcms.infobox.components.infobox.' . $this->theme);
+        }
+        if (View::exists('elfcms.modules.infobox.components.infobox.' . $this->theme)) {
+            return view('elfcms.modules.infobox.components.infobox.' . $this->theme);
+        }
+        if (View::exists('elfcms::infobox.components.infobox.' . $this->theme)) {
+            return view('elfcms::infobox.components.infobox.' . $this->theme);
+        }
+        if (View::exists($this->theme)) {
+            return view($this->theme);
+        }
+        return null;
     }
 }
