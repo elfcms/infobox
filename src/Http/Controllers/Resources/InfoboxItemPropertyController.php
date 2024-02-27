@@ -19,7 +19,8 @@ class InfoboxItemPropertyController extends Controller
     public function index(Infobox $infobox)
     {
         $dataTypes = DataType::all();
-        $properties = InfoboxItemProperty::all();
+        //$properties = InfoboxItemProperty::all();
+        $properties = $infobox->itemProperties;
         return view('elfcms::admin.infobox.properties.index',[
             'page' => [
                 'title' => __('infobox::default.item_properties'),

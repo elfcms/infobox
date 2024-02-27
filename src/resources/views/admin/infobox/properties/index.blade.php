@@ -15,7 +15,7 @@
         </ul>
     </div>
     @endif
-<form name="propertyform" class="data-table-box" method="post" action="{{ route('admin.ajax.infobox.property.'.$type.'.fullsave') }}">
+<form name="propertyform" class="data-table-box" method="post" action="{{ route('admin.ajax.infobox.property.'.$type.'.fullsave',$infobox) }}">
     @csrf
     <input type="hidden" name="infobox_id" value="{{ $infobox->id }}">
     <div class="widetable-wrapper">

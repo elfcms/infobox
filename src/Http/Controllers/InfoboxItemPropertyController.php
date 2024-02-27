@@ -4,8 +4,10 @@ namespace Elfcms\Infobox\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Elfcms\Models\DataType;
+use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxItemProperty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class InfoboxItemPropertyController extends Controller
@@ -17,10 +19,11 @@ class InfoboxItemPropertyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function list(Request  $request, $byId = false)
+    public function list(Request  $request, Infobox $infobox, $byId = false)
     {
         $dataTypes = DataType::all();
-        $properties = InfoboxItemProperty::all();
+        //$properties = InfoboxItemProperty::all();
+        $properties = $infobox->itemProperties;
         if ($request->ajax()) {
             $propertyData = $properties->toArray();
             if ($byId) {
@@ -84,7 +87,7 @@ class InfoboxItemPropertyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function save(Request  $request)
+    public function save(Request  $request, Infobox $infobox)
     {
         $result = [
             'result' => 'error',
@@ -200,7 +203,8 @@ class InfoboxItemPropertyController extends Controller
             }
         }
 
-        $properties = InfoboxItemProperty::all();
+
+        $properties = InfoboxItemProperty::where('infobox_id',$request->infobox_id)->get() ?? InfoboxItemProperty::all();
         $dataTypes = DataType::all();
         $view = view(
             'elfcms::admin.infobox.properties.content.list',

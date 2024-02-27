@@ -62,6 +62,7 @@ class InfoboxCategoryController extends Controller
     public function create(Request $request)
     {
         $category_id = null;
+        $curentCategory = null;
         $categories = InfoboxCategory::all();
         $infoboxes = Infobox::active()->get();
         $currentInfobox = Infobox::where('id',$request->infobox)->orWhere('slug',$request->infobox)->first();
@@ -86,6 +87,7 @@ class InfoboxCategoryController extends Controller
             'currentInfobox' => $currentInfobox,
             'firstInfobox' => $firstInfobox,
             'category_id' => $category_id,
+            'curentCategory' => $curentCategory,
         ]);
     }
 
@@ -149,6 +151,10 @@ class InfoboxCategoryController extends Controller
         $validated['meta_description'] = $request->meta_description;
 
         $category = InfoboxCategory::create($validated);
+
+        if ($request->input('submit') == 'save_and_close') {
+            return redirect(route('admin.infobox.nav',['infobox'=>$category->infobox,'category'=>$category->parent]))->with('success',__('infobox::default.category_created_successfully'));
+        }
 
         return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('elfcms::default.category_created_successfully'));
     }
@@ -362,6 +368,10 @@ class InfoboxCategoryController extends Controller
                 }
             }
             /* /Properties */
+
+            if ($request->input('submit') == 'save_and_close') {
+                return redirect(route('admin.infobox.nav',['infobox'=>$category->infobox,'category'=>$category->parent]))->with('success',__('infobox::default.category_edited_successfully'));
+            }
 
             return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('infobox::default.category_edited_successfully'));
         }

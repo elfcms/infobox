@@ -201,7 +201,7 @@ class InfoboxCategoryPropertyController extends Controller
             }
         }
 
-        $properties = InfoboxCategoryProperty::all();
+        $properties = InfoboxCategoryProperty::where('infobox_id',$request->infobox_id)->get() ?? InfoboxCategoryProperty::all();
         $dataTypes = DataType::all();
         $view = view(
             'elfcms::admin.infobox.properties.content.list',

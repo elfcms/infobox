@@ -30,14 +30,6 @@ Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
             return $result;
         });
 
-        /* Route::get($adminPath . '/infobox/ajax/property/item/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'list'])->name('ajax.infobox.property.item.list');
-        Route::get($adminPath . '/infobox/ajax/property/item/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'emptyItem'])->name('ajax.infobox.property.item.empty-item');
-        Route::post($adminPath . '/infobox/ajax/property/item/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxItemPropertyController::class, 'save'])->name('ajax.infobox.property.item.fullsave');
-
-        Route::get($adminPath . '/infobox/ajax/property/category/list/{byId?}', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'list'])->name('ajax.infobox.property.category.list');
-        Route::get($adminPath . '/infobox/ajax/property/category/empty-property', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'emptyItem'])->name('ajax.infobox.property.category.empty-item');
-        Route::post($adminPath . '/infobox/ajax/property/category/fullsave', [\Elfcms\Infobox\Http\Controllers\InfoboxCategoryPropertyController::class, 'save'])->name('ajax.infobox.property.category.fullsave'); */
-
         Route::name('ajax.')->group(function() {
 
             Route::name('infobox.')->group(function() {
