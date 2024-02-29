@@ -78,8 +78,8 @@ class InfoboxController extends Controller
         ]);
 
         $validated['description'] = $request->description;
-        //$validated['meta_keywords'] = $request->meta_keywords;
-        //$validated['meta_description'] = $request->meta_description;
+        $validated['meta_keywords'] = $request->meta_keywords;
+        $validated['meta_description'] = $request->meta_description;
         $validated['active'] = empty($request->active) ? 0 : 1;
 
         $infobox = Infobox::create($validated);
@@ -144,7 +144,7 @@ class InfoboxController extends Controller
             $validated = $request->validate([
                 'title' => 'required',
             ]);
-            if (Infobox::where('slug',$request->slug)->where('id','<>',$infobox)->first()) {
+            if (Infobox::where('slug',$request->slug)->where('id','<>',$infobox->id)->first()) {
                 return redirect(route('admin.infobox.infoboxes.edit',$infobox))->withErrors([
                     'slug' => __('infobox::default.item_already_exists')
                 ]);
@@ -153,8 +153,8 @@ class InfoboxController extends Controller
             $infobox->title = $validated['title'];
             $infobox->slug = $request->slug;
             $infobox->description = $request->description;
-            //$infobox->meta_keywords = $request->meta_keywords;
-            //$infobox->meta_description = $request->meta_description;
+            $infobox->meta_keywords = $request->meta_keywords;
+            $infobox->meta_description = $request->meta_description;
             $infobox->active = empty($request->active) ? 0 : 1;
 
             $infobox->save();

@@ -65,16 +65,6 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label>
-                        <a href="{{ route('admin.infobox.properties.category.index',['infobox'=>$infobox]) }}">{{ __('infobox::default.category_properties') }}</a>
-                    </label>
-                </div>
-                <div class="input-box colored">
-                    <label>
-                        <a href="{{ route('admin.infobox.properties.item.index',['infobox'=>$infobox]) }}">{{ __('infobox::default.item_properties') }}</a>
-                    </label>
-                </div>
-                {{-- <div class="input-box colored">
                     <label for="meta_keywords">{{ __('elfcms::default.meta_keywords') }}</label>
                     <div class="input-wrapper">
                         <textarea name="meta_keywords" id="meta_keywords" cols="30" rows="2">{{ $infobox->meta_keywords }}</textarea>
@@ -85,7 +75,17 @@
                     <div class="input-wrapper">
                         <textarea name="meta_description" id="meta_description" cols="30" rows="2">{{ $infobox->meta_description }}</textarea>
                     </div>
-                </div> --}}
+                </div>
+                <div class="input-box colored">
+                    <label>
+                        <a href="{{ route('admin.infobox.properties.category.index',['infobox'=>$infobox]) }}">{{ __('infobox::default.category_properties') }}</a>
+                    </label>
+                </div>
+                <div class="input-box colored">
+                    <label>
+                        <a href="{{ route('admin.infobox.properties.item.index',['infobox'=>$infobox]) }}">{{ __('infobox::default.item_properties') }}</a>
+                    </label>
+                </div>
             </div>
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>

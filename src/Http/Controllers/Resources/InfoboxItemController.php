@@ -76,7 +76,13 @@ class InfoboxItemController extends Controller
                 }
             }
         }
-
+        $properties = new InfoboxItemProperty();
+        if ($currentInfobox && !empty($currentInfobox->id)) {
+            $properties = InfoboxItemProperty::where('infobox_id',$currentInfobox->id)->get();
+            foreach ($properties as $property) {
+                $property->value = $property->values($currentInfobox->id);
+            }
+        }
         return view('elfcms::admin.infobox.items.create',[
             'page' => [
                 'title' => __('infobox::default.create_item'),
@@ -88,6 +94,7 @@ class InfoboxItemController extends Controller
             'firstInfobox' => $firstInfobox,
             'category_id' => $category_id,
             'curentCategory' => $curentCategory,
+            'properties' => $properties,
         ]);
     }
 
@@ -155,6 +162,89 @@ class InfoboxItemController extends Controller
                 ];
                 $item->options()->create($optionData);
             }
+        }
+
+
+        if ($item) {
+
+            /* Properties */
+            if (!empty($request->property)) {
+                $properties = $item->infobox->itemProperties;
+                foreach($properties as $property) {
+                    if (empty($request->property[$property->id])) {
+                        if ($property->data_type->code == 'bool') {
+                            $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                                ['item_id' => $item->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => 0]
+                            );
+                        }
+                        elseif ($property->data_type->code == 'list' || $property->data_type->code == 'file') {
+                            $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                                ['item_id' => $item->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => null]
+                            );
+                        }
+                        continue;
+                    }
+
+                    if (!empty($request->property[$property->id])) {
+
+                        $paramValue = $request->property[$property->id];
+                        if (is_array($paramValue)) {
+                            if (!empty($request->file()['property'][$property->id]['file'])) {
+                                continue;
+                            }
+                            if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                                continue;
+                            }
+                            $paramValue = $paramValue['path'];
+                        }
+                        if ($property->data_type->code == 'list') {
+                            if (empty($paramValue)) {
+                                $paramValue = [];
+                            }
+                            if (!is_array($paramValue)) {
+                                $paramValue = [$paramValue];
+                            }
+                            $paramValue = json_encode($paramValue);
+                        }
+                        /* if ($property->data_type->code == 'color') {
+                            if ($paramValue == 0) {
+                                $paramValue = null;
+                            }
+                        } */
+                        if ($property->data_type->code == 'bool') {
+                            $paramValue = 1;
+                        }
+
+                        $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                            ['item_id' => $item->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $paramValue]
+                        );
+                    }
+
+                    if (!empty($request->file()['property']) && !empty($request->file()['property'][$property->id])) {
+                        $paramValue = $request->file()['property'][$property->id];
+                        if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                            continue;
+                        }
+                        if (is_array($paramValue)) {
+                            $paramValue = $paramValue[$property->data_type->code];
+                        }
+                        $originalName = $paramValue->getClientOriginalName();
+                        $file_path = null;
+                        if (is_array($request->property[$property->id])) $file_path = $request->property[$property->id]['path'];
+                        $file = $paramValue->store('public/infobox/properties/item/' . $property->data_type->code . 's');
+                        $file_path = str_ireplace('public/','/storage/',$file);
+                        FileCatalog::set($file_path,$originalName);
+                        $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
+                            ['item_id' => $item->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $file_path]
+                        );
+                    }
+                }
+            }
+            /* /Properties */
         }
 
         if ($request->input('submit') == 'save_and_close') {

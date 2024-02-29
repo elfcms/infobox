@@ -115,6 +115,44 @@
                     </div>
                 </div> --}}
             </div>
+            @if($properties->count())
+            <div class="colored-rows-box">
+                <h4> {{ __('infobox::default.properties') }} </h4>
+                @foreach ($properties as $property)
+                <div class="input-box colored">
+                    <label>{{ $property->name }}</label>
+                    <div class="input-wrapper">
+                        @if ($property->data_type->code == 'text' || $property->data_type->code == 'json')
+                        <textarea name="property[{{$property->id}}]" id="property_{{$property->id}}">{{ $property->value }}</textarea>
+                        <script>
+                            runEditor('#property_{{$property->id}}')
+                        </script>
+                        @elseif ($property->data_type->code == 'list')
+                        <select name="property[{{$property->id}}]" id="property_{{$property->id}}" @if($property->multiple) multiple @endif>
+                            <option value="">{{ __('elfcms::default.none') }}</option>
+                            @if (!empty($property->options))
+                            @foreach ($property->options as $value => $text)
+                            <option value="{{$value}}"
+                                @if (is_array($property->value) && in_array($value,$property->value))
+                                selected
+                                @endif>{{$text}}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                        @elseif ($property->data_type->code == 'image')
+                        <x-elfcms-input-image-alt inputName="property[{{$property->id}}][image]" valueName="property[{{$property->id}}][path]" valueId="property_{{$property->id}}_path" value="{{$property->value}}" download="1" />
+                        @elseif ($property->data_type->code == 'file')
+                        <x-elfcms-input-file code="property[{{$property->id}}]" value="{{$property->value}}" download="1" />
+                        @elseif ($property->data_type->code == 'bool')
+                        <input type="checkbox" name="property[{{$property->id}}]" id="property_{{$property->id}}" @if ($property->value == 1) checked @endif value="1">
+                        @else
+                        <input type="{{ $property->data_type->field[0] }}" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->value }}">
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
             <div class="button-box single-box">
                 <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
                 <button type="submit" name="submit" value="save_and_close" class="default-btn alternate-button">{{ __('elfcms::default.save_and_close') }}</button>
