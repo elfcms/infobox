@@ -110,34 +110,6 @@ class InfoboxCategoryController extends Controller
             //'preview' => 'nullable|file|max:256'
         ]);
 
-        /* $image_path = '';
-        $preview_path = '';
-        if (!empty($request->file()['image'])) {
-            $image = $request->file()['image']->store('public/infobox/categories/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
-        }
-        if (!empty($request->file()['preview'])) {
-            $preview = $request->file()['preview']->store('public/infobox/categories/preview');
-            $preview_path = str_ireplace('public/','/storage/',$preview);
-        } */
-
-        /* $public_time = $request->public_time[0];
-
-        if (empty($request->public_time[1]) && !empty($public_time)) {
-            $public_time .= ' 00:00:00';
-        }
-        elseif (!empty($public_time)) {
-            $public_time .= ' '.$request->public_time[1];
-        }
-
-        $end_time = $request->end_time[0];
-
-        if (empty($request->end_time[1]) && !empty($end_time)) {
-            $end_time .= ' 00:00:00';
-        }
-        elseif (!empty($end_time)) {
-            $end_time .= ' '.$request->end_time[1];
-        } */
 
         //$validated['image'] = $image_path;
         //$validated['preview'] = $preview_path;
@@ -250,34 +222,6 @@ class InfoboxCategoryController extends Controller
                     'slug' => 'Category already exists'
                 ]);
             }
-            /* $image_path = $request->image_path;
-            $preview_path = $request->preview_path;
-            if (!empty($request->file()['image'])) {
-                $image = $request->file()['image']->store('public/infobox/categories/image');
-                $image_path = str_ireplace('public/','/storage/',$image);
-            }
-            if (!empty($request->file()['preview'])) {
-                $preview = $request->file()['preview']->store('public/infobox/categories/preview');
-                $preview_path = str_ireplace('public/','/storage/',$preview);
-            } */
-
-            /* $public_time = $request->public_time[0];
-
-            if (empty($request->public_time[1]) && !empty($public_time)) {
-                $public_time .= ' 00:00:00';
-            }
-            elseif (!empty($public_time)) {
-                $public_time .= ' '.$request->public_time[1];
-            } */
-
-            /* $end_time = $request->end_time[0];
-
-            if (empty($request->end_time[1]) && !empty($end_time)) {
-                $end_time .= ' 00:00:00';
-            }
-            elseif (!empty($end_time)) {
-                $end_time .= ' '.$request->end_time[1];
-            } */
 
             $category->infobox_id = $validated['infobox_id'];
             $category->title = $validated['title'];
@@ -357,8 +301,7 @@ class InfoboxCategoryController extends Controller
                         }
                         $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
                         $file_path = $request->property[$property->id]['path'];
-                        $file = $paramValue[$property->data_type->code]->store('public/infobox/properties/category/' . $property->data_type->code . 's');
-                        $file_path = str_ireplace('public/','/storage/',$file);
+                        $file_path = $paramValue[$property->data_type->code]->store('elfcms/infobox/properties/category/' . $property->data_type->code . 's');
                         FileCatalog::set($file_path,$originalName);
                         $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
                             ['category_id' => $category->id, 'property_id' => $property->id],

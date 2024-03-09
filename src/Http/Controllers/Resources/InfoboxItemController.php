@@ -234,8 +234,7 @@ class InfoboxItemController extends Controller
                         $originalName = $paramValue->getClientOriginalName();
                         $file_path = null;
                         if (is_array($request->property[$property->id])) $file_path = $request->property[$property->id]['path'];
-                        $file = $paramValue->store('public/infobox/properties/item/' . $property->data_type->code . 's');
-                        $file_path = str_ireplace('public/','/storage/',$file);
+                        $file_path = $paramValue->store('elfcms/infobox/properties/item/' . $property->data_type->code . 's');
                         FileCatalog::set($file_path,$originalName);
                         $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
                             ['item_id' => $item->id, 'property_id' => $property->id],
@@ -480,8 +479,8 @@ class InfoboxItemController extends Controller
                     $originalName = $paramValue->getClientOriginalName();
                     $file_path = null;
                     if (is_array($request->property[$property->id])) $file_path = $request->property[$property->id]['path'];
-                    $file = $paramValue->store('public/infobox/properties/item/' . $property->data_type->code . 's');
-                    $file_path = str_ireplace('public/','/storage/',$file);
+                    $file_path = $paramValue->store('elfcms/infobox/properties/item/' . $property->data_type->code . 's');
+
                     FileCatalog::set($file_path,$originalName);
                     $propertyValue = InfoboxItemPropertyValue::updateOrCreate(
                         ['item_id' => $item->id, 'property_id' => $property->id],

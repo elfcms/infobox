@@ -89,13 +89,6 @@
                         </a>
                     </td>
                     <td>{{ $category->slug }}</td>
-                    {{-- <td class="image-cell">
-                        <img src="{{ asset($category->preview) }}" alt="">
-                    </td>
-                    <td class="image-cell">
-                        <img src="{{ asset($category->image) }}" alt="">
-                    </td>
-                    <td>{{ $category->description }}</td> --}}
                     <td>{{ $category->created_at }}</td>
                     <td>{{ $category->updated_at }}</td>
                     <td>{{-- {{ $category->public_time }} --}}</td>

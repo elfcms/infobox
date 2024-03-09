@@ -56,9 +56,9 @@
                             <div class="delete-image @if (empty($item->image)) hidden @endif">&#215;</div>
                             <div class="image-button-img">
                             @if (!empty($item->image))
-                                <img src="{{ asset($item->image) }}" alt="Image">
+                                <img src="{{ asset(file_path($item->image)) }}" alt="Image">
                             @else
-                                <img src="{{ asset('/public/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset(file_path('/elfcms/admin/images/icons/upload.png')) }}" alt="Upload file">
                             @endif
                             </div>
                             <div class="image-button-text">

@@ -110,12 +110,6 @@
                             #{{ $item->category->id }} {{ $item->category->title }}
                         </a> --}}
                     </td>
-                {{-- <td class="image-cell">
-                        <img src="{{ asset($item->preview) }}" alt="">
-                    </td>
-                    <td class="image-cell">
-                        <img src="{{ asset($item->image) }}" alt="">
-                    </td> --}}
                     <td>{{ $item->created_at }}</td>
                     <td>{{ $item->updated_at }}</td>
                     <td>{{ $item->public_time }}</td>
