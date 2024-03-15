@@ -159,7 +159,7 @@
     <script>
     autoSlug('.autoslug')
 
-    tagFormInit()
+    //tagFormInit()
 
     //add editor
     runEditor('#description')
