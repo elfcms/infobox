@@ -43,6 +43,11 @@ class Infobox extends Model
         return $this->hasMany(InfoboxItem::class, 'infobox_id');
     }
 
+    public function itemsOrder ($order = 'asc')
+    {
+        return $this->hasMany(InfoboxItem::class, 'infobox_id')->orderBy('position',$order);
+    }
+
     public function topItems ()
     {
         return $this->hasMany(InfoboxItem::class, 'infobox_id')->where('category_id',null);

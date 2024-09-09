@@ -8,14 +8,14 @@ use Illuminate\View\Component;
 
 class Infobox extends Component
 {
-    public $infobox, $theme;
+    public $infobox, $theme, $params;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($infobox, $theme='default')
+    public function __construct($infobox, $theme='default', $params = [])
     {
         if (is_numeric($infobox)) {
             $infobox = intval($infobox);
@@ -26,6 +26,7 @@ class Infobox extends Component
         }
         $this->infobox = $infobox;
         $this->theme = $theme;
+        $this->params = $params;
     }
 
     /**

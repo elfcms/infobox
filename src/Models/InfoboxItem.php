@@ -15,6 +15,7 @@ class InfoboxItem extends Model
         'title',
         'slug',
         'category_id',
+        'position',
         'infobox_id',
         'description',
         'meta_keywords',

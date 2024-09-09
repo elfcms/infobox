@@ -132,18 +132,21 @@
                             <option value="">{{ __('elfcms::default.none') }}</option>
                             @if (!empty($property->options))
                             @foreach ($property->options as $value => $text)
-                            <option value="{{$value}}">{{$text}}</option>
+                            <option value="{{$value}}"
+                                @if (is_array($property->value) && in_array($value,$property->value))
+                                selected
+                                @endif>{{$text}}</option>
                             @endforeach
                             @endif
                         </select>
                         @elseif ($property->data_type->code == 'image')
-                        <x-elfcms-input-image-alt inputName="property[{{$property->id}}][image]" valueName="property[{{$property->id}}][path]" valueId="property_{{$property->id}}_path" value="" download="1" />
+                        <x-elfcms-input-image-alt inputName="property[{{$property->id}}][image]" valueName="property[{{$property->id}}][path]" valueId="property_{{$property->id}}_path" value="{{$property->value}}" download="1" />
                         @elseif ($property->data_type->code == 'file')
-                        <x-elfcms-input-file code="property[{{$property->id}}]" value="" download="1" />
+                        <x-elfcms-input-file code="property[{{$property->id}}]" value="{{$property->value}}" download="1" />
                         @elseif ($property->data_type->code == 'bool')
                         <input type="checkbox" name="property[{{$property->id}}]" id="property_{{$property->id}}" @if ($property->value == 1) checked @endif value="1">
                         @else
-                        <input type="{{ $property->data_type->field[0] }}" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="">
+                        <input type="{{ $property->data_type->field[0] }}" name="property[{{$property->id}}]" id="property_{{$property->id}}" value="{{ $property->value }}">
                         @endif
                     </div>
                 </div>
