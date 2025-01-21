@@ -110,7 +110,7 @@ class InfoboxCategoryPropertyController extends Controller
 
         if (!empty($request->newproperty)) {
             foreach($request->newproperty as $id => $newproperty) {
-                if (!empty($newproperty['delete']) || (empty($newproperty['name']) && empty($newproperty['abbr']))) {
+                if (!empty($newproperty['delete']) || (empty($newproperty['name']) && empty($newproperty['code']))) {
                     $except[] = 'newproperty.'.$id;
                 }
             }
@@ -161,7 +161,7 @@ class InfoboxCategoryPropertyController extends Controller
                     $propertyItem->code = $property['code'];
                     $propertyItem->data_type_id = $property['data_type_id'];
                     $propertyItem->description = $property['description'];
-                    $propertyItem->multiple = empty($parameter['multiple']) ? 0 : 1;
+                    $propertyItem->multiple = empty($property['multiple']) ? 0 : 1;
                     $propertyItem->options = json_encode($options);
                     $saved = $propertyItem->save();
                     if (!$saved) {

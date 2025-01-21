@@ -35,7 +35,7 @@
     </td> --}}
     <td class="button-column non-text-buttons">
         <div class="check-delete-wrapper">
-            <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" onclick="setUnitRowDelete(this)">
+            <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" onclick="setDynamicUnitRowDelete(this)">
             <i></i>
         </div>
     </td>
