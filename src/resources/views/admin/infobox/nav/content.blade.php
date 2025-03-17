@@ -7,15 +7,18 @@
 </div>
 @endif --}}
 @if ($category || $infobox->title)
-<h4 class="infobox-nav-title">
+<h2 class="infobox-nav-title">
     {{ $category->title ?? $infobox->title ?? __('infobox::default.infoboxes') }}
-</h4>
-<div class="infobox-nav-content">
+</h2>
     @if ($category)
         @if ($category->parent)
-            <a class="infobox-nav-up" href="{{ route('admin.infobox.nav',['infobox'=>$infobox,'category'=>$category->parent]) }}">..</a>
+            <a class="infobox-nav-up" href="{{ route('admin.infobox.nav',['infobox'=>$infobox,'category'=>$category->parent]) }}">
+                {!! iconHtmlLocal('elfcms/admin/images/icons/buttons/path_back.svg', svg: true) !!}
+            </a>
         @else
-            <a class="infobox-nav-up" href="{{ route('admin.infobox.nav',['infobox'=>$infobox]) }}">..</a>
+            <a class="infobox-nav-up" href="{{ route('admin.infobox.nav',['infobox'=>$infobox]) }}">
+                {!! iconHtmlLocal('elfcms/admin/images/icons/buttons/path_back.svg', svg: true) !!}
+            </a>
         @endif
         @if ($category->categories)
         <div class="infobox-nav-categories infobox-nav-dnd-area infobox-nav-dnd-area-cat" data-container="category">
@@ -47,17 +50,14 @@
         </div>
         @endif
     @endif
-</div>
 @else
-<div class="infobox-nav-content">
     <div class="infobox-nav-dnd-area infobox-nav-dnd-area-ib">
     @forelse ($infoboxes as $ib)
         @include('elfcms::admin.infobox.nav.partials.infobox')
     @empty
-        {{ __('elfcms::default.nothing_was_found') }}
+        {{-- {{ __('elfcms::default.nothing_was_found') }} --}}
     @endforelse
     </div>
-</div>
 @endif
 <script>
 const checkForms = document.querySelectorAll('form[data-submit="check"]')
@@ -77,14 +77,14 @@ function setConfirmDelete(forms) {
                     buttons:[
                         {
                             title:'{{ __('elfcms::default.delete') }}',
-                            class:'default-btn delete-button',
+                            class:'button color-text-button danger-button',
                             callback: function(){
                                 self.submit()
                             }
                         },
                         {
                             title:'{{ __('elfcms::default.cancel') }}',
-                            class:'default-btn cancel-button',
+                            class:'button color-text-button',
                             callback:'close'
                         }
                     ],

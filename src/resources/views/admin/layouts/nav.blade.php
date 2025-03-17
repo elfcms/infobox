@@ -5,7 +5,7 @@
 <div class="big-container infobox-nav-container">
 
 
-    @section('infoboxpage-content')
+    @section('pagecontent')
     @show
 
 </div>

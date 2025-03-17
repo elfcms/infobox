@@ -1,6 +1,6 @@
-@extends('elfcms::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.main')
 
-@section('infoboxpage-content')
+@section('pagecontent')
 
     <div class="table-search-box">
         <div class="table-search-result-title">
@@ -17,7 +17,7 @@
                     <input type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="">
                 </div>
                 <div class="non-text-buttons">
-                    <button type="submit" class="default-btn search-button"></button>
+                    <button type="submit" class="button search-button"></button>
                 </div>
             </div>
         </form>
@@ -103,16 +103,16 @@
                     <td class="button-column non-text-buttons">
                         <form action="{{ route('admin.infobox.items.create') }}" method="GET">
                             <input type="hidden" name="category_id" value="{{ $category->id }}">
-                            <button type="submit" class="default-btn submit-button create-button" title="{{ __('infobox::default.add_item') }}"></button>
+                            <button type="submit" class="button submit-button create-button" title="{{ __('infobox::default.add_item') }}"></button>
                         </form>
-                        <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="default-btn edit-button" title="{{ __('elfcms::default.edit') }}"></a>
+                        <a href="{{ route('admin.infobox.categories.edit',$category) }}" class="button edit-button" title="{{ __('elfcms::default.edit') }}"></a>
                         <form action="{{ route('admin.infobox.categories.update',$category) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $category->id }}">
                             <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$category->active }}">
                             <input type="hidden" name="notedit" value="1">
-                            <button type="submit" @if ($category->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
+                            <button type="submit" @if ($category->active == 1) class="button deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="button activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
                             </button>
                         </form>
                         <form action="{{ route('admin.infobox.categories.destroy',$category) }}" method="POST" data-submit="check">
@@ -120,7 +120,7 @@
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $category->id }}">
                             <input type="hidden" name="name" value="{{ $category->name }}">
-                            <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
+                            <button type="submit" class="button color-text-button danger-button" title="{{ __('elfcms::default.delete') }}"></button>
                         </form>
                         <div class="contextmenu-content-box">
                             <a href="{{ route('admin.infobox.items',UrlParams::addArr(['category'=>$category->id])) }}" class="contextmenu-item">
@@ -181,14 +181,14 @@
                         buttons:[
                             {
                                 title:'{{ __('elfcms::default.delete') }}',
-                                class:'default-btn delete-button',
+                                class:'button color-text-button danger-button',
                                 callback: function(){
                                     self.submit()
                                 }
                             },
                             {
                                 title:'{{ __('elfcms::default.cancel') }}',
-                                class:'default-btn cancel-button',
+                                class:'button color-text-button',
                                 callback:'close'
                             }
                         ],
@@ -212,14 +212,14 @@
                             buttons:[
                                 {
                                     title:'{{ __('elfcms::default.delete') }}',
-                                    class:'default-btn delete-button',
+                                    class:'button color-text-button danger-button',
                                     callback: function(){
                                         self.submit()
                                     }
                                 },
                                 {
                                     title:'{{ __('elfcms::default.cancel') }}',
-                                    class:'default-btn cancel-button',
+                                    class:'button color-text-button',
                                     callback:'close'
                                 }
                             ],

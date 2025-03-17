@@ -190,7 +190,7 @@ class InfoboxItemController extends Controller
                     if (!empty($request->property[$property->id])) {
 
                         $paramValue = $request->property[$property->id];
-                        if (is_array($paramValue)) {
+                        if (is_array($paramValue) && $property->data_type->code != 'list') {
                             if (!empty($request->file()['property'][$property->id]['file'])) {
                                 continue;
                             }
@@ -248,10 +248,10 @@ class InfoboxItemController extends Controller
         }
 
         if ($request->input('submit') == 'save_and_close') {
-            return redirect(route('admin.infobox.nav',['infobox'=>$item->infobox,'category'=>$item->category]))->with('success',__('elfcms::default.item_created_successfully'));
+            return redirect(route('admin.infobox.nav',['infobox'=>$item->infobox,'category'=>$item->category]))->with('success',__('infobox::default.item_created_successfully'));
         }
 
-        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::default.item_created_successfully'));
+        return redirect(route('admin.infobox.items.edit',$item))->with('success',__('infobox::default.item_created_successfully'));
     }
 
     /**
@@ -326,7 +326,7 @@ class InfoboxItemController extends Controller
 
             $item->save();
 
-            return redirect(route('admin.infobox.items'))->with('itemresult',__('infobox::default.item_edited_successfully'));
+            return redirect(route('admin.infobox.items'))->with('success',__('infobox::default.item_edited_successfully'));
         }
         $request->merge([
             'slug' => Str::slug($request->slug),
@@ -436,7 +436,7 @@ class InfoboxItemController extends Controller
                 if (!empty($request->property[$property->id])) {
 
                     $paramValue = $request->property[$property->id];
-                    if (is_array($paramValue)) {
+                    if (is_array($paramValue) && $property->data_type->code != 'list') {
                         if (!empty($request->file()['property'][$property->id]['file'])) {
                             continue;
                         }
@@ -494,10 +494,10 @@ class InfoboxItemController extends Controller
 
 
         if ($request->input('submit') == 'save_and_close') {
-            return redirect(route('admin.infobox.nav',['infobox'=>$item->infobox,'category'=>$item->category]))->with('success',__('elfcms::default.item_edited_successfully'));
+            return redirect(route('admin.infobox.nav',['infobox'=>$item->infobox,'category'=>$item->category]))->with('success',__('infobox::default.item_edited_successfully'));
         }
 
-        return redirect(route('admin.infobox.items.edit',$item))->with('itemresult',__('infobox::default.item_edited_successfully'));
+        return redirect(route('admin.infobox.items.edit',$item))->with('success',__('infobox::default.item_edited_successfully'));
 
     }
 
@@ -513,6 +513,6 @@ class InfoboxItemController extends Controller
             return redirect()->back()->withErrors(['itemdelerror'=>__('infobox::default.error_of_item_deleting')]);
         }
 
-        return redirect()->back()->with('itemresult',__('infobox::default.item_deleted_successfully'));
+        return redirect()->back()->with('success',__('infobox::default.item_deleted_successfully'));
     }
 }

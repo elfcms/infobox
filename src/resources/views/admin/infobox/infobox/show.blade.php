@@ -1,6 +1,6 @@
-@extends('elfcms::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.main')
 
-@section('infoboxpage-content')
+@section('pagecontent')
 
     @if (Session::has('infoboxresult'))
     <div class="alert alert-alternate">{{ Session::get('infoboxresult') }}</div>

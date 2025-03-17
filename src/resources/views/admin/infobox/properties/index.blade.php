@@ -1,25 +1,16 @@
-@extends('elfcms::admin.layouts.infobox')
-@section('infoboxpage-content')
+@extends('elfcms::admin.layouts.main')
+@section('pagecontent')
 <div class="pagenav">
-    <a href="{{ route('admin.infobox.infoboxes.edit', $infobox) }}">{{ __('infobox::default.infobox') . ' "' . $infobox->title . '"' }}</a>
+    <a href="{{ route('admin.infobox.infoboxes.edit', $infobox) }}" class="button round-button theme-button">
+        {!! iconHtmlLocal('elfcms/admin/images/icons/buttons/arrow_back.svg', svg: true) !!}
+        <span class="button-collapsed-text">{{ __('infobox::default.infobox') . ' "' . $infobox->title . '"' }}</span>
+    </a>
 </div>
-    @if (Session::has('action_result'))
-    <div class="alert alert-alternate">{{ Session::get('action_result') }}</div>
-    @endif
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 <form name="propertyform" class="data-table-box" method="post" action="{{ route('admin.ajax.infobox.property.'.$type.'.fullsave',$infobox) }}">
     @csrf
     <input type="hidden" name="infobox_id" value="{{ $infobox->id }}">
-    <div class="widetable-wrapper">
-        <table class="grid-table infobox-property-table itemstable">
+    <div class="grid-table-wrapper option-table-wrapper">
+        <table class="grid-table filestorage-group-table table-cols infobox-property-table" style="--first-col:60px; --last-col:7.5rem; --minw:50rem; --cols-count:7;">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -37,10 +28,13 @@
             </tbody>
         </table>
     </div>
-    <div class="infobox-table-buttons">
-        <button class="default-btn alternate-button" title="{{__('infobox::default.add_property')}}" data-action="additem">{{ __('infobox::default.add_property') }}</button>
-        {{-- <button class="default-btn" title="{{__('elfcms::default.reset_button')}}" data-action="reset">{{ __('elfcms::default.reset_button') }}</button> --}}
-        <button type="submit" class="default-btn submit-button" disabled="" data-action="save">{{ __('elfcms::default.save') }}</button>
+    <div class="dynamic-table-buttons">
+        <button class="button round-button theme-button" title="{{__('infobox::default.add_property')}}" data-action="additem">
+            {!! iconHtmlLocal('elfcms/admin/images/icons/plus.svg', svg: true) !!}
+            <span class="button-collapsed-text">{{ __('infobox::default.add_property') }}</span>
+        </button>
+        {{-- <button class="button" title="{{__('elfcms::default.reset_button')}}" data-action="reset">{{ __('elfcms::default.reset_button') }}</button> --}}
+        <button type="submit" class="button color-text-button success-button" disabled="" data-action="save">{{ __('elfcms::default.save') }}</button>
     </div>
 </form>
     <script>
@@ -56,7 +50,6 @@
         async function getEmptyItem() {
             let response = await fetch('{{ route("admin.ajax.infobox.property.".$type.".empty-item") }}',{headers: {'X-Requested-With': 'XMLHttpRequest'}});
             emptyItem = await response.text();
-
             return emptyItem;
         }
 
@@ -77,6 +70,7 @@
                 return false;
             }
             const row = element.closest('tr[data-id="' + element.dataset.id + '"]');
+            console.log(row)
             if (row) {
                 const subrow = row.querySelector('.table-subrow');
                 if (subrow) {
@@ -114,20 +108,21 @@
                     const rowString = `
                     <div class="infobox-option-table-row">
                         <div class="infobox-option-table-column">
-                            <input type="text" name="${newprop}property[${button.dataset.id}][options][${i}][key]" value="" oninput="checkOptionChange(this)" data-loop="${i}" data-name="key">
+                            <input type="text" name="${newprop}property[${button.dataset.id}][options][${i}][key]" value="" data-loop="${i}" data-name="key">
                         </div>
                         <div class="infobox-option-table-column">
-                            <input type="text" name="${newprop}property[${button.dataset.id}][options][${i}][value]" value="" oninput="checkOptionChange(this)" data-loop="${i}" data-name="value">
+                            <input type="text" name="${newprop}property[${button.dataset.id}][options][${i}][value]" value="" data-loop="${i}" data-name="value">
                         </div>
                         <div class="infobox-option-table-column">
-                            <div class="checkbox-switch red">
-                                <input type="checkbox" name="${newprop}property[${button.dataset.id}][options][${i}][delete]" value="1" oninput="checkOptionChange(this)" data-loop="${i}" data-name="delete">
+                            <div class="small-checkbox" style="--switch-color: var(--danger-color)">
+                                <input type="checkbox" name="${newprop}property[${button.dataset.id}][options][${i}][delete]" value="1" data-loop="${i}" data-name="delete">
                                 <i></i>
                             </div>
                         </div>
                     </div>
                     `;
                     box.insertAdjacentHTML('beforeend',rowString);
+                    setIBSaveEnabled(true)
                 }
             }
         }
@@ -179,7 +174,7 @@
                     buttons:[
                         {
                             title:'OK',
-                            class:'default-btn alternate-button',
+                            class:'button color-text-button info-button',
                             callback: [
                                 saveForm,
                                 'close'
@@ -187,11 +182,11 @@
                         },
                         {
                             title:'{{__("elfcms::default.cancel")}}',
-                            class:'default-btn cancel-button',
+                            class:'button color-text-button',
                             callback:'close'
                         }
                     ],
-                    class:'alternate'
+                    class:'submit'
                 });
                 function saveForm() {
                     const formData = new FormData(form);
@@ -230,11 +225,11 @@
                                     buttons:[
                                         {
                                             title:'OK',
-                                            class:'default-btn alternate-button',
+                                            class:'button color-text-button info-button',
                                             callback:'close'
                                         }
                                     ],
-                                    class:'alternate'
+                                    class:'submit'
                                 });
                             }
                             else {
@@ -248,7 +243,7 @@
                                         buttons:[
                                             {
                                                 title:'OK',
-                                                class:'default-btn delete-button',
+                                                class:'button color-text-button danger-button',
                                                 callback:'close'
                                             }
                                         ],

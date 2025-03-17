@@ -20,7 +20,7 @@
             </li>
         </ul>
     </nav>
-    @section('infoboxpage-content')
+    @section('pagecontent')
     @show
 
 </div>

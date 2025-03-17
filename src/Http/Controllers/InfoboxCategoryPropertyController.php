@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Elfcms\Elfcms\Models\DataType;
 use Elfcms\Infobox\Models\InfoboxCategoryProperty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class InfoboxCategoryPropertyController extends Controller
@@ -148,6 +149,7 @@ class InfoboxCategoryPropertyController extends Controller
                 $propertyItem = InfoboxCategoryProperty::find($id);
                 if ($propertyItem) {
                     $options = [];
+                            Log::info(var_export($property,true));
                     if (!empty($property['options']) && is_array($property['options'])) {
                         foreach ($property['options'] as $option) {
                             if (!empty($option['delete']) || (empty($option['key']) && empty($option['value']))) {

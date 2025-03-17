@@ -76,6 +76,13 @@ class InfoboxCategoryController extends Controller
                 }
             }
         }
+        $properties = new InfoboxCategoryProperty();
+        if ($currentInfobox && !empty($currentInfobox->id)) {
+            $properties = InfoboxCategoryProperty::where('infobox_id',$currentInfobox->id)->get();
+            foreach ($properties as $property) {
+                $property->value = null;
+            }
+        }
 
         return view('elfcms::admin.infobox.categories.create',[
             'page' => [
@@ -88,6 +95,7 @@ class InfoboxCategoryController extends Controller
             'firstInfobox' => $firstInfobox,
             'category_id' => $category_id,
             'curentCategory' => $curentCategory,
+            'properties' => $properties,
         ]);
     }
 
@@ -152,11 +160,85 @@ class InfoboxCategoryController extends Controller
 
         $category = InfoboxCategory::create($validated);
 
+
+            /* Properties */
+            if (!empty($request->property)) {
+                $properties = $category->infobox->categoryProperties;
+                foreach($properties as $property) {
+                    if (!isset($request->property[$property->id])) {
+                        if ($property->data_type->code == 'bool') {
+                            $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                                ['category_id' => $category->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => 0]
+                            );
+                        }
+                        elseif ($property->data_type->code == 'list') {
+                            $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                                ['category_id' => $category->id, 'property_id' => $property->id],
+                                [$property->data_type->code . '_value' => null]
+                            );
+                        }
+                        continue;
+                    }
+
+                    if (!empty($request->property[$property->id])) {
+
+                        $paramValue = $request->property[$property->id];
+                        if (is_array($paramValue) && $property->data_type->code != 'list') {
+                            if (!empty($request->file()['property'][$property->id]['file'])) {
+                                continue;
+                            }
+                            if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                                continue;
+                            }
+                            $paramValue = $paramValue['path'];
+                        }
+                        if ($property->data_type->code == 'list') {
+                            if (empty($paramValue)) {
+                                $paramValue = [];
+                            }
+                            if (!is_array($paramValue)) {
+                                $paramValue = [$paramValue];
+                            }
+                            $paramValue = json_encode($paramValue);
+                        }
+                        /* if ($property->data_type->code == 'color') {
+                            if ($paramValue == 0) {
+                                $paramValue = null;
+                            }
+                        } */
+                        if ($property->data_type->code == 'bool') {
+                            $paramValue = 1;
+                        }
+
+                        $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                            ['category_id' => $category->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $paramValue]
+                        );
+                    }
+                    if (!empty($request->file()['property']) && !empty($request->file()['property'][$property->id])) {
+                        $paramValue = $request->file()['property'][$property->id];
+                        if ($property->data_type->code != 'file' && $property->data_type->code != 'image') {
+                            continue;
+                        }
+                        $originalName = $paramValue[$property->data_type->code]->getClientOriginalName();
+                        $file_path = $request->property[$property->id]['path'];
+                        $file_path = $paramValue[$property->data_type->code]->store('elfcms/infobox/properties/category/' . $property->data_type->code . 's');
+                        FileCatalog::set($file_path,$originalName);
+                        $propertyValue = InfoboxCategoryPropertyValue::updateOrCreate(
+                            ['category_id' => $category->id, 'property_id' => $property->id],
+                            [$property->data_type->code . '_value' => $file_path]
+                        );
+                    }
+                }
+            }
+            /* /Properties */
+
         if ($request->input('submit') == 'save_and_close') {
             return redirect(route('admin.infobox.nav',['infobox'=>$category->infobox,'category'=>$category->parent]))->with('success',__('infobox::default.category_created_successfully'));
         }
 
-        return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('elfcms::default.category_created_successfully'));
+        return redirect(route('admin.infobox.categories.edit',$category))->with('success',__('infobox::default.category_created_successfully'));
     }
 
     /**
@@ -231,7 +313,7 @@ class InfoboxCategoryController extends Controller
 
             $category->save();
 
-            return redirect(route('admin.infobox.categories'))->with('categoryresult',__('elfcms::default.category_edited_successfully'));
+            return redirect(route('admin.infobox.categories'))->with('success',__('elfcms::default.category_edited_successfully'));
         }
         else {
             $request->merge([
@@ -318,7 +400,7 @@ class InfoboxCategoryController extends Controller
                     if (!empty($request->property[$property->id])) {
 
                         $paramValue = $request->property[$property->id];
-                        if (is_array($paramValue)) {
+                        if (is_array($paramValue) && $property->data_type->code != 'list') {
                             if (!empty($request->file()['property'][$property->id]['file'])) {
                                 continue;
                             }
@@ -372,7 +454,7 @@ class InfoboxCategoryController extends Controller
                 return redirect(route('admin.infobox.nav',['infobox'=>$category->infobox,'category'=>$category->parent]))->with('success',__('infobox::default.category_edited_successfully'));
             }
 
-            return redirect(route('admin.infobox.categories.edit',$category))->with('categoryresult',__('infobox::default.category_edited_successfully'));
+            return redirect(route('admin.infobox.categories.edit',$category))->with('success',__('infobox::default.category_edited_successfully'));
         }
     }
 
@@ -388,6 +470,6 @@ class InfoboxCategoryController extends Controller
             return redirect()->back()->withErrors(['categoryerror'=>__('infobox::default.error_of_category_deleting')]);
         }
 
-        return redirect()->back()->with('categoryresult',__('infobox::default.category_deleted_successfully'));
+        return redirect()->back()->with('success',__('infobox::default.category_deleted_successfully'));
     }
 }

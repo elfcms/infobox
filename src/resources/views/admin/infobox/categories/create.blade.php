@@ -1,55 +1,33 @@
-@extends('elfcms::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.main')
 
-@section('infoboxpage-content')
-
-    @if (Session::has('categoryresult'))
-        <div class="alert alert-success">{{ Session::get('categoryresult') }}</div>
-    @endif
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="errors-list">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+@section('pagecontent')
 
     <div class="item-form">
-        <h3>{{ __('elfcms::default.create_category') }}</h3>
+        <h2>{{ __('elfcms::default.create_category') }}</h2>
         <form action="{{ route('admin.infobox.categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="colored-rows-box">
                 <div class="input-box colored">
-                    <div class="checkbox-wrapper">
-                        <div class="checkbox-inner">
-                            <input
-                                type="checkbox"
-                                name="active"
-                                id="active"
-                                checked
-                            >
-                            <i></i>
-                            <label for="active">
-                                {{ __('elfcms::default.active') }}
-                            </label>
-                        </div>
-                    </div>
+                    <label for="active">
+                        {{ __('elfcms::default.active') }}
+                    </label>
+                    <x-elfcms::ui.checkbox.switch name="active" id="active" checked="true" />
                 </div>
                 <div class="input-box colored">
                     <label for="infobox_id">{{ __('infobox::default.infobox') }}</label>
                     <div class="input-wrapper">
-                    @if (!empty($currentInfobox))
-                        #{{ $currentInfobox->id }} {{ $currentInfobox->title }}
-                        <input type="hidden" name="infobox_id" value="{{ $currentInfobox->id }}">
-                    @else
-                        <select name="infobox_id" id="infobox_id">
-                        @foreach ($infoboxes as $infobox)
-                            <option value="{{ $infobox->id }}" data-id="{{ $infobox->id }}">{{ $infobox->title }}</option>
-                        @endforeach
-                        </select>
-                    @endif
+                        @if (!empty($currentInfobox))
+                            #{{ $currentInfobox->id }} {{ $currentInfobox->title }}
+                            <input type="hidden" name="infobox_id" value="{{ $currentInfobox->id }}">
+                        @else
+                            <select name="infobox_id" id="infobox_id">
+                                @foreach ($infoboxes as $infobox)
+                                    <option value="{{ $infobox->id }}" data-id="{{ $infobox->id }}">{{ $infobox->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @endif
                     </div>
                 </div>
                 <div class="input-box colored">
@@ -57,9 +35,17 @@
                     <div class="input-wrapper">
                         <select name="parent_id" id="parent_id">
                             <option value="">{{ __('elfcms::default.none') }}</option>
-                        @foreach ($categories as $item)
-                            <option value="{{ $item->id }}" @class(['inactive'=>$item->active != 1, 'hidden' => $item->infobox->id != $firstInfobox->id]) data-id="{{ $item->infobox->id }}" @if (!empty($category_id) && $item->id == $category_id) selected @endif>{{ $item->title }}@if ($item->active != 1) [{{ __('elfcms::default.inactive') }}] @endif</option>
-                        @endforeach
+                            @foreach ($categories as $item)
+                                <option value="{{ $item->id }}" @class([
+                                    'inactive' => $item->active != 1,
+                                    'hidden' => $item->infobox->id != $firstInfobox->id,
+                                ])
+                                    data-id="{{ $item->infobox->id }}" @if (!empty($category_id) && $item->id == $category_id) selected @endif>
+                                    {{ $item->title }}@if ($item->active != 1)
+                                        [{{ __('elfcms::default.inactive') }}]
+                                    @endif
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -75,10 +61,7 @@
                         <input type="text" name="slug" id="slug">
                     </div>
                     <div class="input-wrapper">
-                        <div class="autoslug-wrapper">
-                            <input type="checkbox" data-text-id="title" data-slug-id="slug" class="autoslug" checked>
-                            <div class="autoslug-button"></div>
-                        </div>
+                        <x-elfcms::ui.checkbox.autoslug textid="title" slugid="slug" checked />
                     </div>
                 </div>
                 <div class="input-box colored">
@@ -106,51 +89,89 @@
                     </div>
                 </div>
             </div>
+
+            @if ($properties->count())
+                <div class="colored-rows-box">
+                    <h3> {{ __('infobox::default.properties') }} </h3>
+                    @foreach ($properties as $property)
+                        <div class="input-box colored">
+                            <label>{{ $property->name }}</label>
+                            <div class="input-wrapper">
+                                @if ($property->data_type->code == 'text' || $property->data_type->code == 'json')
+                                    <textarea name="property[{{ $property->id }}]" id="property_{{ $property->id }}">{{ $property->value }}</textarea>
+                                    <script>
+                                        runEditor('#property_{{ $property->id }}')
+                                    </script>
+                                @elseif ($property->data_type->code == 'list')
+                                    <select @if ($property->multiple) name="property[{{ $property->id }}][]" @else name="property[{{ $property->id }}]" @endif id="property_{{ $property->id }}"
+                                        @if ($property->multiple) multiple @endif>
+                                        <option value="">{{ __('elfcms::default.none') }}</option>
+                                        @if (!empty($property->options))
+                                            @foreach ($property->options as $value => $text)
+                                                <option value="{{ $value }}"
+                                                    @if (is_array($property->value) && in_array($value, $property->value)) selected @endif>{{ $text }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                @elseif ($property->data_type->code == 'image' || $property->data_type->code == 'file')
+                                    <x-elf-input-file :params="[
+                                        'name' => 'property[' . $property->id . '][image]',
+                                        'id' => 'property_' . $property->id . '_path',
+                                        'value' => $property->value,
+                                        'value_name' => 'property[' . $property->id . '][path]',
+                                    ]" />
+                                @elseif ($property->data_type->code == 'bool')
+                                <x-elfcms::ui.checkbox.switch name="property[{{ $property->id }}]"
+                                    id="property_{{ $property->id }}" />
+                                @else
+                                    <input type="{{ $property->data_type->field[0] }}"
+                                        name="property[{{ $property->id }}]" id="property_{{ $property->id }}"
+                                        value="{{ $property->value }}">
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             <div class="button-box single-box">
-                <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
-                <button type="submit" name="submit" value="save_and_close" class="default-btn alternate-button">{{ __('elfcms::default.save_and_close') }}</button>
-                <a href="{{ route('admin.infobox.nav',['infobox'=>$currentInfobox,'category'=>$curentCategory]) }}" class="default-btn">{{ __('elfcms::default.cancel') }}</a>
+                <button type="submit"
+                    class="button color-text-button success-button">{{ __('elfcms::default.submit') }}</button>
+                <button type="submit" name="submit" value="save_and_close"
+                    class="button color-text-button info-button">{{ __('elfcms::default.save_and_close') }}</button>
+                <a href="{{ route('admin.infobox.nav', ['infobox' => $currentInfobox, 'category' => $curentCategory]) }}"
+                    class="button color-text-button">{{ __('elfcms::default.cancel') }}</a>
             </div>
         </form>
     </div>
     <script>
-    const imageInput = document.querySelector('#image')
-    if (imageInput) {
-        inputFileImg(imageInput)
-    }
-    const previewInput = document.querySelector('#preview')
-    if (previewInput) {
-        inputFileImg(previewInput)
-    }
-    const infobox = document.querySelector('select[name="infobox_id"]');
-    const parents = document.querySelector('select[name="parent_id"]');
-    if (infobox && parents) {
-        const options = parents.querySelectorAll('option');
-        if (options) {
-            infobox.addEventListener('change',function(){
-                const current = infobox.options[infobox.selectedIndex];
-                if (current) {
-                    let id = current.dataset.id;
-                    let selected = false;
-                    options.forEach((option, i) => {
-                        if (option.dataset.id == id) {
-                            if (!selected) {
-                                parents.selectedIndex = i;
-                                selected = true;
+        const infobox = document.querySelector('select[name="infobox_id"]');
+        const parents = document.querySelector('select[name="parent_id"]');
+        if (infobox && parents) {
+            const options = parents.querySelectorAll('option');
+            if (options) {
+                infobox.addEventListener('change', function() {
+                    const current = infobox.options[infobox.selectedIndex];
+                    if (current) {
+                        let id = current.dataset.id;
+                        let selected = false;
+                        options.forEach((option, i) => {
+                            if (option.dataset.id == id) {
+                                if (!selected) {
+                                    parents.selectedIndex = i;
+                                    selected = true;
+                                }
+                                option.classList.remove('hidden');
+                            } else {
+                                option.classList.add('hidden');
                             }
-                            option.classList.remove('hidden');
-                        }
-                        else {
-                            option.classList.add('hidden');
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         }
-    }
-    autoSlug('.autoslug')
-    //add editor
-    runEditor('#description')
+        //add editor
+        runEditor('#description')
     </script>
 
 @endsection

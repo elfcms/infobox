@@ -1,18 +1,18 @@
 <?php
 
-namespace Elfcms\Elfcms\Console\Commands;
+namespace Elfcms\Infobox\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
-class ElfcmsPublish extends Command
+class ElfcmsInfobox extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'elfcms:infobox';
+    protected $signature = 'elfcms:infobox {action=install}';
 
     /**
      * The console command description.
@@ -28,16 +28,35 @@ class ElfcmsPublish extends Command
      */
     public function handle()
     {
-        /* $module = ucfirst($this->argument('module'));
-        $provider = 'Elfcms\\' . $module . '\Providers\ElfcmsModuleProvider';
-        $exitCode = Artisan::call('vendor:publish', [
-            '--provider' => $provider, '--force' => !$this->option('noforce'), '--tag' => $this->option('tag') ?? null
-        ]);
+        try {
+            \DB::connection()->getPDO();
+            // go
+        } catch (\Exception $e) {
+            $this->error('No connection to the database');
+            $this->line('Check connection parameters in .env file and repeat command');
+            return false;
+        }
 
-        if ($exitCode == 0) {
-            $this->info('Module ELF CMS ' . $module . ' was published successfully!');
+        $this->line('Publishing the module ELF CMS: Infobox');
+        $resultCode = Artisan::call('elfcms:publish infobox');
+        if ($resultCode == 0) {
+            $this->info('OK');
         } else {
-            $this->error('Publishing of module ELF CMS ' . $module . ' completed with error ' . $exitCode);
-        } */
+            $this->error('Publishing completed with error ' . $resultCode);
+            return false;
+        }
+        $resultCode = false;
+
+        $this->line('Creating database tables');
+        $resultCode = Artisan::call('migrate');
+        if ($resultCode == 0) {
+            $this->info('OK');
+        } else {
+            $this->error('Table creating completed with error ' . $resultCode);
+            return false;
+        }
+        $resultCode = false;
+
+        $this->info('Installation completed successfully');
     }
 }

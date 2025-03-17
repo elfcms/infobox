@@ -8,7 +8,7 @@
             <p>{!! $message['text'] ?? '' !!}</p>
         </div>
         <div class="popup-button-box">
-            <button class="default-btn cancel-button" onclick="messageDestroy(this)">OK</button>
+            <button class="button color-text-button" onclick="messageDestroy(this)">OK</button>
         </div>
     </div>
 </div>

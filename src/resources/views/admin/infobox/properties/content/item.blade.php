@@ -8,10 +8,7 @@
     </td>
     <td>
         <div class="input-wrapper">
-            <div class="autoslug-wrapper">
-                <input type="checkbox" data-text-id="property_{{$property->id}}_name" data-slug-id="property_{{$property->id}}_code" class="autoslug" checked>
-                <div class="autoslug-button"></div>
-            </div>
+            <x-elfcms::ui.checkbox.autoslug textid="property_{{$property->id}}_name" slugid="property_{{$property->id}}_code" checked="true" />
         </div>
     </td>
     <td>
@@ -35,19 +32,17 @@
     </td> --}}
     <td class="button-column non-text-buttons">
         <div class="check-delete-wrapper">
-            <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" onclick="setDynamicUnitRowDelete(this)">
-            <i></i>
+            {{-- <input type="checkbox" name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" value="1" data-id="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" onclick="setDynamicUnitRowDelete(this)">
+            <i></i> --}}
+            <x-elfcms::ui.checkbox.delete name="property[{{$property->id}}][delete]" id="property_{{$property->id}}_delete" dataid="{{ $property->id }}" title="{{ __('elfcms::default.delete') }}" click="setDynamicUnitRowDelete(this)" />
         </div>
     </td>
 
     <td @class(['table-subrow','showed' => $property->data_type->code=='list'])>
         <div class="infobox-option-box">
             <div class="infobox-option-multiple-line">
-                <div class="checkbox-switch green" data-column="multiple">
-                    <input type="checkbox" name="property[{{$property->id}}][multiple]" id="property_{{$property->id}}_multiple" value="1" data-name="multiple" @if($property->multiple) checked @endif>
-                    <i></i>
-                </div>
                 <label for="property_{{$property->id}}_multiple">{{ __('infobox::default.multiple') }}</label>
+                <x-elfcms::ui.checkbox.switch name="property[{{$property->id}}][multiple]" id="property_{{$property->id}}_multiple" checked="{{ $property->multiple == 1 }}"  />
             </div>
             <div class="infobox-option-box-label">
                 {{ __('infobox::default.options') }}
@@ -75,17 +70,18 @@
                             <input type="text" name="property[{{$property->id}}][options][{{$loop->index}}][value]" value="{{ $value }}" oninput="checkOptionChange(this)" data-loop="{{$loop->index}}" data-name="value">
                         </div>
                         <div class="infobox-option-table-column">
-                            <div class="checkbox-switch red">
+                            <x-elfcms::ui.checkbox.small name="property[{{$property->id}}][options][{{$loop->index}}][delete]" oninput="checkOptionChange(this)" data-name="delete" color="var(--danger-color)" />
+                            {{-- <div class="checkbox-switch red">
                                 <input type="checkbox" name="property[{{$property->id}}][options][{{$loop->index}}][delete]" value="1" oninput="checkOptionChange(this)" data-loop="{{$loop->index}}" data-name="delete">
                                 <i></i>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     @endforeach
                 @endif
                 </div>
                 <div class="infobox-option-table-add">
-                    <button class="default-btn" data-id="{{$property->id}}" onclick="addOption(this{{!$property->code ? '' : ',false' }})">{{ __('elfcms::default.add_option') }}</button>
+                    <button class="button simple-button" data-id="{{$property->id}}" onclick="addOption(this{{!$property->code ? '' : ',false' }})">{{ __('elfcms::default.add_option') }}</button>
                 </div>
             </div>
         </div>

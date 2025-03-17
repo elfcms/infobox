@@ -38,8 +38,11 @@ return [
             "lang_title" => "infobox::default.infobox",
             "route" => "admin.infobox.nav",
             "parent_route" => "admin.infobox",
-            "icon" => "/elfcms/admin/modules/infobox/images/icons/box.png",
+            "icon" => "/elfcms/admin/modules/infobox/images/icons/box.svg",
             "position" => 200,
+            "color" => "dodgerblue",
+            "second_color" => "#00becf",
+
         ],
     ],
 

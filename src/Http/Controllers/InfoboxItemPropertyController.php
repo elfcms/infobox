@@ -4,6 +4,7 @@ namespace Elfcms\Infobox\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Elfcms\Models\DataType;
+use Elfcms\Elfcms\Models\Setting;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxItemProperty;
 use Illuminate\Http\Request;

@@ -84,7 +84,11 @@ class InfoboxController extends Controller
 
         $infobox = Infobox::create($validated);
 
-        return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::default.infobox_created_successfully'));
+        if ($request->input('submit') == 'save_and_close') {
+            return redirect(route('admin.infobox.nav',['infobox'=>$infobox]))->with('success',__('infobox::default.infobox_created_successfully'));
+        }
+
+        return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('success',__('infobox::default.infobox_created_successfully'));
     }
 
     /**
@@ -135,7 +139,7 @@ class InfoboxController extends Controller
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infoboxes'))->with('infoboxresult',__('infobox::default.item_edited_successfully'));
+            return redirect(route('admin.infobox.infoboxes'))->with('success',__('infobox::default.item_edited_successfully'));
         }
         else {
             $request->merge([
@@ -159,7 +163,11 @@ class InfoboxController extends Controller
 
             $infobox->save();
 
-            return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('infoboxresult',__('infobox::default.item_edited_successfully'));
+            if ($request->input('submit') == 'save_and_close') {
+                return redirect(route('admin.infobox.nav',['infobox'=>$infobox]))->with('success',__('infobox::default.item_edited_successfully'));
+            }
+
+            return redirect(route('admin.infobox.infoboxes.edit',$infobox))->with('success',__('infobox::default.item_edited_successfully'));
         }
     }
 
@@ -175,6 +183,6 @@ class InfoboxController extends Controller
             return redirect()->back()->withErrors(['deleteerror'=>__('infobox::default.error_of_infobox_deleting')]);
         }
 
-        return redirect()->back()->with('infoboxresult',__('infobox::default.infobox_deleted_successfully'));
+        return redirect()->back()->with('success',__('infobox::default.infobox_deleted_successfully'));
     }
 }

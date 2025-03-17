@@ -63,10 +63,10 @@ function isIBDeletableUnits() {
     return false;
 }
 
-function setIBSaveEnabled() {
+function setIBSaveEnabled(enable = null) {
     const saveButton = document.querySelector('button[data-action="save"]');
     if (saveButton) {
-        if (isIBDeletableUnits() || isIBEditedUnits()) {
+        if (isIBDeletableUnits() || isIBEditedUnits() || enable === true) {
             saveButton.disabled = false;
         }
         else {
@@ -80,7 +80,7 @@ function addIBPropertyItem() {
     if (!newItemId && newItemId !== 0) return false;
     const container = document.querySelector('table.infobox-property-table tbody');
     if (container) {
-        let itemString = emptyItem.replaceAll('btn" data-id="newproperty"','btn" data-id="'+newItemId+'"').replaceAll('id="newproperty"','id="new_'+newItemId+'"').replaceAll('property[newproperty]','newproperty['+newItemId+']').replaceAll('property_newproperty','newproperty_'+newItemId).replaceAll('<span>newproperty</span>','');
+        let itemString = emptyItem.replaceAll('property[newproperty]','newproperty[new_'+newItemId+']').replaceAll('data-id="newproperty"','data-id="new_'+newItemId+'"').replaceAll('id="newproperty"','id="new_'+newItemId+'"').replaceAll('property_newproperty','newproperty_new_'+newItemId).replaceAll('<span>newproperty</span>','');
         container.insertAdjacentHTML('beforeend',itemString);
         const newRow = container.lastElementChild;
         if (newRow) {

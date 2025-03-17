@@ -1,6 +1,6 @@
-@extends('elfcms::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.main')
 
-@section('infoboxpage-content')
+@section('pagecontent')
 
     <div class="table-search-box">
         <div class="table-search-result-title">
@@ -17,7 +17,7 @@
                     <input type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="">
                 </div>
                 <div class="non-text-buttons">
-                    <button type="submit" class="default-btn search-button"></button>
+                    <button type="submit" class="button search-button"></button>
                 </div>
             </div>
         </form>
@@ -122,21 +122,21 @@
                     @endif
                     </td>
                     <td class="button-column non-text-buttons">
-                        <a href="{{ route('admin.infobox.items.edit',$item) }}" class="default-btn edit-button" title="{{ __('elfcms::default.add_item') }}"></a>
+                        <a href="{{ route('admin.infobox.items.edit',$item) }}" class="button edit-button" title="{{ __('elfcms::default.add_item') }}"></a>
                         <form action="{{ route('admin.infobox.items.update',$item) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $item->id }}">
                             <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$item->active }}">
                             <input type="hidden" name="notedit" value="1">
-                            <button type="submit" @if ($item->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif></button>
+                            <button type="submit" @if ($item->active == 1) class="button deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="button activate-button" title="{{ __('elfcms::default.activate') }}" @endif></button>
                         </form>
                         <form action="{{ route('admin.infobox.items.destroy',$item) }}" method="POST" data-submit="check">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $item->id }}">
                             <input type="hidden" name="title" value="{{ $item->title }}">
-                            <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
+                            <button type="submit" class="button color-text-button danger-button" title="{{ __('elfcms::default.delete') }}"></button>
                         </form>
                         <div class="contextmenu-content-box">
                             <a href="{{ route('admin.infobox.items.edit',$item) }}" class="contextmenu-item">{{ __('elfcms::default.edit') }}</a>
@@ -193,14 +193,14 @@
                             buttons:[
                                 {
                                     title:'{{ __('elfcms::default.delete') }}',
-                                    class:'default-btn delete-button',
+                                    class:'button color-text-button danger-button',
                                     callback: function(){
                                         self.submit()
                                     }
                                 },
                                 {
                                     title:'{{ __('elfcms::default.cancel') }}',
-                                    class:'default-btn cancel-button',
+                                    class:'button color-text-button',
                                     callback:'close'
                                 }
                             ],

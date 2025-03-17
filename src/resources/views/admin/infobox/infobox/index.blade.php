@@ -1,6 +1,6 @@
-@extends('elfcms::admin.layouts.infobox')
+@extends('elfcms::admin.layouts.main')
 
-@section('infoboxpage-content')
+@section('pagecontent')
 
     @if (Session::has('infoboxresult'))
     <div class="alert alert-alternate">{{ Session::get('infoboxresult') }}</div>
@@ -74,28 +74,28 @@
                     <td>{{ $infobox->created_at }}</td>
                     <td>{{ $infobox->updated_at }}</td>
                     {{-- <td class="button-column">
-                        <a href="{{ route('admin.infobox.infoboxes.edit',$infobox->id) }}" class="default-btn edit-button">{{ __('elfcms::default.edit') }}</a>
+                        <a href="{{ route('admin.infobox.infoboxes.edit',$infobox->id) }}" class="button edit-button">{{ __('elfcms::default.edit') }}</a>
                         <form action="{{ route('admin.infobox.infoboxes.destroy',$infobox->id) }}" method="POST" data-submit="check">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $infobox->id }}">
                             <input type="hidden" name="name" value="{{ $infobox->name }}">
-                            <button type="submit" class="default-btn delete-button">{{ __('elfcms::default.delete') }}</button>
+                            <button type="submit" class="button color-text-button danger-button">{{ __('elfcms::default.delete') }}</button>
                         </form>
                     </td> --}}
                     <td class="button-column non-text-buttons">
                         {{-- <form action="{{ route('admin.infobox.infoboxes.create') }}" method="GET">
                             <input type="hidden" name="infobox_id" value="{{ $infobox->id }}">
-                            <button type="submit" class="default-btn submit-button create-button" title="{{ __('elfcms::default.add_post') }}"></button>
+                            <button type="submit" class="button submit-button create-button" title="{{ __('elfcms::default.add_post') }}"></button>
                         </form> --}}
-                        <a href="{{ route('admin.infobox.infoboxes.edit',$infobox) }}" class="default-btn edit-button" title="{{ __('elfcms::default.edit') }}"></a>
+                        <a href="{{ route('admin.infobox.infoboxes.edit',$infobox) }}" class="button edit-button" title="{{ __('elfcms::default.edit') }}"></a>
                         <form action="{{ route('admin.infobox.infoboxes.update',$infobox) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $infobox->id }}">
                             <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$infobox->active }}">
                             <input type="hidden" name="notedit" value="1">
-                            <button type="submit" @if ($infobox->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
+                            <button type="submit" @if ($infobox->active == 1) class="button deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="button activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
                             </button>
                         </form>
                         <form action="{{ route('admin.infobox.infoboxes.destroy',$infobox) }}" method="POST" data-submit="check">
@@ -103,7 +103,7 @@
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $infobox->id }}">
                             <input type="hidden" name="name" value="{{ $infobox->title }}">
-                            <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
+                            <button type="submit" class="button color-text-button danger-button" title="{{ __('elfcms::default.delete') }}"></button>
                         </form>
                         <div class="contextmenu-content-box">
                             {{-- <a href="{{ route('admin.infobox.infoboxes',UrlParams::addArr(['infobox'=>$infobox->id])) }}" class="contextmenu-item">
@@ -161,14 +161,14 @@
                         buttons:[
                             {
                                 title:'{{ __('elfcms::default.delete') }}',
-                                class:'default-btn delete-button',
+                                class:'button color-text-button danger-button',
                                 callback: function(){
                                     self.submit()
                                 }
                             },
                             {
                                 title:'{{ __('elfcms::default.cancel') }}',
-                                class:'default-btn cancel-button',
+                                class:'button color-text-button',
                                 callback:'close'
                             }
                         ],

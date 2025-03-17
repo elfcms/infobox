@@ -94,7 +94,12 @@ function itemPositionSuccess(type) {
 
                     const positionBox = line.querySelector('.infobox-line-position');
                     if (positionBox) {
-                        positionBox.innerHTML = position;
+                        const positionValue = positionBox.querySelector("span");
+                        if (positionValue) {
+                            positionValue.innerText = position;
+                        } else {
+                            positionBox.innerHTML = position;
+                        }
                     }
                     position++;
                 }
