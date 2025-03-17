@@ -208,11 +208,6 @@ class InfoboxItemController extends Controller
                             }
                             $paramValue = json_encode($paramValue);
                         }
-                        /* if ($property->data_type->code == 'color') {
-                            if ($paramValue == 0) {
-                                $paramValue = null;
-                            }
-                        } */
                         if ($property->data_type->code == 'bool') {
                             $paramValue = 1;
                         }
@@ -292,13 +287,7 @@ class InfoboxItemController extends Controller
         $categories = InfoboxCategory::where('infobox_id',$item->infobox->id)->get();
         $properties = InfoboxItemProperty::where('infobox_id',$item->infobox->id)->get();
         foreach ($properties as $property) {
-            //if ($parameter->id == 9) dd($parameter->product_values($shopProduct->id));
             $property->value = $property->values($item->id);
-            /* if ($property->data_type->code == 'color') {
-                //dd($property->value);
-                $property->colorData = ShopColor::find($property->value);
-            } */
-            //if ($parameter->id == 9) dd($parameter->value);
         }
         return view('elfcms::admin.infobox.items.edit',[
             'page' => [
@@ -320,7 +309,6 @@ class InfoboxItemController extends Controller
      */
     public function update(Request $request, InfoboxItem $item)
     {
-        //dd($item->infobox->itemProperties[0]->data_type);
         if ($request->notedit && $request->notedit == 1) {
             $item->active = empty($request->active) ? 0 : 1;
 
@@ -336,7 +324,7 @@ class InfoboxItemController extends Controller
             'slug' => 'required',//|unique:Elfcms\Infobox\Models\InfoboxItem,code',
         ]);
         if (InfoboxItem::where('slug',$request->slug)->where('id','<>',$item->id)->first()) {
-            return redirect(route('admin.infobox.item.edit',$item->id))->withErrors([
+            return redirect(route('admin.infobox.items.edit',$item->id))->withErrors([
                 'slug' => __('infobox::default.item_already_exists')
             ]);
         }
@@ -368,48 +356,6 @@ class InfoboxItemController extends Controller
         $item->end_time = $end_time;
         $item->meta_keywords = $request->meta_keywords;
         $item->meta_description = $request->meta_description;
-
-        /* $typeCodes = ['int','float','date','datetime'];
-
-        if (!empty($request->options_exist)) {
-            foreach ($request->options_exist as $oid => $param) {
-                if (!empty($param['deleted']) && $oid > 0) {
-                    $item->options()->find($oid)->delete();
-                    continue;
-                }
-                $typeCode = DataType::find($param['type']);
-                $type = '';
-                if (!empty($typeCode) && !empty($typeCode->code) && in_array($typeCode->code,$typeCodes)) {
-                    $type = '_' . $typeCode->code;
-                }
-                /* $option = InfoboxItemOption::find($oid);
-                if ($option) {
-                    $option['value'.$type] = $param['value'];
-                    $option->name = $param['name'];
-                    $option->data_type_id = $param['type'];
-                    $option->save();
-                } *
-            }
-        } */
-
-        /* if (!empty($request->options_new)) {
-            foreach ($request->options_new as $i => $param) {
-                if (!empty($param['deleted']) || (empty($param['value']) && empty($param['text']))) {
-                    continue;
-                }
-                $typeCode = DataType::find($param['type']);
-                $type = '';
-                if (!empty($typeCode) && !empty($typeCode->code) && in_array($typeCode->code,$typeCodes)) {
-                    $type = '_' . $typeCode->code;
-                }
-                $optionData = [
-                    'value'.$type => $param['value'],
-                    'name' => $param['name'],
-                    'data_type_id' => $param['type'],
-                ];
-                $item->options()->create($optionData);
-            }
-        } */
 
         $item->save();
 
@@ -454,11 +400,6 @@ class InfoboxItemController extends Controller
                         }
                         $paramValue = json_encode($paramValue);
                     }
-                    /* if ($property->data_type->code == 'color') {
-                        if ($paramValue == 0) {
-                            $paramValue = null;
-                        }
-                    } */
                     if ($property->data_type->code == 'bool') {
                         $paramValue = 1;
                     }

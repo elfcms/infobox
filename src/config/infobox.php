@@ -3,14 +3,23 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Version
+    | Info
     |--------------------------------------------------------------------------
     |
-    | Version of package
+    | Package info
     |
     */
 
-    'version' => '1.6.2',
+    'version' => '1.7',
+    'developer' => 'Maxim Klassen',
+    'license' => 'MIT',
+    'author' => 'Maxim Klassen',
+    'title' => 'Infobox',
+    'description' => '',
+    'url' => '',
+    'github' => 'https://github.com/elfcms/infobox',
+    'release_status' => 'stable',
+    'release_date' => '2025',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +30,7 @@ return [
     |
     */
 
-    'elfcms_package' => '2.0.2',
+    'elfcms_package' => '3.0',
 
     /*
     |--------------------------------------------------------------------------
