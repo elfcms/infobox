@@ -23,6 +23,9 @@
             "providers": [
                 "Elfcms\\Infobox\\Providers\\ElfcmsModuleProvider"
             ]
+        },
+        "elfcms": {
+            "title": "Infobox"
         }
     }
 }
