@@ -4,23 +4,27 @@ use Elfcms\Elfcms\Models\DataType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-$adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
+$adminPath = config('elfcms.elfcms.admin_path') ?? 'admin';
+$adminPath = trim($adminPath,'/');
 
 Route::group(['middleware'=>['web', 'locales', 'cookie']],function() use ($adminPath) {
 
     Route::name('admin.')->middleware(['admin','access'])->group(function() use ($adminPath) {
 
-        Route::name('infobox.')->group(function() use ($adminPath) {
-            Route::get($adminPath . '/infobox/nav/{infobox?}/{category?}', [\Elfcms\Infobox\Http\Controllers\InfoboxNavigator::class, 'index'])->name('nav');
-            Route::resource($adminPath . '/infobox/infoboxes', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxController::class)->names(['index' => 'infoboxes']);
-            Route::resource($adminPath . '/infobox/items', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemController::class)->names(['index' => 'items']);
-            Route::resource($adminPath . '/infobox/categories', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryController::class)->names(['index' => 'categories']);
+
+        Route::prefix($adminPath . '/infobox')->name('infobox.')->group(function() use ($adminPath) {
+            Route::get('/nav/{infobox?}/{category?}', [\Elfcms\Infobox\Http\Controllers\InfoboxNavigator::class, 'index'])->name('nav');
+            Route::resource('/infoboxes', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxController::class)->names(['index' => 'infoboxes']);
+            Route::resource('/items', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemController::class)->names(['index' => 'items']);
+            Route::resource('/categories', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryController::class)->names(['index' => 'categories']);
 
             Route::name('properties.')->group(function() use ($adminPath) {
-                Route::resource($adminPath . '/infobox/{infobox}/properties/category', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryPropertyController::class);
-                Route::resource($adminPath . '/infobox/{infobox}/properties/item', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemPropertyController::class);
+                Route::resource('/{infobox}/properties/category', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryPropertyController::class);
+                Route::resource('/{infobox}/properties/item', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemPropertyController::class);
             });
         });
+
+
         Route::get($adminPath . '/ajax/json/infobox/datatypes',function(Request $request){
             $result = [];
             if ($request->ajax()) {
