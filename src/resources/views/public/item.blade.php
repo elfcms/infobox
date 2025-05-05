@@ -1,1 +1,1 @@
-@dd($item)
+@dd($pageConfig)
