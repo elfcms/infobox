@@ -82,4 +82,13 @@ return [
             "actions" => ["read", "write"],
         ],
     ],
+
+    "pages" => [
+        'name' => 'Infobox',
+        'class' => Elfcms\Infobox\Models\Infobox::class ?? null,
+        'search_key' => 'infobox',
+        'search_column' => 'slug',
+        'options_view' => 'elfcms::admin.infobox.pages.options',
+        'router' => Elfcms\Infobox\Services\DynamicPageRouter::class ?? null,
+    ],
 ];

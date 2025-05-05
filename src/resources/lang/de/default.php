@@ -118,4 +118,11 @@ return [
 
     'nothing_selected' => 'Nichts ausgewählt',
 
+    'nesting_depth_of_categories' => 'Verschachtelungstiefe der Kategorien',
+    'main_page_template' => 'Hauptseitenvorlage',
+    'category_template' => 'Kategorievorlage',
+    'item_template' => 'Artikelvorlage',
+    'category_page_path' => 'Pfad der Kategorieseite',
+    'item_page_path' => 'Pfad zur Elementseite',
+    'use_category_path' => 'Kategoriepfad verwenden',
 ];

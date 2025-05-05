@@ -117,5 +117,9 @@ return [
     'nav' => 'Навигация',
 
     'nothing_selected' => 'Ничего не выбрано',
-
+    
+    'nesting_depth_of_categories' => 'Глубина вложения категорий',
+    'main_page_template' => 'Шаблон главной страницы',
+    'category_template' => 'Шаблон категории',
+    'item_template' => 'Шаблон элемента',
 ];

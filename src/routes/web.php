@@ -1,8 +1,11 @@
 <?php
 
 use Elfcms\Elfcms\Models\DataType;
+use Elfcms\Elfcms\Models\Page;
+use Elfcms\Infobox\Http\Controllers\DynamicPageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 $adminPath = config('elfcms.elfcms.admin_path') ?? 'admin';
 $adminPath = trim($adminPath,'/');
@@ -17,6 +20,8 @@ Route::group(['middleware'=>['web', 'locales', 'cookie']],function() use ($admin
             Route::resource('/infoboxes', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxController::class)->names(['index' => 'infoboxes']);
             Route::resource('/items', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxItemController::class)->names(['index' => 'items']);
             Route::resource('/categories', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryController::class)->names(['index' => 'categories']);
+
+            Route::post('/create-page/{infobox}',[\Elfcms\Infobox\Http\Controllers\DynamicPageController::class, 'createPage'])->name('create-page');
 
             Route::name('properties.')->group(function() use ($adminPath) {
                 Route::resource('/{infobox}/properties/category', \Elfcms\Infobox\Http\Controllers\Resources\InfoboxCategoryPropertyController::class);
@@ -56,5 +61,6 @@ Route::group(['middleware'=>['web', 'locales', 'cookie']],function() use ($admin
         });
 
     });
+    
 
 });

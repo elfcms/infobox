@@ -3,6 +3,7 @@
 namespace Elfcms\Infobox\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Elfcms\Models\Page;
 use Elfcms\Infobox\Models\Infobox;
 use Elfcms\Infobox\Models\InfoboxCategory;
 use Illuminate\Http\Request;
@@ -56,6 +57,11 @@ class InfoboxNavigator extends Controller
             $categories = $infobox->topCategories ?? [];
         }
 
+        $page = null;
+
+        if (!empty($infobox) && !empty($infobox->id)) {
+            $page = Page::where('module','infobox')->where('module_id',$infobox->id)->first();
+        }
         return view('elfcms::admin.infobox.nav.index',[
             'page' => [
                 'title' => empty($infobox->id) ? __('infobox::default.infoboxes') : __('infobox::default.infobox') . ': ' . $infobox->title,
@@ -65,7 +71,8 @@ class InfoboxNavigator extends Controller
             'infobox' => $infobox,
             'category' => $category,
             'categories' => $categories,
-            'message' => $message
+            'message' => $message,
+            'page' => $page,
         ]);
     }
 }

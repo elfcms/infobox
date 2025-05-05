@@ -118,4 +118,14 @@ return [
 
     'nothing_selected' => 'Nothing selected',
 
+    'nesting_depth_of_categories' => 'Nesting depth of categories',
+    'main_page_template' => 'Main page template',
+    'category_template' => 'Category template',
+    'item_template' => 'Item template',
+    'category_page_path' => 'Category page path',
+    'item_page_path' => 'Item page path',
+    'use_category_path' => 'Use category path',
+    'category_page_path' => 'Путь к странице категории',
+    'item_page_path' => 'Путь к странице элемента',
+    'use_category_path' => 'Использовать категорию',
 ];

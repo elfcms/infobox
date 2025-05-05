@@ -75,6 +75,10 @@ class ElfcmsModuleProvider extends ServiceProvider
         ], 'admin');
 
         $this->publishes([
+            $moduleDir.'/resources/views/public' => resource_path('views/elfcms/public/infobox'),
+        ],'public');
+
+        $this->publishes([
             $moduleDir.'/resources/views/components' => resource_path('views/elfcms/components'),
         ],'components');
 
