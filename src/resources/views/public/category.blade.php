@@ -1,1 +1,1 @@
-@dd($category)
+@dd($pageConfig)

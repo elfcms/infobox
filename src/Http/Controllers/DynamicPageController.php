@@ -82,6 +82,10 @@ class DynamicPageController extends Controller
 
     public function showCategory(Page $page, InfoboxCategory $category)
     {
+        if (empty($page->module_id) || $category->infobox_id != $page->module_id) {
+            abort(404);
+        }
+
         $options = $page->module_options ?? [];
         $template = $options['category_template'] ?? 'elfcms.public.infobox.category';
 
@@ -100,6 +104,10 @@ class DynamicPageController extends Controller
 
     public function showItem(Page $page, InfoboxItem $item)
     {
+        if (empty($page->module_id) || $item->infobox_id != $page->module_id) {
+            abort(404);
+        }
+
         $options = $page->module_options ?? [];
         $template = $options['item_template'] ?? 'elfcms.public.infobox.item';
 
@@ -119,6 +127,10 @@ class DynamicPageController extends Controller
 
     public function showCategoryItem(Page $page, InfoboxCategory $category, InfoboxItem $item)
     {
+        if (empty($page->module_id) || $item->infobox_id != $page->module_id || $item->category_id != $category->id) {
+            abort(404);
+        }
+
         $options = $page->module_options ?? [];
         $template = $options['item_template'] ?? 'elfcms.public.infobox.item';
 

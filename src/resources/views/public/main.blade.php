@@ -1,1 +1,1 @@
-@dd($infobox)
+@dd($pageConfig)
