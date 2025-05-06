@@ -19,12 +19,14 @@ class DynamicPageRouter
                 $pages = Page::where('active', 1)
                     ->where('module', 'infobox')
                     ->get();
+                
+                $controller = new DynamicPageController;
 
                 foreach ($pages as $page) {
                     if ($page->path) {
                         // Main page route
-                        Route::get($page->path, function () use ($page) {
-                            return app(DynamicPageController::class)->show($page);
+                        Route::get($page->path, function () use ($page, $controller) {
+                            return $controller->show($page);
                         });
 
                         $options = $page->module_options ?? [];
@@ -34,8 +36,7 @@ class DynamicPageRouter
                         $categoryPath = trim($categoryPath, '/');
                         if ($categoryPath !== '') $categoryPath .= '/';
                         if (!empty($options['show_categories'])) {
-                            Route::get($page->path . '/' . $categoryPath . '{category:slug}', function (InfoboxCategory $category) use ($page) {
-                                $controller = app(DynamicPageController::class);
+                            Route::get($page->path . '/' . $categoryPath . '{category:slug}', function (InfoboxCategory $category) use ($page, $controller) {
                                 return $controller->showCategory($page, $category);
                             });
                         }
@@ -47,20 +48,17 @@ class DynamicPageRouter
                             if ($itemPath !== '') $itemPath .= '/';
                             if (!empty($options['use_category_path'])) {
                                 $itemPath = $categoryPath . '{category:slug}/' . $itemPath;
-                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxCategory $category, InfoboxItem $item) use ($page) {
-                                    $controller = app(DynamicPageController::class);
+                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxCategory $category, InfoboxItem $item) use ($page, $controller) {
                                     return $controller->showCategoryItem($page, $category, $item);
                                 });
                             } elseif (empty($itemPath)) {
                                 $itemPath = 'items/';
-                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxItem $item) use ($page) {
-                                    $controller = app(DynamicPageController::class);
+                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxItem $item) use ($page, $controller) {
                                     return $controller->showItem($page, $item);
                                 });
                             }
                             else {
-                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxItem $item) use ($page) {
-                                    $controller = app(DynamicPageController::class);
+                                Route::get($page->path . '/' . $itemPath . '{item:slug}', function (InfoboxItem $item) use ($page, $controller) {
                                     return $controller->showItem($page, $item);
                                 });
                             }

@@ -56,6 +56,7 @@ class DynamicPageController extends Controller
             'title' => $infobox->title,
             'description' => $infobox->meta_description,
             'keywords' => $infobox->meta_keywords,
+            'breadcrumbs' => $this->breadcrumbs($page, $infobox),
         ]);
 
         return view($template, [
@@ -94,6 +95,7 @@ class DynamicPageController extends Controller
             'infobox_title' => $category->infobox->title,
             'description' => $category->meta_description,
             'keywords' => $category->meta_keywords,
+            'breadcrumbs' => $this->breadcrumbs($page, $category, true),
         ]);
 
         return view($template, [
@@ -117,6 +119,7 @@ class DynamicPageController extends Controller
             'infobox_title' => $item->infobox->title,
             'description' => $item->meta_description,
             'keywords' => $item->meta_keywords,
+            'breadcrumbs' => $this->breadcrumbs($page, $item, true),
         ]);
 
         return view($template, [
@@ -140,6 +143,7 @@ class DynamicPageController extends Controller
             'infobox_title' => $item->infobox->title,
             'description' => $item->meta_description,
             'keywords' => $item->meta_keywords,
+            'breadcrumbs' => $this->breadcrumbs($page, $item, true),
         ]);
 
         return view($template, [
@@ -186,5 +190,101 @@ class DynamicPageController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => __('elfcms::default.error') . ': ' . $th->getMessage()]);
         }
+    }
+
+    public function breadcrumbs(Page $page, Infobox|InfoboxCategory|InfoboxItem $element, $home = false): array
+    {
+        $breadcrumbs = [];
+        $options = $page->module_options ?? [];
+
+        if(!empty($home)) {
+            if (!is_string($home)) {
+                $home = 'Start';
+            }
+        }
+
+        $categoryPath = $options['category_path'] ?? '';
+        $categoryPath = trim($categoryPath, '/');
+
+        $itemPath = $options['item_path'] ?? '';
+        $itemPath = trim($itemPath, '/');
+        if (!empty($options['use_category_path'])) {
+            $itemPath = $categoryPath . '{category:slug}' . $itemPath;
+        }
+        elseif (empty($itemPath)) {
+            $itemPath = 'items/';
+        }
+
+        if ($itemPath !== '') $itemPath .= '/';
+        if ($categoryPath !== '') $categoryPath .= '/';
+
+        if ($element instanceof Infobox) {
+            if(!empty($home)) {
+                $breadcrumbs[] = [
+                    'name' => $home,
+                    'url' => url('/'),
+                ];
+            }
+            $breadcrumbs[] = [
+                'name' => $element->title,
+                'url' => url($page->path ?? $element->slug),
+                'current' => true,
+            ];
+        }
+        if ($element instanceof InfoboxCategory) {
+            $current = $element;
+            while ($current->parent) {
+                $breadcrumbs[] = [
+                    'name' => $current->parent->title,
+                    'url' => url($page->path . '/' . $categoryPath . $current->parent->slug),
+                ];
+                $current = $current->parent;
+            }
+            $breadcrumbs[] = [
+                'name' => $element->infobox->title,
+                'url' => url($page->path ?? $element->infobox->slug),
+            ];
+            if(!empty($home)) {
+                $breadcrumbs[] = [
+                    'name' => $home,
+                    'url' => url('/'),
+                ];
+            }
+            $breadcrumbs = array_reverse($breadcrumbs);
+            $breadcrumbs[] = [
+                'name' => $element->title,
+                'url' => url($page->path . '/' . $categoryPath . $element->slug),
+                'current' => true,
+            ];
+        }
+        if ($element instanceof InfoboxItem) {
+            if (!empty($options['show_categories']) && $element->category) {
+                $current = $element->category;
+                while ($current) {
+                    $breadcrumbs[] = [
+                        'name' => $current->title,
+                        'url' => url($page->path . '/' . $categoryPath . $current->slug),
+                    ];
+                    $current = $current->parent;
+                }
+            }
+            $breadcrumbs[] = [
+                'name' => $element->infobox->title,
+                'url' => url($page->path ?? $element->infobox->slug),
+            ];
+            if(!empty($home)) {
+                $breadcrumbs[] = [
+                    'name' => $home,
+                    'url' => url('/'),
+                ];
+            }
+            $breadcrumbs = array_reverse($breadcrumbs);
+            $breadcrumbs[] = [
+                'name' => $element->title,
+                'url' => url($page->path . '/' . $itemPath . $element->slug),
+                'current' => true
+            ];
+        }
+        return $breadcrumbs;
     }
 }
