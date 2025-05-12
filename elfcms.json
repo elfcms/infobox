@@ -1,7 +1,7 @@
 {
     "name": "infobox",
     "title": "Infobox",
-    "version": "1.8.0",
+    "version": "1.8.1",
     "github": "https://github.com/elfcms/infobox",
     "zip": "https://github.com/elfcms/infobox/archive/refs/tags/1.8.0",
     "release_status": "stable"
