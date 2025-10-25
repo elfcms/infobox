@@ -33,7 +33,7 @@ class InfoboxCategoryPropertyValue extends Model
         return $this->belongsTo(InfoboxCategoryProperty::class, 'property_id');
     }
 
-    public function item()
+    public function category()
     {
         return $this->belongsTo(InfoboxCategory::class, 'category_id');
     }

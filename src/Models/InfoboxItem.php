@@ -89,4 +89,9 @@ class InfoboxItem extends Model
     {
         return array_merge($this->toArray(),$this->props());
     }
+
+    public function propertyValues()
+    {
+        return $this->hasMany(InfoboxItemPropertyValue::class, 'item_id');
+    }
 }

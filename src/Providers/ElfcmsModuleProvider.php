@@ -87,5 +87,7 @@ class ElfcmsModuleProvider extends ServiceProvider
         ],'emails');
 
         Blade::component('infobox-infobox', \Elfcms\Infobox\View\Components\Infobox::class);
+        Blade::component('infobox-categories', \Elfcms\Infobox\View\Components\Categories::class);
+        Blade::component('infobox-category', \Elfcms\Infobox\View\Components\Category::class);
     }
 }

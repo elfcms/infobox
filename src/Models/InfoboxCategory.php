@@ -243,4 +243,9 @@ class InfoboxCategory extends Model
 
         return $result;
     }
+
+    public function propertyValues()
+    {
+        return $this->hasMany(InfoboxCategoryPropertyValue::class, 'category_id');
+    }
 }
